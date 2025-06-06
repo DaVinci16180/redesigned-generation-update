@@ -1,0 +1,502 @@
+[
+  {
+    "id": 1,
+    "name": "Portal 1",
+    "minResponseTime": 607,
+    "maxResponseTime": 2300,
+    "requestsPerMinute": -1,
+    "failureRate": 0.2,
+    "timeoutRate": 0.18,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 2,
+    "name": "Portal 2",
+    "minResponseTime": 740,
+    "maxResponseTime": 1878,
+    "requestsPerMinute": -1,
+    "failureRate": 0.05,
+    "timeoutRate": 0.02,
+    "timeoutDuration": 5000
+  },
+  {
+    "id": 3,
+    "name": "Portal 3",
+    "minResponseTime": 125,
+    "maxResponseTime": 624,
+    "requestsPerMinute": -1,
+    "failureRate": 0.08,
+    "timeoutRate": 0.09,
+    "timeoutDuration": 2000
+  },
+  {
+    "id": 4,
+    "name": "Portal 4",
+    "minResponseTime": 932,
+    "maxResponseTime": 1777,
+    "requestsPerMinute": -1,
+    "failureRate": 0.07,
+    "timeoutRate": 0.11,
+    "timeoutDuration": 5000
+  },
+  {
+    "id": 5,
+    "name": "Portal 5",
+    "minResponseTime": 905,
+    "maxResponseTime": 2977,
+    "requestsPerMinute": -1,
+    "failureRate": 0.08,
+    "timeoutRate": 0.06,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 6,
+    "name": "Portal 6",
+    "minResponseTime": 143,
+    "maxResponseTime": 627,
+    "requestsPerMinute": -1,
+    "failureRate": 0.26,
+    "timeoutRate": 0.19,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 7,
+    "name": "Portal 7",
+    "minResponseTime": 615,
+    "maxResponseTime": 1596,
+    "requestsPerMinute": -1,
+    "failureRate": 0.04,
+    "timeoutRate": 0.08,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 8,
+    "name": "Portal 8",
+    "minResponseTime": 836,
+    "maxResponseTime": 2401,
+    "requestsPerMinute": -1,
+    "failureRate": 0.21,
+    "timeoutRate": 0.16,
+    "timeoutDuration": 3000
+  },
+  {
+    "id": 9,
+    "name": "Portal 9",
+    "minResponseTime": 3134,
+    "maxResponseTime": 6318,
+    "requestsPerMinute": -1,
+    "failureRate": 0.12,
+    "timeoutRate": 0.06,
+    "timeoutDuration": 2000
+  },
+  {
+    "id": 10,
+    "name": "Portal 10",
+    "minResponseTime": 844,
+    "maxResponseTime": 1069,
+    "requestsPerMinute": 30,
+    "failureRate": 0.05,
+    "timeoutRate": 0.14,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 11,
+    "name": "Portal 11",
+    "minResponseTime": 751,
+    "maxResponseTime": 1771,
+    "requestsPerMinute": -1,
+    "failureRate": 0.15,
+    "timeoutRate": 0.15,
+    "timeoutDuration": 3000
+  },
+  {
+    "id": 12,
+    "name": "Portal 12",
+    "minResponseTime": 613,
+    "maxResponseTime": 2681,
+    "requestsPerMinute": 30,
+    "failureRate": 0.07,
+    "timeoutRate": 0.02,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 13,
+    "name": "Portal 13",
+    "minResponseTime": 4459,
+    "maxResponseTime": 5356,
+    "requestsPerMinute": -1,
+    "failureRate": 0.16,
+    "timeoutRate": 0.11,
+    "timeoutDuration": 2000
+  },
+  {
+    "id": 14,
+    "name": "Portal 14",
+    "minResponseTime": 529,
+    "maxResponseTime": 2658,
+    "requestsPerMinute": 30,
+    "failureRate": 0.12,
+    "timeoutRate": 0.2,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 15,
+    "name": "Portal 15",
+    "minResponseTime": 216,
+    "maxResponseTime": 619,
+    "requestsPerMinute": -1,
+    "failureRate": 0.06,
+    "timeoutRate": 0.03,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 16,
+    "name": "Portal 16",
+    "minResponseTime": 695,
+    "maxResponseTime": 1166,
+    "requestsPerMinute": -1,
+    "failureRate": 0.02,
+    "timeoutRate": 0.05,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 17,
+    "name": "Portal 17",
+    "minResponseTime": 924,
+    "maxResponseTime": 1189,
+    "requestsPerMinute": -1,
+    "failureRate": 0.3,
+    "timeoutRate": 0.07,
+    "timeoutDuration": 3000
+  },
+  {
+    "id": 18,
+    "name": "Portal 18",
+    "minResponseTime": 742,
+    "maxResponseTime": 2152,
+    "requestsPerMinute": -1,
+    "failureRate": 0.22,
+    "timeoutRate": 0.11,
+    "timeoutDuration": 3000
+  },
+  {
+    "id": 19,
+    "name": "Portal 19",
+    "minResponseTime": 884,
+    "maxResponseTime": 2046,
+    "requestsPerMinute": -1,
+    "failureRate": 0.05,
+    "timeoutRate": 0.17,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 20,
+    "name": "Portal 20",
+    "minResponseTime": 690,
+    "maxResponseTime": 1943,
+    "requestsPerMinute": -1,
+    "failureRate": 0.02,
+    "timeoutRate": 0.18,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 21,
+    "name": "Portal 21",
+    "minResponseTime": 555,
+    "maxResponseTime": 1336,
+    "requestsPerMinute": -1,
+    "failureRate": 0.26,
+    "timeoutRate": 0.16,
+    "timeoutDuration": 2000
+  },
+  {
+    "id": 22,
+    "name": "Portal 22",
+    "minResponseTime": 738,
+    "maxResponseTime": 1425,
+    "requestsPerMinute": -1,
+    "failureRate": 0.03,
+    "timeoutRate": 0.08,
+    "timeoutDuration": 5000
+  },
+  {
+    "id": 23,
+    "name": "Portal 23",
+    "minResponseTime": 201,
+    "maxResponseTime": 621,
+    "requestsPerMinute": -1,
+    "failureRate": 0.29,
+    "timeoutRate": 0.2,
+    "timeoutDuration": 5000
+  },
+  {
+    "id": 24,
+    "name": "Portal 24",
+    "minResponseTime": 689,
+    "maxResponseTime": 2870,
+    "requestsPerMinute": -1,
+    "failureRate": 0.09,
+    "timeoutRate": 0.14,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 25,
+    "name": "Portal 25",
+    "minResponseTime": 760,
+    "maxResponseTime": 1096,
+    "requestsPerMinute": -1,
+    "failureRate": 0.03,
+    "timeoutRate": 0.16,
+    "timeoutDuration": 2000
+  },
+  {
+    "id": 26,
+    "name": "Portal 26",
+    "minResponseTime": 533,
+    "maxResponseTime": 2905,
+    "requestsPerMinute": -1,
+    "failureRate": 0.06,
+    "timeoutRate": 0.18,
+    "timeoutDuration": 5000
+  },
+  {
+    "id": 27,
+    "name": "Portal 27",
+    "minResponseTime": 722,
+    "maxResponseTime": 2586,
+    "requestsPerMinute": 200,
+    "failureRate": 0.13,
+    "timeoutRate": 0.2,
+    "timeoutDuration": 5000
+  },
+  {
+    "id": 28,
+    "name": "Portal 28",
+    "minResponseTime": 687,
+    "maxResponseTime": 2147,
+    "requestsPerMinute": 30,
+    "failureRate": 0.17,
+    "timeoutRate": 0.14,
+    "timeoutDuration": 2000
+  },
+  {
+    "id": 29,
+    "name": "Portal 29",
+    "minResponseTime": 677,
+    "maxResponseTime": 1850,
+    "requestsPerMinute": 100,
+    "failureRate": 0.2,
+    "timeoutRate": 0.13,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 30,
+    "name": "Portal 30",
+    "minResponseTime": 968,
+    "maxResponseTime": 1812,
+    "requestsPerMinute": 60,
+    "failureRate": 0.12,
+    "timeoutRate": 0.14,
+    "timeoutDuration": 5000
+  },
+  {
+    "id": 31,
+    "name": "Portal 31",
+    "minResponseTime": 725,
+    "maxResponseTime": 1317,
+    "requestsPerMinute": -1,
+    "failureRate": 0.03,
+    "timeoutRate": 0.08,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 32,
+    "name": "Portal 32",
+    "minResponseTime": 831,
+    "maxResponseTime": 1816,
+    "requestsPerMinute": -1,
+    "failureRate": 0.22,
+    "timeoutRate": 0.08,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 33,
+    "name": "Portal 33",
+    "minResponseTime": 584,
+    "maxResponseTime": 2938,
+    "requestsPerMinute": -1,
+    "failureRate": 0.12,
+    "timeoutRate": 0.02,
+    "timeoutDuration": 3000
+  },
+  {
+    "id": 34,
+    "name": "Portal 34",
+    "minResponseTime": 4583,
+    "maxResponseTime": 7249,
+    "requestsPerMinute": -1,
+    "failureRate": 0.2,
+    "timeoutRate": 0.02,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 35,
+    "name": "Portal 35",
+    "minResponseTime": 4306,
+    "maxResponseTime": 5732,
+    "requestsPerMinute": 60,
+    "failureRate": 0.01,
+    "timeoutRate": 0.13,
+    "timeoutDuration": 5000
+  },
+  {
+    "id": 36,
+    "name": "Portal 36",
+    "minResponseTime": 4315,
+    "maxResponseTime": 5921,
+    "requestsPerMinute": -1,
+    "failureRate": 0.2,
+    "timeoutRate": 0.11,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 37,
+    "name": "Portal 37",
+    "minResponseTime": 962,
+    "maxResponseTime": 2781,
+    "requestsPerMinute": -1,
+    "failureRate": 0.15,
+    "timeoutRate": 0.17,
+    "timeoutDuration": 3000
+  },
+  {
+    "id": 38,
+    "name": "Portal 38",
+    "minResponseTime": 162,
+    "maxResponseTime": 595,
+    "requestsPerMinute": -1,
+    "failureRate": 0.14,
+    "timeoutRate": 0.02,
+    "timeoutDuration": 2000
+  },
+  {
+    "id": 39,
+    "name": "Portal 39",
+    "minResponseTime": 632,
+    "maxResponseTime": 1772,
+    "requestsPerMinute": -1,
+    "failureRate": 0.28,
+    "timeoutRate": 0.02,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 40,
+    "name": "Portal 40",
+    "minResponseTime": 786,
+    "maxResponseTime": 1798,
+    "requestsPerMinute": -1,
+    "failureRate": 0.01,
+    "timeoutRate": 0.03,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 41,
+    "name": "Portal 41",
+    "minResponseTime": 644,
+    "maxResponseTime": 2954,
+    "requestsPerMinute": 200,
+    "failureRate": 0.09,
+    "timeoutRate": 0.16,
+    "timeoutDuration": 2000
+  },
+  {
+    "id": 42,
+    "name": "Portal 42",
+    "minResponseTime": 549,
+    "maxResponseTime": 2587,
+    "requestsPerMinute": 30,
+    "failureRate": 0.2,
+    "timeoutRate": 0.19,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 43,
+    "name": "Portal 43",
+    "minResponseTime": 845,
+    "maxResponseTime": 2239,
+    "requestsPerMinute": -1,
+    "failureRate": 0.26,
+    "timeoutRate": 0.09,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 44,
+    "name": "Portal 44",
+    "minResponseTime": 118,
+    "maxResponseTime": 400,
+    "requestsPerMinute": 100,
+    "failureRate": 0.01,
+    "timeoutRate": 0.19,
+    "timeoutDuration": 1000
+  },
+  {
+    "id": 45,
+    "name": "Portal 45",
+    "minResponseTime": 867,
+    "maxResponseTime": 1362,
+    "requestsPerMinute": 30,
+    "failureRate": 0.19,
+    "timeoutRate": 0.07,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 46,
+    "name": "Portal 46",
+    "minResponseTime": 3236,
+    "maxResponseTime": 7324,
+    "requestsPerMinute": -1,
+    "failureRate": 0.19,
+    "timeoutRate": 0.12,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 47,
+    "name": "Portal 47",
+    "minResponseTime": 858,
+    "maxResponseTime": 2835,
+    "requestsPerMinute": -1,
+    "failureRate": 0.17,
+    "timeoutRate": 0.04,
+    "timeoutDuration": 5000
+  },
+  {
+    "id": 48,
+    "name": "Portal 48",
+    "minResponseTime": 877,
+    "maxResponseTime": 1567,
+    "requestsPerMinute": -1,
+    "failureRate": 0.18,
+    "timeoutRate": 0.17,
+    "timeoutDuration": 7000
+  },
+  {
+    "id": 49,
+    "name": "Portal 49",
+    "minResponseTime": 813,
+    "maxResponseTime": 2765,
+    "requestsPerMinute": -1,
+    "failureRate": 0.05,
+    "timeoutRate": 0.19,
+    "timeoutDuration": 2000
+  },
+  {
+    "id": 50,
+    "name": "Portal 50",
+    "minResponseTime": 146,
+    "maxResponseTime": 568,
+    "requestsPerMinute": -1,
+    "failureRate": 0.21,
+    "timeoutRate": 0.06,
+    "timeoutDuration": 1000
+  }
+]
