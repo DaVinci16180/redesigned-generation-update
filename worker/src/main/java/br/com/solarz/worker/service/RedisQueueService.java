@@ -7,6 +7,8 @@ import br.com.solarz.worker.model.Usina.Priority;
 import br.com.solarz.worker.repository.ApiRepository;
 import br.com.solarz.worker.repository.CredencialRepository;
 import br.com.solarz.worker.repository.UsinaRepository;
+import io.micrometer.core.instrument.Gauge;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RSet;
@@ -25,12 +27,12 @@ public class RedisQueueService {
         AVAILABLE_OR_FAILED //usado para pegar dados das duas filas ao mesmo tempo, priorizando a fila available
     };
 
-    private HashMap<String, HashMap<Integer, RSet<Long>>> queues = new HashMap<>();
+    private final HashMap<String, HashMap<Integer, RSet<Long>>> queues = new HashMap<>();
     private RedissonClient redissonClient;
 
-    private final CredencialRepository credencialRepository;
     private final UsinaRepository usinaRepository;
     private final ApiRepository apiRepository;
+    private final MeterRegistry meterRegistry;
 
     @PostConstruct
     public void setup() {
@@ -53,10 +55,34 @@ public class RedisQueueService {
 
             queues.put(avaQueueName, available);
             queues.put(errQueueName, error);
+
+            buildMeters(api);
         }
     }
 
-    public synchronized Set<Usina> dequeue(String queueName, int amount, Priority priority) {
+    private void buildMeters(Api api) {
+        String avaQueueName = buildName(api, QueueType.AVAILABLE);
+        String errQueueName = buildName(api, QueueType.FAILED);
+
+        for (var priority : queues.get(avaQueueName).keySet()) {
+            String priorityName = Priority.values()[priority].name();
+
+            Gauge.builder("available.queue.size", queues, queues -> queues.get(avaQueueName).get(priority).size())
+                    .tags("portal", api.getName(), "priority", priorityName)
+                    .register(meterRegistry);
+        }
+
+        for (var priority : queues.get(errQueueName).keySet()) {
+            String priorityName = Priority.values()[priority].name();
+
+            Gauge.builder("error.queue.size", queues, queues -> queues.get(errQueueName).get(priority).size())
+                    .tags("portal", api.getName(), "priority", priorityName)
+                    .register(meterRegistry);
+        }
+    }
+
+    public synchronized Set<Usina> dequeue(Api api, QueueType type, int amount, Priority priority) {
+        String queueName = buildName(api, type);
         Set<Usina> usinas = new HashSet<>();
         var queueWithPriority = queues.get(queueName);
 
@@ -67,15 +93,12 @@ public class RedisQueueService {
         }
 
         for (RSet<Long> queue : queueWithPriority.values()) {
-            if (amount - usinas.size() <= 0)
-                break;
+            if (amount - usinas.size() > 0) {
+                Set<Long> ids = queue.removeRandom(amount - usinas.size());
 
-            Set<Long> ids = queue.removeRandom(amount - usinas.size());
-
-            if (ids.isEmpty())
-                continue;
-
-            usinas.addAll(usinaRepository.findAllById(ids));
+                if (!ids.isEmpty())
+                    usinas.addAll(usinaRepository.findAllById(ids));
+            }
         }
 
         return usinas;
@@ -83,23 +106,29 @@ public class RedisQueueService {
 
     public Set<Usina> getUsinasByApi(Api api, QueueType type, int amount, Priority priority) {
         if (type == QueueType.AVAILABLE_OR_FAILED) {
-            String avaQueueName = buildName(api, QueueType.AVAILABLE);
-            String errQueueName = buildName(api, QueueType.FAILED);
-
-            Set<Usina> usinas = dequeue(avaQueueName, amount, priority);
+            Set<Usina> usinas = dequeue(api, QueueType.AVAILABLE, amount, priority);
             if (usinas.size() < amount) {
-                Set<Usina> failed = dequeue(errQueueName, amount - usinas.size(), priority);
+                Set<Usina> failed = dequeue(api, QueueType.FAILED, amount - usinas.size(), priority);
                 usinas.addAll(failed);
             }
 
             return usinas;
         }
 
-        String queueName = buildName(api, type);
-        return dequeue(queueName, amount, priority);
+        return dequeue(api, type, amount, priority);
+    }
+
+    public void queueFailed(List<Usina> usinas, Api api) {
+        String errQueueName = buildName(api, QueueType.FAILED);
+        var apiQueues = queues.get(errQueueName);
+
+        for (Usina usina : usinas) {
+            var queue = apiQueues.get(usina.getPriority().ordinal());
+            queue.add(usina.getId());
+        }
     }
 
     public String buildName(Api api, QueueType type) {
-        return api.getName() + "_" + type;
+        return api.getName() + "_" + type.name();
     }
 }

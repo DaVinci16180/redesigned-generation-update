@@ -29,6 +29,12 @@ public class Usina {
     private Credencial credencial;
 
     private Priority priority = Priority.NORMAL;
+    private int updateAttempts = 0;
+    private boolean updated = false;
+
+    public void incrementUpdateAttempts() {
+        updateAttempts++;
+    }
 
     @Override
     public boolean equals(Object o) {

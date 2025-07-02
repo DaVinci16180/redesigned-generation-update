@@ -17,6 +17,8 @@ CREATE TABLE usina (
     id BIGINT PRIMARY KEY,
     credencial_id BIGINT NOT NULL,
     priority VARCHAR DEFAULT 'NORMAL',
+    update_attempts INT DEFAULT 0,
+    updated BOOLEAN DEFAULT FALSE,
 
     CONSTRAINT fk_credencial
         FOREIGN KEY (credencial_id)

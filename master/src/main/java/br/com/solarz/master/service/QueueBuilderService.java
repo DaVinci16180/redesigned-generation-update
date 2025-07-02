@@ -1,6 +1,7 @@
 package br.com.solarz.master.service;
 
 import br.com.solarz.master.config.RedisClientProvider;
+import br.com.solarz.master.helpers.PopulateDatabaseHelper;
 import br.com.solarz.master.model.Api;
 import br.com.solarz.master.model.Credencial;
 import br.com.solarz.master.model.Usina;
@@ -33,9 +34,10 @@ public class QueueBuilderService {
      *     NORMAL: [...ids]
      * }
      */
-    private HashMap<String, HashMap<Integer, RSet<Long>>> queues = new HashMap<>();
+    private final HashMap<String, HashMap<Integer, RSet<Long>>> queues = new HashMap<>();
     private RedissonClient redissonClient;
 
+    private final PopulateDatabaseHelper populate;
     private final CredencialRepository credencialRepository;
     private final UsinaRepository usinaRepository;
     private final ApiRepository apiRepository;
@@ -43,18 +45,24 @@ public class QueueBuilderService {
     @PostConstruct
     public void setup() {
         this.redissonClient = RedisClientProvider.getClient();
+
+        populate.populateApis();
+        populate.populateCredenciais();
+        populate.populateUsinas();
+
         setupQueues();
+        buildQueues();
     }
 
     public void setupQueues() {
         List<Api> apis = apiRepository.findAll();
         for (Api api : apis) {
-            String avaQueueName = api.getName() + "_" + QueueType.AVAILABLE;
+            String avaQueueName = buildName(api, QueueType.AVAILABLE);
             HashMap<Integer, RSet<Long>> available = new HashMap<>();
             available.put(Priority.HIGH.ordinal(), redissonClient.getSet(avaQueueName + "_" + Priority.HIGH));
             available.put(Priority.NORMAL.ordinal(), redissonClient.getSet(avaQueueName + "_" + Priority.NORMAL));
 
-            String errQueueName = api.getName() + "_" + QueueType.FAILED;
+            String errQueueName = buildName(api, QueueType.FAILED);
             HashMap<Integer, RSet<Long>> error = new HashMap<>();
             error.put(Priority.HIGH.ordinal(), redissonClient.getSet(errQueueName + "_" + Priority.HIGH));
             error.put(Priority.NORMAL.ordinal(), redissonClient.getSet(errQueueName + "_" + Priority.NORMAL));
@@ -69,7 +77,7 @@ public class QueueBuilderService {
         clearQueues(apis);
 
         for (Api api : apis) {
-            String avaQueueName = api.getName() + "_" + QueueType.AVAILABLE;
+            String avaQueueName = buildName(api, QueueType.AVAILABLE);
             List<Credencial> credenciais = credencialRepository.findAllByApi(api);
 
             for (Credencial credencial : credenciais) {
@@ -85,8 +93,8 @@ public class QueueBuilderService {
 
     public void clearQueues(List<Api> apis) {
         for (Api api : apis) {
-            String avaQueueName = api.getName() + "_" + QueueType.AVAILABLE;
-            String errQueueName = api.getName() + "_" + QueueType.FAILED;
+            String avaQueueName = buildName(api, QueueType.AVAILABLE);
+            String errQueueName = buildName(api, QueueType.FAILED);
 
             if (queues.containsKey(avaQueueName))
                 for (var queue : queues.get(avaQueueName).values())
@@ -96,6 +104,10 @@ public class QueueBuilderService {
                 for (var queue : queues.get(errQueueName).values())
                     queue.clear();
         }
+    }
+
+    public String buildName(Api api, QueueType type) {
+        return api.getName() + "_" + type.name();
     }
 
     public void shutdown() {

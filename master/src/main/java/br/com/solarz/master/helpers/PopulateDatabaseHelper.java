@@ -38,7 +38,10 @@ public class PopulateDatabaseHelper {
     }
 
     public void populateCredenciais() {
-        int credenciaisPorApi = 20;
+        Random rand = new Random();
+        int credenciaisPorApiMin = 5;
+        int credenciaisPorApiMax = 30;
+
         List<Credencial> credenciais = credencialRepository.findAll();
 
         if (!credenciais.isEmpty())
@@ -47,18 +50,22 @@ public class PopulateDatabaseHelper {
         List<Api> apis = apiRepository.findAll();
         long sequence = 1;
         for (Api api : apis) {
-            for (long i = 0; i < credenciaisPorApi; i++) {
+            int credenciaisAmount = rand.nextInt(credenciaisPorApiMin, credenciaisPorApiMax);
+
+            for (int i = 0; i < credenciaisAmount; i++) {
                 Credencial credencial = new Credencial(sequence++, api);
                 credencial = credencialRepository.save(credencial);
 
-                int percentage = (int) ((double) sequence / (double) (apis.size() * credenciaisPorApi) * 100.);
-                System.out.println("Credencial " + credencial.getId() + " do portal " + api.getName() + "criada com sucesso (" + percentage + "%)");
+                System.out.println("Credencial " + credencial.getId() + " do portal " + api.getName() + "criada com sucesso");
             }
         }
     }
 
     public void populateUsinas() {
-        int usinasPorCredencial = 20;
+        Random rand = new Random();
+        int usinasPorCredencialMin = 1;
+        int usinasPorCredencialMax = 40;
+
         List<Usina> usinas = usinaRepository.findAll();
 
         if (!usinas.isEmpty())
@@ -67,16 +74,17 @@ public class PopulateDatabaseHelper {
         List<Credencial> credenciais = credencialRepository.findAll();
         long sequence = 1;
         Random random = new Random(1);
-        double priorityRate = 0.4;
+        double priorityRate = 0.3;
 
         for (Credencial credencial : credenciais) {
-            for (long i = 0; i < usinasPorCredencial; i++) {
+            int usinasAmount = rand.nextInt(usinasPorCredencialMin, usinasPorCredencialMax);
+
+            for (long i = 0; i < usinasAmount; i++) {
                 boolean priority = random.nextDouble() < priorityRate;
-                Usina usina = new Usina(sequence++, credencial, priority ? Priority.NORMAL : Priority.HIGH);
+                Usina usina = new Usina(sequence++, credencial, priority ? Priority.HIGH : Priority.NORMAL, 0, false);
                 usina = usinaRepository.save(usina);
 
-                int percentage = (int) ((double) sequence / (double) (credenciais.size() * usinasPorCredencial) * 100.);
-                System.out.println("Usina " + usina.getId() + " da credencial " + credencial.getId() + " criada com sucesso (" + percentage + "%)");
+                System.out.println("Usina " + usina.getId() + " da credencial " + credencial.getId() + " criada com sucesso");
             }
         }
     }
