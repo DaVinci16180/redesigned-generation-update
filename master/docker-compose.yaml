@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
     user: root
     ports:
-      - "3000:3000" # access grafana url
+      - "3000:3000"
     volumes:
       - ./data/grafana:/var/lib/grafana
     environment:
@@ -27,7 +27,6 @@ services:
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SERVER_DOMAIN=localhost
       - GF_SERVER_ROOT_URL=http://localhost:3000
-      # Enabled for logging
       - GF_LOG_MODE=console file
       - GF_LOG_FILTERS=alerting.notifier.slack:debug alertmanager:debug ngalert:debug
 
@@ -35,17 +34,36 @@ services:
     image: redis:latest
     container_name: redis
     ports:
-      - "6379:6379"  # Expondo a porta 6379 para acesso externo
+      - "6379:6379"
     networks:
       - redis_network
     volumes:
-      - redis_data:/data  # Persistência de dados no volume local
+      - redis_data:/data
+    restart: always
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_DB: tcc
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data  # Persistindo dados no volume
+    networks:
+      - postgres_network
     restart: always
 
 networks:
   redis_network:
-    driver: bridge  # Rede interna do Docker para comunicação entre contêineres e host
+    driver: bridge
+  postgres_network:
+    driver: bridge
 
 volumes:
   redis_data:
-    driver: local  # Volume para persistir os dados do Redis no host
+    driver: local
+  postgres_data:
+    driver: local

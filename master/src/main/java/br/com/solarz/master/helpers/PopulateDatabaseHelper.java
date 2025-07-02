@@ -39,8 +39,8 @@ public class PopulateDatabaseHelper {
 
     public void populateCredenciais() {
         Random rand = new Random(1);
-        int credenciaisPorApiMin = 5;
-        int credenciaisPorApiMax = 30;
+        int credenciaisPorApiMin = 1;
+        int credenciaisPorApiMax = 100;
 
         List<Credencial> credenciais = credencialRepository.findAll();
 
@@ -62,9 +62,9 @@ public class PopulateDatabaseHelper {
     }
 
     public void populateUsinas() {
-        Random rand = new Random(2);
+        Random rand = new Random(1);
         int usinasPorCredencialMin = 1;
-        int usinasPorCredencialMax = 40;
+        int usinasPorCredencialMax = 100;
 
         List<Usina> usinas = usinaRepository.findAll();
 
