@@ -38,7 +38,7 @@ public class PopulateDatabaseHelper {
     }
 
     public void populateCredenciais() {
-        Random rand = new Random();
+        Random rand = new Random(1);
         int credenciaisPorApiMin = 5;
         int credenciaisPorApiMax = 30;
 
@@ -62,7 +62,7 @@ public class PopulateDatabaseHelper {
     }
 
     public void populateUsinas() {
-        Random rand = new Random();
+        Random rand = new Random(2);
         int usinasPorCredencialMin = 1;
         int usinasPorCredencialMax = 40;
 
