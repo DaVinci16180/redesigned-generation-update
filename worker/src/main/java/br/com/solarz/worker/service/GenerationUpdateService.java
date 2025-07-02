@@ -1,5 +1,6 @@
 package br.com.solarz.worker.service;
 
+import br.com.solarz.worker.WorkerApplication;
 import br.com.solarz.worker.model.Api;
 import br.com.solarz.worker.model.Usina;
 import br.com.solarz.worker.model.Usina.Priority;
@@ -33,7 +34,7 @@ public class GenerationUpdateService {
 
     private final HashMap<Api, Integer> threadCounter = new HashMap<>();
     private static final int MAX_UPDATE_ATTEMPTS = 10;
-    private static final String API_SIM_URL = "http://localhost:8082";
+    private static final String API_SIM_URL = "http://" + WorkerApplication.MASTER_ADDRESS + ":8082";
 
     @PostConstruct
     public void setup() {

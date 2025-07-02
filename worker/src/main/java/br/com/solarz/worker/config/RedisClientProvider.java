@@ -1,4 +1,5 @@
 package br.com.solarz.worker.config;
+import br.com.solarz.worker.WorkerApplication;
 import org.redisson.Redisson;
 import org.redisson.api.RedissonClient;
 import org.redisson.config.Config;
@@ -11,7 +12,7 @@ public class RedisClientProvider {
         if (client == null) {
             Config config = new Config();
             config.useSingleServer()
-                    .setAddress("redis://127.0.0.1:6379"); // ajuste o IP conforme o ambiente
+                    .setAddress("redis://" + WorkerApplication.MASTER_ADDRESS + ":6379"); // ajuste o IP conforme o ambiente
             client = Redisson.create(config);
         }
 
