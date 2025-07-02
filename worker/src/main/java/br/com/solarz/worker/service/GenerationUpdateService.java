@@ -10,6 +10,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +33,11 @@ public class GenerationUpdateService {
     private final MeterRegistry meterRegistry;
     private OkHttpClient client;
 
+    @Value("${MASTER_ADDR}")
+    private String MASTER_ADDR;
+
     private final HashMap<Api, Integer> threadCounter = new HashMap<>();
-    private static final int MAX_UPDATE_ATTEMPTS = 10;
-    private static final String API_SIM_URL = "http://" + WorkerApplication.MASTER_ADDRESS + ":8082";
+    private final String API_SIM_URL = "http://" + MASTER_ADDR + ":8082";
 
     @PostConstruct
     public void setup() {
@@ -102,8 +105,11 @@ public class GenerationUpdateService {
 
             return true;
         } catch (Exception e) {
+            int MAX_UPDATE_ATTEMPTS = 10;
+
             usina.incrementUpdateAttempts();
             usina = usinaRepository.save(usina);
+
             return usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS;
         }
     }
