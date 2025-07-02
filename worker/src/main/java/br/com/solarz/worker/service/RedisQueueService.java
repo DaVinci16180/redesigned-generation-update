@@ -5,7 +5,6 @@ import br.com.solarz.worker.model.Api;
 import br.com.solarz.worker.model.Usina;
 import br.com.solarz.worker.model.Usina.Priority;
 import br.com.solarz.worker.repository.ApiRepository;
-import br.com.solarz.worker.repository.CredencialRepository;
 import br.com.solarz.worker.repository.UsinaRepository;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -30,13 +29,14 @@ public class RedisQueueService {
     private final HashMap<String, HashMap<Integer, RSet<Long>>> queues = new HashMap<>();
     private RedissonClient redissonClient;
 
+    private final RedisClientProvider redisClientProvider;
     private final UsinaRepository usinaRepository;
     private final ApiRepository apiRepository;
     private final MeterRegistry meterRegistry;
 
     @PostConstruct
     public void setup() {
-        this.redissonClient = RedisClientProvider.getClient();
+        this.redissonClient = redisClientProvider.getClient();
         setupQueues();
     }
 

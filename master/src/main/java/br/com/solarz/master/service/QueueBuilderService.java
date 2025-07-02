@@ -39,12 +39,13 @@ public class QueueBuilderService {
 
     private final PopulateDatabaseHelper populate;
     private final CredencialRepository credencialRepository;
+    private final RedisClientProvider redisClientProvider;
     private final UsinaRepository usinaRepository;
     private final ApiRepository apiRepository;
 
     @PostConstruct
     public void setup() {
-        this.redissonClient = RedisClientProvider.getClient();
+        this.redissonClient = redisClientProvider.getClient();
 
         populate.populateApis();
         populate.populateCredenciais();
@@ -108,9 +109,5 @@ public class QueueBuilderService {
 
     public String buildName(Api api, QueueType type) {
         return api.getName() + "_" + type.name();
-    }
-
-    public void shutdown() {
-        RedisClientProvider.shutdown();
     }
 }

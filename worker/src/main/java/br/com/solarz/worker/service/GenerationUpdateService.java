@@ -33,11 +33,11 @@ public class GenerationUpdateService {
     private final MeterRegistry meterRegistry;
     private OkHttpClient client;
 
-    @Value("${MASTER_ADDR}")
-    private String MASTER_ADDR;
+    @Value("${DOCKER_ADDR}")
+    private String DOCKER_ADDR;
 
     private final HashMap<Api, Integer> threadCounter = new HashMap<>();
-    private final String API_SIM_URL = "http://" + MASTER_ADDR + ":8082";
+    private final String API_SIM_URL = "http://" + DOCKER_ADDR + ":8082";
 
     @PostConstruct
     public void setup() {
