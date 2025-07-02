@@ -30,3 +30,22 @@ services:
       # Enabled for logging
       - GF_LOG_MODE=console file
       - GF_LOG_FILTERS=alerting.notifier.slack:debug alertmanager:debug ngalert:debug
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"  # Expondo a porta 6379 para acesso externo
+    networks:
+      - redis_network
+    volumes:
+      - redis_data:/data  # Persistência de dados no volume local
+    restart: always
+
+networks:
+  redis_network:
+    driver: bridge  # Rede interna do Docker para comunicação entre contêineres e host
+
+volumes:
+  redis_data:
+    driver: local  # Volume para persistir os dados do Redis no host
