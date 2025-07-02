@@ -15,6 +15,8 @@ import org.redisson.api.RSet;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 
@@ -74,6 +76,7 @@ public class QueueBuilderService {
     }
 
     public void buildQueues() {
+        Instant start = Instant.now();
         List<Api> apis = apiRepository.findAll();
         clearQueues(apis);
 
@@ -84,12 +87,26 @@ public class QueueBuilderService {
             for (Credencial credencial : credenciais) {
                 List<Usina> usinas = usinaRepository.findAllByCredencial(credencial);
 
-                for (Usina usina : usinas) {
-                    var queue = queues.get(avaQueueName).get(usina.getPriority().ordinal());
-                    queue.add(usina.getId());
-                }
+                List<Usina> usinasHigh = usinas.stream().filter(u -> u.getPriority().equals(Priority.HIGH)).toList();
+                List<Usina> usinasNorm = usinas.stream().filter(u -> u.getPriority().equals(Priority.NORMAL)).toList();
+
+                var queueHigh = queues.get(avaQueueName).get(Priority.HIGH.ordinal());
+                var queueNorm = queues.get(avaQueueName).get(Priority.NORMAL.ordinal());
+
+                queueHigh.addAll(usinasHigh.stream().map(Usina::getId).toList());
+                queueNorm.addAll(usinasNorm.stream().map(Usina::getId).toList());
+
+//                for (Usina usina : usinas) {
+//                    var queue = queues.get(avaQueueName).get(usina.getPriority().ordinal());
+//                    queue.add(usina.getId());
+//                }
             }
         }
+
+        Instant finish = Instant.now();
+        Duration duration = Duration.between(start, finish);
+
+        System.out.println("Building queues took " + duration.toSeconds() + " seconds");
     }
 
     public void clearQueues(List<Api> apis) {
