@@ -1,8 +1,8 @@
 package br.com.solarz.master.controller;
 
+import br.com.solarz.master.MasterApplication;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
@@ -20,16 +20,18 @@ public class MasterController {
         Map<String, String> body = new HashMap<>();
         body.put("operation", "start");
 
-        String result = client.post()
-                .uri("http://localhost:8081/simulation/change-state")
-                .body(body)
-                .contentType(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .body(String.class);
+        for (String addr : MasterApplication.WORKERS_ADDR) {
+            String result = client.post()
+                    .uri("http://" + addr + ":8081/simulation/change-state")
+                    .body(body)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .body(String.class);
 
-        System.out.println(result);
+            System.out.println(result);
+        }
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/simulation/stop")
@@ -37,15 +39,17 @@ public class MasterController {
         Map<String, String> body = new HashMap<>();
         body.put("operation", "stop");
 
-        String result = client.post()
-                .uri("http://localhost:8081/simulation/change-state")
-                .body(body)
-                .contentType(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .body(String.class);
+        for (String addr : MasterApplication.WORKERS_ADDR) {
+            String result = client.post()
+                    .uri("http://" + addr + ":8081/simulation/change-state")
+                    .body(body)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .body(String.class);
 
-        System.out.println(result);
+            System.out.println(result);
+        }
 
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok().build();
     }
 }
