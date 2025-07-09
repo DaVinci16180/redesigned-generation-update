@@ -1,10 +1,12 @@
 package br.com.solarz.master.helpers;
 
 import br.com.solarz.master.model.Api;
+import br.com.solarz.master.model.ApiScore;
 import br.com.solarz.master.model.Credencial;
 import br.com.solarz.master.model.Usina;
 import br.com.solarz.master.model.Usina.Priority;
 import br.com.solarz.master.repository.ApiRepository;
+import br.com.solarz.master.repository.ApiScoreRepository;
 import br.com.solarz.master.repository.CredencialRepository;
 import br.com.solarz.master.repository.UsinaRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.util.Random;
 public class PopulateDatabaseHelper {
 
     private final CredencialRepository credencialRepository;
+    private final ApiScoreRepository apiScoreRepository;
     private final UsinaRepository usinaRepository;
     private final ApiRepository apiRepository;
 
@@ -30,7 +33,10 @@ public class PopulateDatabaseHelper {
 
         for (long i = 1; i <= apisCount; i++) {
             Api api = new Api(i, "Portal" + i);
-            apiRepository.save(api);
+            api = apiRepository.save(api);
+
+            ApiScore score = new ApiScore(api);
+            apiScoreRepository.save(score);
 
             int percentage = (int) (((double) i / (double) apisCount) * 100.);
             System.out.println("Portal " + api.getName() + " criado com sucesso (" + percentage + "%)");

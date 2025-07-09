@@ -1,6 +1,7 @@
 package br.com.solarz.worker;
 
 import br.com.solarz.worker.model.Api;
+import br.com.solarz.worker.model.ApiScore;
 import br.com.solarz.worker.repository.ApiRepository;
 import br.com.solarz.worker.service.GenerationUpdateService;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,6 @@ public class GenerationUpdateTests {
     @Test
     void updateGeneration() {
         Api api = apiRepository.findById(1L).orElseThrow();
-        generationUpdateService.updateGenerationByApi(api);
+        generationUpdateService.updateGenerationByApi(api, new ApiScore(api));
     }
 }

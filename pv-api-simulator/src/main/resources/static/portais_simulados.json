@@ -2,12 +2,12 @@
   {
     "id": 1,
     "name": "Portal 1",
-    "minResponseTime": 607,
+    "minResponseTime": 1607,
     "maxResponseTime": 2300,
     "requestsPerMinute": -1,
     "failureRate": 0.2,
     "timeoutRate": 0.18,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 2,
@@ -17,7 +17,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.05,
     "timeoutRate": 0.02,
-    "timeoutDuration": 5000
+    "timeoutDuration": 10000
   },
   {
     "id": 3,
@@ -27,7 +27,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.08,
     "timeoutRate": 0.09,
-    "timeoutDuration": 2000
+    "timeoutDuration": 10000
   },
   {
     "id": 4,
@@ -37,7 +37,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.07,
     "timeoutRate": 0.11,
-    "timeoutDuration": 5000
+    "timeoutDuration": 10000
   },
   {
     "id": 5,
@@ -47,7 +47,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.08,
     "timeoutRate": 0.06,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 6,
@@ -57,7 +57,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.26,
     "timeoutRate": 0.19,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 7,
@@ -67,17 +67,17 @@
     "requestsPerMinute": -1,
     "failureRate": 0.04,
     "timeoutRate": 0.08,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 8,
     "name": "Portal 8",
-    "minResponseTime": 836,
+    "minResponseTime": 1836,
     "maxResponseTime": 2401,
     "requestsPerMinute": -1,
     "failureRate": 0.21,
     "timeoutRate": 0.16,
-    "timeoutDuration": 3000
+    "timeoutDuration": 10000
   },
   {
     "id": 9,
@@ -87,7 +87,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.12,
     "timeoutRate": 0.06,
-    "timeoutDuration": 2000
+    "timeoutDuration": 10000
   },
   {
     "id": 10,
@@ -97,7 +97,7 @@
     "requestsPerMinute": 30,
     "failureRate": 0.05,
     "timeoutRate": 0.14,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 11,
@@ -107,7 +107,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.15,
     "timeoutRate": 0.15,
-    "timeoutDuration": 3000
+    "timeoutDuration": 10000
   },
   {
     "id": 12,
@@ -117,7 +117,7 @@
     "requestsPerMinute": 30,
     "failureRate": 0.07,
     "timeoutRate": 0.02,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 13,
@@ -127,7 +127,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.16,
     "timeoutRate": 0.11,
-    "timeoutDuration": 2000
+    "timeoutDuration": 10000
   },
   {
     "id": 14,
@@ -137,7 +137,7 @@
     "requestsPerMinute": 30,
     "failureRate": 0.12,
     "timeoutRate": 0.2,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 15,
@@ -147,7 +147,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.06,
     "timeoutRate": 0.03,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 16,
@@ -157,7 +157,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.02,
     "timeoutRate": 0.05,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 17,
@@ -167,7 +167,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.3,
     "timeoutRate": 0.07,
-    "timeoutDuration": 3000
+    "timeoutDuration": 10000
   },
   {
     "id": 18,
@@ -177,7 +177,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.22,
     "timeoutRate": 0.11,
-    "timeoutDuration": 3000
+    "timeoutDuration": 10000
   },
   {
     "id": 19,
@@ -187,7 +187,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.05,
     "timeoutRate": 0.17,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 20,
@@ -197,7 +197,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.02,
     "timeoutRate": 0.18,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 21,
@@ -207,7 +207,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.26,
     "timeoutRate": 0.16,
-    "timeoutDuration": 2000
+    "timeoutDuration": 10000
   },
   {
     "id": 22,
@@ -217,7 +217,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.03,
     "timeoutRate": 0.08,
-    "timeoutDuration": 5000
+    "timeoutDuration": 10000
   },
   {
     "id": 23,
@@ -227,7 +227,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.29,
     "timeoutRate": 0.2,
-    "timeoutDuration": 5000
+    "timeoutDuration": 10000
   },
   {
     "id": 24,
@@ -237,7 +237,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.09,
     "timeoutRate": 0.14,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 25,
@@ -247,7 +247,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.03,
     "timeoutRate": 0.16,
-    "timeoutDuration": 2000
+    "timeoutDuration": 10000
   },
   {
     "id": 26,
@@ -257,7 +257,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.06,
     "timeoutRate": 0.18,
-    "timeoutDuration": 5000
+    "timeoutDuration": 10000
   },
   {
     "id": 27,
@@ -267,7 +267,7 @@
     "requestsPerMinute": 200,
     "failureRate": 0.13,
     "timeoutRate": 0.2,
-    "timeoutDuration": 5000
+    "timeoutDuration": 10000
   },
   {
     "id": 28,
@@ -277,7 +277,7 @@
     "requestsPerMinute": 30,
     "failureRate": 0.17,
     "timeoutRate": 0.14,
-    "timeoutDuration": 2000
+    "timeoutDuration": 10000
   },
   {
     "id": 29,
@@ -287,7 +287,7 @@
     "requestsPerMinute": 100,
     "failureRate": 0.2,
     "timeoutRate": 0.13,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 30,
@@ -297,7 +297,7 @@
     "requestsPerMinute": 60,
     "failureRate": 0.12,
     "timeoutRate": 0.14,
-    "timeoutDuration": 5000
+    "timeoutDuration": 10000
   },
   {
     "id": 31,
@@ -307,7 +307,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.03,
     "timeoutRate": 0.08,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 32,
@@ -317,7 +317,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.22,
     "timeoutRate": 0.08,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 33,
@@ -327,7 +327,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.12,
     "timeoutRate": 0.02,
-    "timeoutDuration": 3000
+    "timeoutDuration": 10000
   },
   {
     "id": 34,
@@ -337,7 +337,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.2,
     "timeoutRate": 0.02,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 35,
@@ -347,7 +347,7 @@
     "requestsPerMinute": 60,
     "failureRate": 0.01,
     "timeoutRate": 0.13,
-    "timeoutDuration": 5000
+    "timeoutDuration": 10000
   },
   {
     "id": 36,
@@ -357,7 +357,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.2,
     "timeoutRate": 0.11,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 37,
@@ -367,7 +367,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.15,
     "timeoutRate": 0.17,
-    "timeoutDuration": 3000
+    "timeoutDuration": 10000
   },
   {
     "id": 38,
@@ -377,7 +377,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.14,
     "timeoutRate": 0.02,
-    "timeoutDuration": 2000
+    "timeoutDuration": 10000
   },
   {
     "id": 39,
@@ -387,7 +387,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.28,
     "timeoutRate": 0.02,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 40,
@@ -397,27 +397,27 @@
     "requestsPerMinute": -1,
     "failureRate": 0.01,
     "timeoutRate": 0.03,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 41,
     "name": "Portal 41",
-    "minResponseTime": 644,
+    "minResponseTime": 1644,
     "maxResponseTime": 2954,
     "requestsPerMinute": 200,
     "failureRate": 0.09,
     "timeoutRate": 0.16,
-    "timeoutDuration": 2000
+    "timeoutDuration": 10000
   },
   {
     "id": 42,
     "name": "Portal 42",
-    "minResponseTime": 549,
+    "minResponseTime": 1549,
     "maxResponseTime": 2587,
     "requestsPerMinute": 30,
     "failureRate": 0.2,
     "timeoutRate": 0.19,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 43,
@@ -427,7 +427,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.26,
     "timeoutRate": 0.09,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 44,
@@ -437,7 +437,7 @@
     "requestsPerMinute": 100,
     "failureRate": 0.01,
     "timeoutRate": 0.19,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   },
   {
     "id": 45,
@@ -447,7 +447,7 @@
     "requestsPerMinute": 30,
     "failureRate": 0.19,
     "timeoutRate": 0.07,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 46,
@@ -457,7 +457,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.19,
     "timeoutRate": 0.12,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 47,
@@ -467,7 +467,7 @@
     "requestsPerMinute": -1,
     "failureRate": 0.17,
     "timeoutRate": 0.04,
-    "timeoutDuration": 5000
+    "timeoutDuration": 10000
   },
   {
     "id": 48,
@@ -477,17 +477,17 @@
     "requestsPerMinute": -1,
     "failureRate": 0.18,
     "timeoutRate": 0.17,
-    "timeoutDuration": 7000
+    "timeoutDuration": 10000
   },
   {
     "id": 49,
     "name": "Portal 49",
-    "minResponseTime": 813,
+    "minResponseTime": 1813,
     "maxResponseTime": 2765,
     "requestsPerMinute": -1,
     "failureRate": 0.05,
     "timeoutRate": 0.19,
-    "timeoutDuration": 2000
+    "timeoutDuration": 10000
   },
   {
     "id": 50,
@@ -497,6 +497,6 @@
     "requestsPerMinute": -1,
     "failureRate": 0.21,
     "timeoutRate": 0.06,
-    "timeoutDuration": 1000
+    "timeoutDuration": 10000
   }
 ]

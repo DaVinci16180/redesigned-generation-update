@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @Entity
@@ -18,4 +20,15 @@ public class Api {
     private Long id;
 
     private String name;
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Api api)) return false;
+        return Objects.equals(id, api.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

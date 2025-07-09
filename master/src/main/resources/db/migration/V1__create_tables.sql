@@ -25,3 +25,16 @@ CREATE TABLE usina (
         REFERENCES credencial(id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE api_score (
+    id BIGINT PRIMARY KEY,
+    api_id BIGINT NOT NULL,
+    average_time REAL DEFAULT 0,
+    error_rate REAL DEFAULT 0,
+    pending REAL DEFAULT 0,
+
+    CONSTRAINT fk_api
+       FOREIGN KEY (api_id)
+           REFERENCES api(id)
+           ON DELETE CASCADE
+);
