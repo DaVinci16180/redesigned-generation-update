@@ -4,10 +4,12 @@ import br.com.solarz.worker.model.Api;
 import br.com.solarz.worker.model.ApiScore;
 import br.com.solarz.worker.model.Usina;
 import br.com.solarz.worker.model.Usina.Priority;
+import br.com.solarz.worker.repository.ApiRepository;
 import br.com.solarz.worker.repository.ApiScoreRepository;
 import br.com.solarz.worker.repository.UsinaRepository;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import br.com.solarz.worker.util.ApiAverages;
+import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ public class GenerationUpdateService_Original {
     private final RedisQueueService redisQueueService;
     private final UsinaRepository usinaRepository;
     private final MeterRegistry meterRegistry;
+    private final ApiRepository apiRepository;
     private OkHttpClient client;
 
     @Value("${DOCKER_ADDR}")
@@ -53,6 +56,20 @@ public class GenerationUpdateService_Original {
                 .build();
 
         API_SIM_URL = "http://" + DOCKER_ADDR + ":8082";
+
+        buildMeters();
+    }
+
+    private void buildMeters() {
+        List<Api> apis = apiRepository.findAll();
+
+        for (Api api : apis) {
+            threadCounter.put(api, 0);
+
+            Gauge.builder("thread.count", threadCounter, tc -> tc.get(api))
+                    .tags("portal", api.getName())
+                    .register(meterRegistry);
+        }
     }
 
     @Async("generationUpdate")
@@ -63,8 +80,6 @@ public class GenerationUpdateService_Original {
 
         Instant start = Instant.now();
 
-        System.out.println("Iniciando atualização do portal " + api.getName());
-
         threadCounter.put(api, threadCounter.getOrDefault(api, 0) + 1);
         int batchSize = 20;
         int failedRecap = 5; // alta prioridade apenas
@@ -73,6 +88,11 @@ public class GenerationUpdateService_Original {
         Set<Usina> recap = redisQueueService.getUsinasByApi(api, QueueType.FAILED, failedRecap, Priority.HIGH);
         usinas.addAll(recap);
 
+        if (usinas.isEmpty())
+            return;
+
+        System.out.println("Iniciando atualização do portal " + api.getName());
+
         List<Usina> failed = new ArrayList<>();
         for (Usina usina : usinas) {
             boolean success = updateUsinaGeneration(usina);
@@ -80,6 +100,9 @@ public class GenerationUpdateService_Original {
             if (!success) {
                 failed.add(usina);
                 meterRegistry.counter("simulacao.usinas.falhas").increment();
+            } else {
+                usina.setUpdated(true);
+                usinaRepository.save(usina);
             }
         }
 
@@ -104,9 +127,6 @@ public class GenerationUpdateService_Original {
             if (!response.isSuccessful())
                 throw new RuntimeException();
 
-            usina.setUpdated(true);
-            usinaRepository.save(usina);
-
             meterRegistry.counter("simulacao.usinas.processadas").increment();
 
             return true;
@@ -115,6 +135,9 @@ public class GenerationUpdateService_Original {
 
             usina.incrementUpdateAttempts();
             usina = usinaRepository.save(usina);
+
+            if (usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS)
+                meterRegistry.counter("simulacao.usinas.expiradas").increment();
 
             return usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS;
         }

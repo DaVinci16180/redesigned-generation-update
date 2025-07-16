@@ -104,6 +104,9 @@ public class GenerationUpdateService_FirstSolution {
             if (!success) {
                 failed.add(usina);
                 meterRegistry.counter("simulacao.usinas.falhas").increment();
+            } else {
+                usina.setUpdated(true);
+                usinaRepository.save(usina);
             }
         }
 
@@ -142,9 +145,6 @@ public class GenerationUpdateService_FirstSolution {
         try (Response response = call.execute()) {
             if (!response.isSuccessful())
                 throw new RuntimeException();
-
-            usina.setUpdated(true);
-            usinaRepository.save(usina);
 
             meterRegistry.counter("simulacao.usinas.processadas").increment();
 

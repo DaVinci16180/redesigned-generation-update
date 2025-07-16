@@ -34,7 +34,8 @@ public class GenerationUpdateScheduler {
         if (!RUNNING)
             return;
 
-        firstSolution();
+        original();
+//        firstSolution();
     }
 
     private void original() {

@@ -86,7 +86,7 @@ public class QueueBuilderService {
 
             for (Credencial credencial : credenciais) {
                 List<Usina> usinas = usinaRepository.findAllByCredencial(credencial);
-                usinas = usinas.stream().peek(u -> u.setUpdated(false)).toList();
+                usinas = usinas.stream().peek(Usina::reset).toList();
                 usinaRepository.saveAll(usinas);
 
                 List<Usina> usinasHigh = usinas.stream().filter(u -> u.getPriority().equals(Priority.HIGH)).toList();

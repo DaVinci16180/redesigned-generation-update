@@ -30,7 +30,7 @@ public class ApiAverages {
         if (times.isEmpty())
             return 0.;
 
-        long sum = times.stream().mapToLong(l -> l).sum();
+        long sum = times.stream().reduce(Long::sum).get();
 
         return sum / (double) times.size();
     }

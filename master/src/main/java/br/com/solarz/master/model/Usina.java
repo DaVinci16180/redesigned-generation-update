@@ -29,4 +29,9 @@ public class Usina {
     private Priority priority = Priority.NORMAL;
     private int updateAttempts = 0;
     private boolean updated = false;
+
+    public void reset() {
+        updateAttempts = 0;
+        updated = false;
+    }
 }

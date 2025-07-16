@@ -9,7 +9,7 @@ import java.util.List;
 public class MasterApplication {
 
 	public static final List<String> WORKERS_ADDR = List.of(
-//			"192.168.0.11",
+			"192.168.0.11",
 			"localhost"
 	);
 	public static void main(String[] args) {

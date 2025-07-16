@@ -33,7 +33,7 @@ public class MetricsScheduler {
     private final UsinaRepository usinaRepository;
 
     public static Instant start = null;
-    private int checkpoint = 2; // minutos
+    private int checkpoint = 5; // minutos
 
     @Scheduled(cron = "*/1 * * * * *")
     public void processarAtualizacaoDeGeracaoFila() {
@@ -46,8 +46,8 @@ public class MetricsScheduler {
             int updated = usinaRepository.countByUpdated(true);
             logger.info("Usinas atualizadas em {} minutos: {}", checkpoint, updated);
             // pegar averages e atualizar score a cada 5 minutos
-            updateAverages();
-            checkpoint += 2;
+//            updateAverages();
+            checkpoint += 5;
         }
     }
 
