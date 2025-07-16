@@ -1,25 +1,24 @@
 package br.com.solarz.worker.scheduler;
 
+import br.com.solarz.worker.model.Api;
 import br.com.solarz.worker.model.ApiScore;
 import br.com.solarz.worker.repository.ApiRepository;
 import br.com.solarz.worker.repository.ApiScoreRepository;
-import br.com.solarz.worker.service.GenerationUpdateInterface;
+import br.com.solarz.worker.service.GenerationUpdateService_FirstSolution;
+import br.com.solarz.worker.service.GenerationUpdateService_Original;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class GenerationUpdateScheduler {
 
-    @Qualifier("original")
-    private final GenerationUpdateInterface generationUpdateService;
+    private final GenerationUpdateService_FirstSolution firstSolution;
+    private final GenerationUpdateService_Original original;
     private final ApiScoreRepository apiScoreRepository;
     private final ApiRepository apiRepository;
 
@@ -30,15 +29,26 @@ public class GenerationUpdateScheduler {
 
     }
 
-    @Scheduled(cron = "*/10 * * * * *")
+    @Scheduled(cron = "*/5 * * * * *")
     public void processarAtualizacaoDeGeracaoFila() {
         if (!RUNNING)
             return;
 
+        firstSolution();
+    }
+
+    private void original() {
+        List<Api> apis = apiRepository.findAll();
+
+        for (Api api : apis)
+            original.updateGenerationByApi(api);
+    }
+
+    private void firstSolution() {
         List<ApiScore> apiScores = apiScoreRepository.findAll();
         apiScores.sort(null);
 
         for (ApiScore score : apiScores)
-            generationUpdateService.updateGenerationByApi(score.getApi(), score);
+            firstSolution.updateGenerationByApi(score.getApi(), score);
     }
 }

@@ -1,0 +1,37 @@
+worker/HELP.md
+worker/target/
+worker/.mvn/wrapper/maven-wrapper.jar
+worker/!**/src/main/**/target/
+worker/!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+worker/.idea
+worker/*.iws
+worker/*.iml
+worker/*.ipr
+
+master/HELP.md
+master/target/
+master/.mvn/wrapper/maven-wrapper.jar
+master/!**/src/main/**/target/
+master/!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+master/.idea
+master/*.iws
+master/*.iml
+master/*.ipr
+
+master/data/grafana
+
+pv-api-simulator/HELP.md
+pv-api-simulator/target/
+pv-api-simulator/.mvn/wrapper/maven-wrapper.jar
+pv-api-simulator/!**/src/main/**/target/
+pv-api-simulator/!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+pv-api-simulator/.idea
+pv-api-simulator/*.iws
+pv-api-simulator/*.iml
+pv-api-simulator/*.ipr

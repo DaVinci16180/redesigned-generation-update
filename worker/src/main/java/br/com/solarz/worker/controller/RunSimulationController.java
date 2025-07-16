@@ -1,12 +1,15 @@
 package br.com.solarz.worker.controller;
 
+import br.com.solarz.worker.model.Api;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
+import br.com.solarz.worker.service.GenerationUpdateService_FirstSolution;
+import br.com.solarz.worker.util.ApiAverages;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -26,5 +29,17 @@ public class RunSimulationController {
         }
 
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/averages")
+    public ResponseEntity<String> averages() throws JsonProcessingException {
+        var averages = GenerationUpdateService_FirstSolution.averages;
+
+        Map<Long, ApiAverages> result = new HashMap<>();
+        for (var avg : averages.entrySet())
+            result.put(avg.getKey().getId(), avg.getValue());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        return ResponseEntity.ok(objectMapper.writeValueAsString(result));
     }
 }

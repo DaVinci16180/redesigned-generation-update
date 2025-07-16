@@ -3,7 +3,7 @@ package br.com.solarz.worker;
 import br.com.solarz.worker.model.Api;
 import br.com.solarz.worker.model.ApiScore;
 import br.com.solarz.worker.repository.ApiRepository;
-import br.com.solarz.worker.service.GenerationUpdateService;
+import br.com.solarz.worker.service.GenerationUpdateInterface;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class GenerationUpdateTests {
 
     @Autowired
-    private GenerationUpdateService generationUpdateService;
+    private GenerationUpdateInterface generationUpdateService;
     @Autowired
     private ApiRepository apiRepository;
 

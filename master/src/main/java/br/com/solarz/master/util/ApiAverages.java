@@ -1,13 +1,12 @@
-package br.com.solarz.worker.util;
+package br.com.solarz.master.util;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-@Getter
 public class ApiAverages {
+    @Getter
     private final int usinasAmount;
     private final int N;
     private final Deque<Long> times;
@@ -15,20 +14,16 @@ public class ApiAverages {
 
     public ApiAverages(int usinasAmount) {
         this.usinasAmount = usinasAmount;
-//        N = (int) Math.round(usinasAmount * 0.2);
         N = usinasAmount;
         times = new ArrayDeque<>(N);
         errors = new ArrayDeque<>(N);
     }
 
-    public void register(long tempoMs, boolean error) {
-        if (times.size() == N) {
-            times.pollFirst();
-            errors.pollFirst();
-        }
-
-        times.addLast(tempoMs);
-        errors.addLast(error);
+    public ApiAverages(int usinasAmount, int N, Deque<Long> times, Deque<Boolean> errors) {
+        this.usinasAmount = usinasAmount;
+        this.N = usinasAmount;
+        this.times = times;
+        this.errors = errors;
     }
 
     public double averageTime() {
@@ -52,8 +47,9 @@ public class ApiAverages {
         return errorAmount / (double) errors.size();
     }
 
-    @JsonIgnore
-    public boolean isFull() {
-        return times.size() == N;
+    public ApiAverages sum(ApiAverages other) {
+        this.times.addAll(other.times);
+        this.errors.addAll(other.errors);
+        return this;
     }
 }

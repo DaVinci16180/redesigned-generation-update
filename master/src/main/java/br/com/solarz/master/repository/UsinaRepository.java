@@ -22,4 +22,15 @@ public interface UsinaRepository extends JpaRepository<Usina, Long> {
         AND u.priority = :priority
     """)
     List<Usina> findAllByCredencial_ApiAndPriority(@Param("apiId") Long apiId, @Param("priority") int priority);
+
+    int countByUpdated(boolean updated);
+
+    @Query("""
+        SELECT count(u) FROM Usina u
+        JOIN u.credencial c
+        JOIN c.api a
+        WHERE a.id = :apiId
+        AND u.updated = false
+    """)
+    int countNotUpdatedByApiId(@Param("apiId") Long apiId);
 }

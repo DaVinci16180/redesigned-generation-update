@@ -4,10 +4,12 @@ import br.com.solarz.worker.model.Api;
 import br.com.solarz.worker.model.ApiScore;
 import br.com.solarz.worker.model.Usina;
 import br.com.solarz.worker.model.Usina.Priority;
+import br.com.solarz.worker.repository.ApiRepository;
 import br.com.solarz.worker.repository.ApiScoreRepository;
 import br.com.solarz.worker.repository.UsinaRepository;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import br.com.solarz.worker.util.ApiAverages;
+import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -26,25 +28,28 @@ import java.util.concurrent.TimeUnit;
 
 import br.com.solarz.worker.service.RedisQueueService.QueueType;
 
-@Service("first")
+@Service()
 @RequiredArgsConstructor
-public class GenerationUpdateService_FirstSolution implements GenerationUpdateInterface {
+public class GenerationUpdateService_FirstSolution {
 
     private final RedisQueueService redisQueueService;
     private final UsinaRepository usinaRepository;
     private final MeterRegistry meterRegistry;
     private final ApiScoreRepository apiScoreRepository;
+    private final ApiRepository apiRepository;
     private OkHttpClient client;
 
     @Value("${DOCKER_ADDR}")
     private String DOCKER_ADDR;
 
+    public static final HashMap<Api, ApiAverages> averages = new HashMap<>();
     private final HashMap<Api, Integer> threadCounter = new HashMap<>();
-    private final HashMap<Api, ApiAverages> averages = new HashMap<>();
     private String API_SIM_URL;
 
     @PostConstruct
     public void setup() {
+        API_SIM_URL = "http://" + DOCKER_ADDR + ":8082";
+
         client = new OkHttpClient.Builder()
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS)
@@ -52,7 +57,19 @@ public class GenerationUpdateService_FirstSolution implements GenerationUpdateIn
                 .connectionPool(new ConnectionPool())
                 .build();
 
-        API_SIM_URL = "http://" + DOCKER_ADDR + ":8082";
+        buildMeters();
+    }
+
+    private void buildMeters() {
+        List<Api> apis = apiRepository.findAll();
+
+        for (Api api : apis) {
+            threadCounter.put(api, 0);
+
+            Gauge.builder("thread.count", threadCounter, tc -> tc.get(api))
+                    .tags("portal", api.getName())
+                    .register(meterRegistry);
+        }
     }
 
     @Async("generationUpdate")
@@ -98,14 +115,14 @@ public class GenerationUpdateService_FirstSolution implements GenerationUpdateIn
         System.out.println(usinas.size() + " usinas do portal " + api.getName() + " atualizadas em " + duration.toMillis() + " milissegundos. Falhas: " + failed.size());
 
 //        if (score.getAverageTime() == .0 || average.isFull()) {
-        score.setAverageTime(average.averageTime());
-        score.setErrorRate(average.errorRate());
+//        score.setAverageTime(average.averageTime());
+//        score.setErrorRate(average.errorRate());
 //        }
 
-        int notUpdated = usinaRepository.countNotUpdatedByApiId(api.getId());
-        score.setPending( notUpdated / (double) average.getUsinasAmount());
+//        int notUpdated = usinaRepository.countNotUpdatedByApiId(api.getId());
+//        score.setPending( notUpdated / (double) average.getUsinasAmount());
 
-        apiScoreRepository.save(score);
+//        apiScoreRepository.save(score);
 
         threadCounter.put(api, threadCounter.get(api) - 1);
     }
@@ -143,6 +160,9 @@ public class GenerationUpdateService_FirstSolution implements GenerationUpdateIn
         Duration duration = Duration.between(start, finish);
 
         average.register(duration.toMillis(), !success);
+
+        if (usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS)
+            meterRegistry.counter("simulacao.usinas.expiradas").increment();
 
         return success || usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS;
     }

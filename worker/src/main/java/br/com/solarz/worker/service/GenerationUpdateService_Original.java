@@ -30,7 +30,7 @@ import br.com.solarz.worker.service.RedisQueueService.QueueType;
 @Primary
 @Service("original")
 @RequiredArgsConstructor
-public class GenerationUpdateService_Original implements GenerationUpdateInterface {
+public class GenerationUpdateService_Original {
 
     private final RedisQueueService redisQueueService;
     private final UsinaRepository usinaRepository;
@@ -56,7 +56,7 @@ public class GenerationUpdateService_Original implements GenerationUpdateInterfa
     }
 
     @Async("generationUpdate")
-    public void updateGenerationByApi(Api api, ApiScore score) {
+    public void updateGenerationByApi(Api api) {
         // checar se está dentro da janela de atualização
         if (!GenerationUpdateScheduler.RUNNING)
             return;
