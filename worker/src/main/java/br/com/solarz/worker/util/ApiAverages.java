@@ -22,12 +22,14 @@ public class ApiAverages {
     }
 
     public void register(long tempoMs, boolean error) {
-        if (times.size() == N) {
+        if (times.size() == N)
             times.pollFirst();
-            errors.pollFirst();
-        }
 
-        times.addLast(tempoMs);
+        if (errors.size() == N)
+            errors.pollFirst();
+
+        if (!error)
+            times.addLast(tempoMs);
         errors.addLast(error);
     }
 
