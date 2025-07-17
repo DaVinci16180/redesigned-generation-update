@@ -46,7 +46,7 @@ public class GenerationUpdateScheduler {
     }
 
     private void firstSolution() {
-        List<ApiScore> apiScores = apiScoreRepository.findAll();
+        List<ApiScore> apiScores = apiScoreRepository.findAllByPendingGreaterThan(0);
         apiScores.sort(null);
 
         for (ApiScore score : apiScores)
