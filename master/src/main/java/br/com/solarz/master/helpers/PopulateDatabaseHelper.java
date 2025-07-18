@@ -24,6 +24,12 @@ public class PopulateDatabaseHelper {
     private final UsinaRepository usinaRepository;
     private final ApiRepository apiRepository;
 
+    public void populateDatabase() {
+        populateApis();
+        populateCredenciais();
+        populateUsinas();
+    }
+
     public void populateApis() {
         int apisCount = 50;
         List<Api> apis = apiRepository.findAll();

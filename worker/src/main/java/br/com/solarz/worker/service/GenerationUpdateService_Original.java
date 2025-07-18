@@ -40,7 +40,7 @@ public class GenerationUpdateService_Original {
     @Value("${DOCKER_ADDR}")
     private String DOCKER_ADDR;
 
-    private final HashMap<Api, Integer> threadCounter = new HashMap<>();
+    private final HashMap<Long, Integer> threadCounter = new HashMap<>();
     private String API_SIM_URL;
 
     @PostConstruct
@@ -61,9 +61,9 @@ public class GenerationUpdateService_Original {
         List<Api> apis = apiRepository.findAll();
 
         for (Api api : apis) {
-            threadCounter.put(api, 0);
+            threadCounter.put(api.getId(), 0);
 
-            Gauge.builder("thread.count", threadCounter, tc -> tc.get(api))
+            Gauge.builder("thread.count", threadCounter, tc -> tc.get(api.getId()))
                     .tags("portal", api.getName())
                     .register(meterRegistry);
         }
@@ -77,7 +77,12 @@ public class GenerationUpdateService_Original {
 
         Instant start = Instant.now();
 
-        threadCounter.put(api, threadCounter.getOrDefault(api, 0) + 1);
+        threadCounter.replace(api.getId(), threadCounter.get(api.getId()) + 1);
+
+        meterRegistry
+                .summary("threads.ativas", "portal", api.getName())
+                .record(threadCounter.get(api.getId()));
+
         int batchSize = 20;
         int failedRecap = 5; // alta prioridade apenas
 
@@ -110,7 +115,7 @@ public class GenerationUpdateService_Original {
 
         System.out.println(usinas.size() + " usinas do portal " + api.getName() + " atualizadas em " + duration.toMillis() + " milissegundos. Falhas: " + failed.size());
 
-        threadCounter.put(api, threadCounter.get(api) - 1);
+        threadCounter.replace(api.getId(), threadCounter.get(api.getId()) - 1);
     }
 
     private boolean updateUsinaGeneration(Usina usina) {

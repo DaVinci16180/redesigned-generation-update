@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,7 +24,7 @@ public class MasterController {
     private final RestClient client = RestClient.create();
 
     @GetMapping("/simulation/start")
-    public ResponseEntity<?> startSimulation() {
+    public ResponseEntity<?> startSimulation() throws IOException {
         Map<String, String> body = new HashMap<>();
         body.put("operation", "start");
 
@@ -34,9 +37,14 @@ public class MasterController {
                     .body(String.class);
         }
 
-        logger.info("Simulation started");
         if (MetricsScheduler.start == null)
             MetricsScheduler.start = Instant.now();
+
+        logger.info("Simulation started");
+
+        FileOutputStream fos = new FileOutputStream("logs.txt", true);
+        fos.write(("\n" + ZonedDateTime.now() + " - Simulation started\n").getBytes());
+        fos.close();
 
         return ResponseEntity.ok("Simulação iniciada.");
     }

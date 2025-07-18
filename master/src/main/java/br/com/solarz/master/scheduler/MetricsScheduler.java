@@ -3,6 +3,7 @@ package br.com.solarz.master.scheduler;
 import br.com.solarz.master.MasterApplication;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import model.Api;
 import model.ApiScore;
@@ -15,25 +16,28 @@ import repository.ApiScoreRepository;
 import repository.UsinaRepository;
 import util.ApiAverages;
 
+import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
 public class MetricsScheduler {
 
-    private final ApiScoreRepository apiScoreRepository;
     Logger logger = LoggerFactory.getLogger(MetricsScheduler.class);
     private final RestClient client = RestClient.create();
 
+    private final ApiScoreRepository apiScoreRepository;
     private final UsinaRepository usinaRepository;
+    private final MeterRegistry meterRegistry;
 
     public static Instant start = null;
-    private int checkpoint = 5; // minutos
+    private int checkpoint = 2; // minutos
 
     @Scheduled(cron = "*/1 * * * * *")
-    public void processarAtualizacaoDeGeracaoFila() {
+    public void processarAtualizacaoDeGeracaoFila() throws IOException {
         if (start == null)
             return;
 
@@ -42,9 +46,14 @@ public class MetricsScheduler {
             // contar usinas atualizadas e registrar a cada 5 minutos
             int updated = usinaRepository.countByUpdated(true);
             logger.info("Usinas atualizadas em {} minutos: {}", checkpoint, updated);
+
+            FileOutputStream fos = new FileOutputStream("logs.txt", true);
+            fos.write((ZonedDateTime.now() + " - Usinas atualizadas em " + checkpoint + " minutos: " + updated + "\n").getBytes());
+            fos.close();
+
             // pegar averages e atualizar score a cada 5 minutos
 //            updateAverages();
-            checkpoint += 5;
+            checkpoint += 2;
         }
     }
 
@@ -66,7 +75,9 @@ public class MetricsScheduler {
                     Map<String, Object> avgs = (Map<String, Object>) entry.getValue();
                     int usinasAmount = (int) avgs.get("usinasAmount");
                     int N = (int) avgs.get("n");
-                    Deque<Long> times = new ArrayDeque<>((ArrayList<Long>) avgs.get("times"));
+                    List<Integer> timeList = (ArrayList<Integer>) avgs.get("times");
+                    Deque<Long> times = new ArrayDeque<>();
+                    times.addAll(timeList.stream().map(x -> (long) x).toList());
                     Deque<Boolean> errors = new ArrayDeque<>((ArrayList<Boolean>) avgs.get("errors"));
                     ApiAverages avg = new ApiAverages(usinasAmount, N, times, errors);
 

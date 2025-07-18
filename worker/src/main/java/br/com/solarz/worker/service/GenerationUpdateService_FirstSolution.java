@@ -10,6 +10,7 @@ import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import util.ApiAverages;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
@@ -42,7 +43,7 @@ public class GenerationUpdateService_FirstSolution {
     private String DOCKER_ADDR;
 
     public static final HashMap<Api, ApiAverages> averages = new HashMap<>();
-    private final HashMap<Api, Integer> threadCounter = new HashMap<>();
+    private static final HashMap<Api, Integer> threadCounter = new HashMap<>();
     private String API_SIM_URL;
 
     @PostConstruct
@@ -86,7 +87,13 @@ public class GenerationUpdateService_FirstSolution {
 
         System.out.println("Iniciando atualização do portal " + api.getName());
 
-        threadCounter.put(api, threadCounter.getOrDefault(api, 0) + 1);
+        threadCounter.replace(api, threadCounter.get(api) + 1);
+
+        meterRegistry.gauge(
+                "threads.ativas",
+                List.of(Tag.of("portal", api.getName())),
+                threadCounter.get(api));
+
         int batchSize = 20;
         int failedRecap = 5; // alta prioridade apenas
 
@@ -114,7 +121,7 @@ public class GenerationUpdateService_FirstSolution {
 
         System.out.println(usinas.size() + " usinas do portal " + api.getName() + " atualizadas em " + duration.toMillis() + " milissegundos. Falhas: " + failed.size());
 
-        threadCounter.put(api, threadCounter.get(api) - 1);
+        threadCounter.replace(api, threadCounter.get(api) - 1);
     }
 
     private boolean updateUsinaGeneration(Usina usina, ApiAverages average) {
