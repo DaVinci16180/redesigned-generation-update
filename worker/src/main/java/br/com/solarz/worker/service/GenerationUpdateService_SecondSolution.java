@@ -1,9 +1,7 @@
 package br.com.solarz.worker.service;
 
 import br.com.solarz.worker.model.Api;
-import br.com.solarz.worker.model.ApiScore;
 import br.com.solarz.worker.model.Usina;
-import br.com.solarz.worker.model.Usina.Priority;
 import br.com.solarz.worker.repository.ApiRepository;
 import br.com.solarz.worker.repository.ApiScoreRepository;
 import br.com.solarz.worker.repository.UsinaRepository;
@@ -20,19 +18,15 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import br.com.solarz.worker.service.RedisQueueService.QueueType;
 
 @Service
 @RequiredArgsConstructor
-public class GenerationUpdateService_FirstSolution {
+public class GenerationUpdateService_SecondSolution {
 
-    private final RedisQueueService redisQueueService;
+    private final RedisQueueService_SecondSolution redisQueueService;
     private final UsinaRepository usinaRepository;
     private final MeterRegistry meterRegistry;
     private final ApiScoreRepository apiScoreRepository;
@@ -73,68 +67,39 @@ public class GenerationUpdateService_FirstSolution {
     }
 
     @Async("generationUpdate")
-    public void updateGenerationByApi(Api api, ApiScore score) {
+    public void updateGeneration() {
         // checar se está dentro da janela de atualização
         if (!GenerationUpdateScheduler.RUNNING)
             return;
 
-        if (!averages.containsKey(api)) {
-            int usinasAmount = usinaRepository.countByApiId(api.getId());
-            averages.put(api, new ApiAverages(usinasAmount));
+        List<Usina> usinas = redisQueueService.dequeue(25);
+        if (usinas.isEmpty()) {
+            GenerationUpdateScheduler.RUNNING = false;
+            return;
         }
 
-        ApiAverages average = averages.get(api);
-
-        Instant start = Instant.now();
-
-        System.out.println("Iniciando atualização do portal " + api.getName());
-
-        threadCounter.put(api, threadCounter.getOrDefault(api, 0) + 1);
-        int batchSize = 20;
-        int failedRecap = 5; // alta prioridade apenas
-
-        Set<Usina> usinas = redisQueueService.getUsinasByApi(api, QueueType.AVAILABLE_OR_FAILED, batchSize, null);
-        Set<Usina> recap = redisQueueService.getUsinasByApi(api, QueueType.FAILED, failedRecap, Priority.HIGH);
-        usinas.addAll(recap);
-
-        List<Usina> failed = new ArrayList<>();
         for (Usina usina : usinas) {
-            boolean success = updateUsinaGeneration(usina, average);
+            System.out.println("Atualizando usina " + usina.getId());
+
+            boolean success = updateUsinaGeneration(usina);
 
             if (!success) {
-                failed.add(usina);
+                System.out.println("Falha na atualização da usina " + usina.getId());
+                redisQueueService.queueFailed(usina);
                 meterRegistry.counter("simulacao.usinas.falhas").increment();
             } else {
+                System.out.println("Usina " + usina.getId() + " atualizada com sucesso");
                 usina.setUpdated(true);
                 usinaRepository.save(usina);
             }
         }
-
-        redisQueueService.queueFailed(failed, api);
-
-        Instant finish = Instant.now();
-        Duration duration = Duration.between(start, finish);
-
-        System.out.println(usinas.size() + " usinas do portal " + api.getName() + " atualizadas em " + duration.toMillis() + " milissegundos. Falhas: " + failed.size());
-
-//        if (score.getAverageTime() == .0 || average.isFull()) {
-//        score.setAverageTime(average.averageTime());
-//        score.setErrorRate(average.errorRate());
-//        }
-
-//        int notUpdated = usinaRepository.countNotUpdatedByApiId(api.getId());
-//        score.setPending( notUpdated / (double) average.getUsinasAmount());
-
-//        apiScoreRepository.save(score);
-
-        threadCounter.put(api, threadCounter.get(api) - 1);
     }
 
-    private boolean updateUsinaGeneration(Usina usina, ApiAverages average) {
+    private boolean updateUsinaGeneration(Usina usina) {
         int MAX_UPDATE_ATTEMPTS = 10;
 
         boolean success;
-        Instant start = Instant.now();
+//        Instant start = Instant.now();
 
         Request request = new Request.Builder()
                 .url(API_SIM_URL + "/portal/generation?portalId=" + usina.getCredencial().getApi().getId())
@@ -156,10 +121,10 @@ public class GenerationUpdateService_FirstSolution {
             success = false;
         }
 
-        Instant finish = Instant.now();
-        Duration duration = Duration.between(start, finish);
+//        Instant finish = Instant.now();
+//        Duration duration = Duration.between(start, finish);
 
-        average.register(duration.toMillis(), !success);
+//        average.register(duration.toMillis(), !success);
 
         if (usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS)
             meterRegistry.counter("simulacao.usinas.expiradas").increment();

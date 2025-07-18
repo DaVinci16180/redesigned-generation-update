@@ -33,7 +33,7 @@ public class ApiScore implements Comparable<ApiScore> {
     }
 
     public double calculate() {
-        return averageTime * errorRate * pending;
+        return averageTime * errorRate;
     }
 
     @Override
