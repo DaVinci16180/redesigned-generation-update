@@ -1,9 +1,9 @@
-CREATE TABLE api (
+CREATE TABLE IF NOT EXISTS api (
     id BIGINT PRIMARY KEY,
     name VARCHAR
 );
 
-CREATE TABLE credencial (
+CREATE TABLE IF NOT EXISTS credencial (
     id BIGINT PRIMARY KEY,
     api_id BIGINT NOT NULL,
 
@@ -13,7 +13,7 @@ CREATE TABLE credencial (
         ON DELETE CASCADE
 );
 
-CREATE TABLE usina (
+CREATE TABLE IF NOT EXISTS usina (
     id BIGINT PRIMARY KEY,
     credencial_id BIGINT NOT NULL,
     priority VARCHAR DEFAULT 'NORMAL',
@@ -26,7 +26,7 @@ CREATE TABLE usina (
         ON DELETE CASCADE
 );
 
-CREATE TABLE api_score (
+CREATE TABLE IF NOT EXISTS api_score (
     id BIGINT PRIMARY KEY,
     api_id BIGINT NOT NULL,
     average_time REAL DEFAULT 0,

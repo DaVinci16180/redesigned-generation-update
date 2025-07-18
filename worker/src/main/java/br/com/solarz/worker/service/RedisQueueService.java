@@ -1,11 +1,11 @@
 package br.com.solarz.worker.service;
 
-import br.com.solarz.worker.config.RedisClientProvider;
-import br.com.solarz.worker.model.Api;
-import br.com.solarz.worker.model.Usina;
-import br.com.solarz.worker.model.Usina.Priority;
-import br.com.solarz.worker.repository.ApiRepository;
-import br.com.solarz.worker.repository.UsinaRepository;
+import config.RedisClientProvider;
+import model.Api;
+import model.Usina;
+import model.Usina.Priority;
+import repository.ApiRepository;
+import repository.UsinaRepository;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;

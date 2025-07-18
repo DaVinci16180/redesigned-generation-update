@@ -1,14 +1,13 @@
 package br.com.solarz.worker.service;
 
-import br.com.solarz.worker.model.Api;
-import br.com.solarz.worker.model.ApiScore;
-import br.com.solarz.worker.model.Usina;
-import br.com.solarz.worker.model.Usina.Priority;
-import br.com.solarz.worker.repository.ApiRepository;
-import br.com.solarz.worker.repository.ApiScoreRepository;
-import br.com.solarz.worker.repository.UsinaRepository;
+import model.Api;
+import model.Usina;
+import model.Usina.Priority;
+import repository.ApiRepository;
+import repository.ApiScoreRepository;
+import repository.UsinaRepository;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
-import br.com.solarz.worker.util.ApiAverages;
+import util.ApiAverages;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
@@ -69,19 +68,17 @@ public class GenerationUpdateService_FirstSolution {
             Gauge.builder("thread.count", threadCounter, tc -> tc.get(api))
                     .tags("portal", api.getName())
                     .register(meterRegistry);
+
+            int usinasAmount = usinaRepository.countByCredencial_Api(api);
+            averages.put(api, new ApiAverages(usinasAmount));
         }
     }
 
     @Async("generationUpdate")
-    public void updateGenerationByApi(Api api, ApiScore score) {
+    public void updateGenerationByApi(Api api) {
         // checar se está dentro da janela de atualização
         if (!GenerationUpdateScheduler.RUNNING)
             return;
-
-        if (!averages.containsKey(api)) {
-            int usinasAmount = usinaRepository.countByApiId(api.getId());
-            averages.put(api, new ApiAverages(usinasAmount));
-        }
 
         ApiAverages average = averages.get(api);
 
@@ -116,16 +113,6 @@ public class GenerationUpdateService_FirstSolution {
         Duration duration = Duration.between(start, finish);
 
         System.out.println(usinas.size() + " usinas do portal " + api.getName() + " atualizadas em " + duration.toMillis() + " milissegundos. Falhas: " + failed.size());
-
-//        if (score.getAverageTime() == .0 || average.isFull()) {
-//        score.setAverageTime(average.averageTime());
-//        score.setErrorRate(average.errorRate());
-//        }
-
-//        int notUpdated = usinaRepository.countNotUpdatedByApiId(api.getId());
-//        score.setPending( notUpdated / (double) average.getUsinasAmount());
-
-//        apiScoreRepository.save(score);
 
         threadCounter.put(api, threadCounter.get(api) - 1);
     }

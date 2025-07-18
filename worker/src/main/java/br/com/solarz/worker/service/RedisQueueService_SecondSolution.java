@@ -1,12 +1,12 @@
 package br.com.solarz.worker.service;
 
-import br.com.solarz.worker.config.RedisClientProvider;
-import br.com.solarz.worker.model.Api;
-import br.com.solarz.worker.model.ApiScore;
-import br.com.solarz.worker.model.Usina;
-import br.com.solarz.worker.repository.ApiRepository;
-import br.com.solarz.worker.repository.ApiScoreRepository;
-import br.com.solarz.worker.repository.UsinaRepository;
+import config.RedisClientProvider;
+import model.Api;
+import model.ApiScore;
+import model.Usina;
+import repository.ApiRepository;
+import repository.ApiScoreRepository;
+import repository.UsinaRepository;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
@@ -85,8 +85,7 @@ public class RedisQueueService_SecondSolution {
 
     public void queueFailed(Usina usina) {
         long apiId = usina.getCredencial().getApi().getId();
-        int offset = errorScores.size() * (usina.getPriority().equals(Usina.Priority.HIGH) ? 2 : 3);
-        double score = errorScores.get(apiId) + offset;
+        double score = errorScores.get(apiId) + usina.getUpdateAttempts() - 1;
         queue.add(score, usina.getId());
     }
 }

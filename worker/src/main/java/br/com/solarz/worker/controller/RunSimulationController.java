@@ -1,9 +1,8 @@
 package br.com.solarz.worker.controller;
 
-import br.com.solarz.worker.model.Api;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import br.com.solarz.worker.service.GenerationUpdateService_FirstSolution;
-import br.com.solarz.worker.util.ApiAverages;
+import util.ApiAverages;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.ResponseEntity;

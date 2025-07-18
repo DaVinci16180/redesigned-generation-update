@@ -1,19 +1,19 @@
 package br.com.solarz.master.service;
 
-import br.com.solarz.master.config.RedisClientProvider;
 import br.com.solarz.master.helpers.PopulateDatabaseHelper;
-import br.com.solarz.master.model.Api;
-import br.com.solarz.master.model.Credencial;
-import br.com.solarz.master.model.Usina;
-import br.com.solarz.master.model.Usina.Priority;
-import br.com.solarz.master.repository.ApiRepository;
-import br.com.solarz.master.repository.CredencialRepository;
-import br.com.solarz.master.repository.UsinaRepository;
+import config.RedisClientProvider;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import model.Api;
+import model.Credencial;
+import model.Usina;
+import model.Usina.Priority;
 import org.redisson.api.RSet;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
+import repository.ApiRepository;
+import repository.CredencialRepository;
+import repository.UsinaRepository;
 
 import java.time.Duration;
 import java.time.Instant;

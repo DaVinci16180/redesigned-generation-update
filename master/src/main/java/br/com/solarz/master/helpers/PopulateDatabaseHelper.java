@@ -1,14 +1,14 @@
 package br.com.solarz.master.helpers;
 
-import br.com.solarz.master.model.Api;
-import br.com.solarz.master.model.ApiScore;
-import br.com.solarz.master.model.Credencial;
-import br.com.solarz.master.model.Usina;
-import br.com.solarz.master.model.Usina.Priority;
-import br.com.solarz.master.repository.ApiRepository;
-import br.com.solarz.master.repository.ApiScoreRepository;
-import br.com.solarz.master.repository.CredencialRepository;
-import br.com.solarz.master.repository.UsinaRepository;
+import model.Api;
+import model.ApiScore;
+import model.Credencial;
+import model.Usina;
+import model.Usina.Priority;
+import repository.ApiRepository;
+import repository.ApiScoreRepository;
+import repository.CredencialRepository;
+import repository.UsinaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

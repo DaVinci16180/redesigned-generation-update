@@ -1,14 +1,11 @@
 package br.com.solarz.worker.service;
 
-import br.com.solarz.worker.model.Api;
-import br.com.solarz.worker.model.ApiScore;
-import br.com.solarz.worker.model.Usina;
-import br.com.solarz.worker.model.Usina.Priority;
-import br.com.solarz.worker.repository.ApiRepository;
-import br.com.solarz.worker.repository.ApiScoreRepository;
-import br.com.solarz.worker.repository.UsinaRepository;
+import model.Api;
+import model.Usina;
+import model.Usina.Priority;
+import repository.ApiRepository;
+import repository.UsinaRepository;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
-import br.com.solarz.worker.util.ApiAverages;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;

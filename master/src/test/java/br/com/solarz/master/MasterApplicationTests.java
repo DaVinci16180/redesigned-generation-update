@@ -8,14 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class MasterApplicationTests {
 
-	@Autowired
-	private PopulateDatabaseHelper populate;
-
 	@Test
 	void contextLoads() {
-		populate.populateApis();
-		populate.populateCredenciais();
-		populate.populateUsinas();
+
 	}
 
 }

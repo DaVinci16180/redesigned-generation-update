@@ -1,9 +1,9 @@
 package br.com.solarz.worker.scheduler;
 
-import br.com.solarz.worker.model.Api;
-import br.com.solarz.worker.model.ApiScore;
-import br.com.solarz.worker.repository.ApiRepository;
-import br.com.solarz.worker.repository.ApiScoreRepository;
+import model.Api;
+import model.ApiScore;
+import repository.ApiRepository;
+import repository.ApiScoreRepository;
 import br.com.solarz.worker.service.GenerationUpdateService_FirstSolution;
 import br.com.solarz.worker.service.GenerationUpdateService_Original;
 import br.com.solarz.worker.service.GenerationUpdateService_SecondSolution;
@@ -53,7 +53,7 @@ public class GenerationUpdateScheduler {
         apiScores.sort(null);
 
         for (ApiScore score : apiScores)
-            firstSolution.updateGenerationByApi(score.getApi(), score);
+            firstSolution.updateGenerationByApi(score.getApi());
     }
 
     private boolean looping = false;

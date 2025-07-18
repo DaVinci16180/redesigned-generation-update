@@ -1,22 +1,19 @@
 package br.com.solarz.master.scheduler;
 
 import br.com.solarz.master.MasterApplication;
-import br.com.solarz.master.controller.MasterController;
-import br.com.solarz.master.model.Api;
-import br.com.solarz.master.model.ApiScore;
-import br.com.solarz.master.repository.ApiScoreRepository;
-import br.com.solarz.master.repository.UsinaRepository;
-import br.com.solarz.master.util.ApiAverages;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import model.Api;
+import model.ApiScore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import repository.ApiScoreRepository;
+import repository.UsinaRepository;
+import util.ApiAverages;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -74,7 +71,7 @@ public class MetricsScheduler {
                     ApiAverages avg = new ApiAverages(usinasAmount, N, times, errors);
 
                     if (averages.containsKey(apiId))
-                        averages.put(apiId, averages.get(apiId).sum(avg));
+                        averages.put(apiId, averages.get(apiId).add(avg));
                     else
                         averages.put(apiId, avg);
                 }
@@ -88,7 +85,7 @@ public class MetricsScheduler {
         for (ApiScore score : scores) {
             Api api = score.getApi();
             ApiAverages average = averages.get(api.getId());
-            int notUpdated = usinaRepository.countNotUpdatedByApiId(api.getId());
+            int notUpdated = usinaRepository.countByUpdatedAndCredencial_Api(false, api);
 
             score.setAverageTime(average.averageTime());
             score.setErrorRate(average.errorRate());

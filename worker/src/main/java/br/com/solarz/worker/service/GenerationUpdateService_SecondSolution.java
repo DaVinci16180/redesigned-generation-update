@@ -1,12 +1,12 @@
 package br.com.solarz.worker.service;
 
-import br.com.solarz.worker.model.Api;
-import br.com.solarz.worker.model.Usina;
-import br.com.solarz.worker.repository.ApiRepository;
-import br.com.solarz.worker.repository.ApiScoreRepository;
-import br.com.solarz.worker.repository.UsinaRepository;
+import model.Api;
+import model.Usina;
+import repository.ApiRepository;
+import repository.ApiScoreRepository;
+import repository.UsinaRepository;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
-import br.com.solarz.worker.util.ApiAverages;
+import util.ApiAverages;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
@@ -16,8 +16,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
