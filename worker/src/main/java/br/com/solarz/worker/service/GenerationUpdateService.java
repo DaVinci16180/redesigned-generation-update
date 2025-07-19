@@ -124,7 +124,7 @@ public class GenerationUpdateService {
         Instant finish = Instant.now();
         Duration duration = Duration.between(start, finish);
 
-        average.register(duration.toMillis(), !success);
+//        average.register(duration.toMillis(), !success);
 
         if (usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS)
             meterRegistry.counter("simulacao.usinas.expiradas").increment();

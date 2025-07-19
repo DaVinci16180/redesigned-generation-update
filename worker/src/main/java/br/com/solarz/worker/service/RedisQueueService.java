@@ -87,7 +87,7 @@ public class RedisQueueService {
 
     public void queueFailed(Usina usina) {
         long apiId = usina.getCredencial().getApi().getId();
-        double score = errorScores.get(apiId) + usina.getUpdateAttempts() - 1;
+        double score = errorScores.get(apiId);
         queue.add(score, usina.getId());
     }
 }
