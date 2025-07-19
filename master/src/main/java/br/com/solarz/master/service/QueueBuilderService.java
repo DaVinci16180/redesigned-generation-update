@@ -1,16 +1,14 @@
 package br.com.solarz.master.service;
 
 import br.com.solarz.master.MasterApplication;
+import br.com.solarz.master.helpers.PopulateDatabaseHelper;
+import br.com.solarz.master.scheduler.MetricsScheduler;
 import config.RedisClientProvider;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import model.ApiScore;
 import model.Credencial;
 import model.Usina;
-import repository.ApiScoreRepository;
-import repository.CredencialRepository;
-import repository.UsinaRepository;
-import br.com.solarz.master.scheduler.MetricsScheduler;
-import jakarta.annotation.PostConstruct;
-import lombok.RequiredArgsConstructor;
 import org.redisson.api.RScoredSortedSet;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
@@ -18,6 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import repository.ApiScoreRepository;
+import repository.CredencialRepository;
+import repository.UsinaRepository;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -31,12 +32,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class QueueBuilderService_SecondSolution {
+public class QueueBuilderService {
 
-    Logger logger = LoggerFactory.getLogger(QueueBuilderService_Original.class);
+    Logger logger = LoggerFactory.getLogger(QueueBuilderService.class);
     private RedissonClient redissonClient;
     private final RestClient client = RestClient.create();
 
+    private final PopulateDatabaseHelper populate;
     private final CredencialRepository credencialRepository;
     private final RedisClientProvider redisClientProvider;
     private final ApiScoreRepository apiScoreRepository;
@@ -46,17 +48,41 @@ public class QueueBuilderService_SecondSolution {
     public void setup() {
         this.redissonClient = redisClientProvider.getClient();
 
-        List<ApiScore> scores = apiScoreRepository.findAll();
-        apiScoreRepository.saveAll(scores.stream().peek(s -> s.setPending(1)).toList());
+        populate.populateDatabase();
 
         buildQueues();
         startSim();
     }
 
+    public void startSim() {
+        Map<String, String> body = new HashMap<>();
+        body.put("operation", "start");
+
+        for (String addr : MasterApplication.WORKERS_ADDR) {
+            client.post()
+                    .uri("http://" + addr + ":8081/simulation/change-state")
+                    .body(body)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .body(String.class);
+        }
+
+        if (MetricsScheduler.start == null)
+            MetricsScheduler.start = Instant.now();
+
+        logger.info("Simulation started");
+
+        try {
+            FileOutputStream fos = new FileOutputStream("logs.txt", true);
+            fos.write(("\n" + ZonedDateTime.now() + " - Simulation started\n").getBytes());
+            fos.close();
+        } catch (IOException ignored) {}
+    }
+
     public void buildQueues() {
         Instant start = Instant.now();
 
-        RScoredSortedSet<Long> queue =  redissonClient.getScoredSortedSet("queue_second_solution");
+        RScoredSortedSet<Long> queue =  redissonClient.getScoredSortedSet("usinas_queue");
         queue.clear();
 
         List<ApiScore> scores = apiScoreRepository
@@ -95,30 +121,5 @@ public class QueueBuilderService_SecondSolution {
         Duration duration = Duration.between(start, finish);
 
         System.out.println("Building queues took " + duration.toSeconds() + " seconds");
-    }
-
-    public void startSim() {
-        Map<String, String> body = new HashMap<>();
-        body.put("operation", "start");
-
-        for (String addr : MasterApplication.WORKERS_ADDR) {
-            client.post()
-                    .uri("http://" + addr + ":8081/simulation/change-state")
-                    .body(body)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .body(String.class);
-        }
-
-        if (MetricsScheduler.start == null)
-            MetricsScheduler.start = Instant.now();
-
-        logger.info("Simulation started");
-
-        try {
-            FileOutputStream fos = new FileOutputStream("logs.txt", true);
-            fos.write(("\n" + ZonedDateTime.now() + " - Simulation started\n").getBytes());
-            fos.close();
-        } catch (IOException ignored) {}
     }
 }

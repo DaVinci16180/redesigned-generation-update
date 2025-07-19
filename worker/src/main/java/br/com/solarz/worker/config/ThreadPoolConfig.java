@@ -21,7 +21,7 @@ public class ThreadPoolConfig {
         executor.setThreadNamePrefix("generationUpdateThreadPool-");
         executor.setBeanName("generationUpdateThreadPool-");
         executor.setKeepAliveSeconds(0);
-        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
         executor.initialize();
         return executor;
     }

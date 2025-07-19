@@ -1,17 +1,16 @@
-package br.com.solarz.worker.service.secondsolution;
+package br.com.solarz.worker.service;
 
 import config.RedisClientProvider;
 import model.Api;
 import model.ApiScore;
 import model.Usina;
-import repository.ApiRepository;
+import org.redisson.api.RScoredSortedSet;
 import repository.ApiScoreRepository;
 import repository.UsinaRepository;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.redisson.api.RScoredSortedSet;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
@@ -19,14 +18,13 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class RedisQueueService_SecondSolution {
+public class RedisQueueService {
 
-    private final ApiScoreRepository apiScoreRepository;
     private RedissonClient redissonClient;
 
     private final RedisClientProvider redisClientProvider;
+    private final ApiScoreRepository apiScoreRepository;
     private final UsinaRepository usinaRepository;
-    private final ApiRepository apiRepository;
     private final MeterRegistry meterRegistry;
 
     RScoredSortedSet<Long> queue;
@@ -36,9 +34,9 @@ public class RedisQueueService_SecondSolution {
     @PostConstruct
     public void setup() {
         redissonClient = redisClientProvider.getClient();
-        queue = redissonClient.getScoredSortedSet("queue_second_solution");
+        queue = redissonClient.getScoredSortedSet("usinas_queue");
 
-//        buildMeters();
+        buildMeters();
     }
 
     private void buildMeters() {

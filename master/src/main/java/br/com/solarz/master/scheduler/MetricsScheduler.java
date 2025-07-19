@@ -31,19 +31,17 @@ public class MetricsScheduler {
 
     private final ApiScoreRepository apiScoreRepository;
     private final UsinaRepository usinaRepository;
-    private final MeterRegistry meterRegistry;
 
     public static Instant start = null;
     private int checkpoint = 2; // minutos
 
-    @Scheduled(cron = "*/1 * * * * *")
+    @Scheduled(cron = "*/5 * * * * *")
     public void processarAtualizacaoDeGeracaoFila() throws IOException {
         if (start == null)
             return;
 
         Instant now = Instant.now();
         if (Duration.between(start, now).toMinutes() >= checkpoint) {
-            // contar usinas atualizadas e registrar a cada 5 minutos
             int updated = usinaRepository.countByUpdated(true);
             logger.info("Usinas atualizadas em {} minutos: {}", checkpoint, updated);
 
@@ -51,8 +49,7 @@ public class MetricsScheduler {
             fos.write((ZonedDateTime.now() + " - Usinas atualizadas em " + checkpoint + " minutos: " + updated + "\n").getBytes());
             fos.close();
 
-            // pegar averages e atualizar score a cada 5 minutos
-//            updateAverages();
+            updateAverages();
             checkpoint += 2;
         }
     }
@@ -72,13 +69,18 @@ public class MetricsScheduler {
 
                 for (var entry : map.entrySet()) {
                     long apiId = Long.parseLong(entry.getKey());
+
                     Map<String, Object> avgs = (Map<String, Object>) entry.getValue();
+
                     int usinasAmount = (int) avgs.get("usinasAmount");
                     int N = (int) avgs.get("n");
+
                     List<Integer> timeList = (ArrayList<Integer>) avgs.get("times");
                     Deque<Long> times = new ArrayDeque<>();
                     times.addAll(timeList.stream().map(x -> (long) x).toList());
+
                     Deque<Boolean> errors = new ArrayDeque<>((ArrayList<Boolean>) avgs.get("errors"));
+
                     ApiAverages avg = new ApiAverages(usinasAmount, N, times, errors);
 
                     if (averages.containsKey(apiId))

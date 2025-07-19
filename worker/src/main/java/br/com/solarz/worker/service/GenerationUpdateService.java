@@ -1,9 +1,8 @@
-package br.com.solarz.worker.service.secondsolution;
+package br.com.solarz.worker.service;
 
 import model.Api;
 import model.Usina;
 import repository.ApiRepository;
-import repository.ApiScoreRepository;
 import repository.UsinaRepository;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import util.ApiAverages;
@@ -16,18 +15,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Service
 @RequiredArgsConstructor
-public class GenerationUpdateService_SecondSolution {
+public class GenerationUpdateService {
 
-    private final RedisQueueService_SecondSolution redisQueueService;
+    private final RedisQueueService redisQueueService;
     private final UsinaRepository usinaRepository;
     private final MeterRegistry meterRegistry;
-    private final ApiScoreRepository apiScoreRepository;
     private final ApiRepository apiRepository;
     private OkHttpClient client;
 
@@ -35,7 +35,7 @@ public class GenerationUpdateService_SecondSolution {
     private String DOCKER_ADDR;
 
     public static final HashMap<Api, ApiAverages> averages = new HashMap<>();
-    private final HashMap<Api, Integer> threadCounter = new HashMap<>();
+    private static final HashMap<Api, Integer> threadCounter = new HashMap<>();
     private String API_SIM_URL;
 
     @PostConstruct
@@ -61,12 +61,14 @@ public class GenerationUpdateService_SecondSolution {
             Gauge.builder("thread.count", threadCounter, tc -> tc.get(api))
                     .tags("portal", api.getName())
                     .register(meterRegistry);
+
+            int usinasAmount = usinaRepository.countByCredencial_Api(api);
+            averages.put(api, new ApiAverages(usinasAmount));
         }
     }
 
     @Async("generationUpdate")
     public void updateGeneration() {
-        // checar se está dentro da janela de atualização
         if (!GenerationUpdateScheduler.RUNNING)
             return;
 
@@ -77,28 +79,26 @@ public class GenerationUpdateService_SecondSolution {
         }
 
         Usina usina = usinas.get(0);
-//        for (Usina usina : usinas) {
-            System.out.println("Atualizando usina " + usina.getId());
+        System.out.println("Atualizando usina " + usina.getId());
 
-            boolean success = updateUsinaGeneration(usina);
+        boolean success = updateUsinaGeneration(usina, averages.get(usina.getCredencial().getApi()));
 
-            if (!success) {
-                System.out.println("Falha na atualização da usina " + usina.getId());
-                redisQueueService.queueFailed(usina);
-                meterRegistry.counter("simulacao.usinas.falhas").increment();
-            } else {
-                System.out.println("Usina " + usina.getId() + " atualizada com sucesso");
-                usina.setUpdated(true);
-                usinaRepository.save(usina);
-            }
-//        }
+        if (!success) {
+            System.out.println("Falha na atualização da usina " + usina.getId());
+            redisQueueService.queueFailed(usina);
+            meterRegistry.counter("simulacao.usinas.falhas").increment();
+        } else {
+            System.out.println("Usina " + usina.getId() + " atualizada com sucesso");
+            usina.setUpdated(true);
+            usinaRepository.save(usina);
+        }
     }
 
-    private boolean updateUsinaGeneration(Usina usina) {
+    private boolean updateUsinaGeneration(Usina usina, ApiAverages average) {
         int MAX_UPDATE_ATTEMPTS = 10;
 
         boolean success;
-//        Instant start = Instant.now();
+        Instant start = Instant.now();
 
         Request request = new Request.Builder()
                 .url(API_SIM_URL + "/portal/generation?portalId=" + usina.getCredencial().getApi().getId())
@@ -120,10 +120,10 @@ public class GenerationUpdateService_SecondSolution {
             success = false;
         }
 
-//        Instant finish = Instant.now();
-//        Duration duration = Duration.between(start, finish);
+        Instant finish = Instant.now();
+        Duration duration = Duration.between(start, finish);
 
-//        average.register(duration.toMillis(), !success);
+        average.register(duration.toMillis(), !success);
 
         if (usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS)
             meterRegistry.counter("simulacao.usinas.expiradas").increment();
