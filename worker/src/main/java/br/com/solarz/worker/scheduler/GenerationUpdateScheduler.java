@@ -37,8 +37,8 @@ public class GenerationUpdateScheduler {
             return;
 
 //        original();
-//        firstSolution();
-        secondSolution();
+        firstSolution();
+//        secondSolution();
     }
 
     private void original() {
@@ -49,24 +49,18 @@ public class GenerationUpdateScheduler {
     }
 
     private void firstSolution() {
-        List<ApiScore> apiScores = apiScoreRepository.findAllByPendingGreaterThan(0);
-        apiScores.sort(null);
+        List<ApiScore> apiScores = apiScoreRepository
+                .findAllByPendingGreaterThan(0)
+                .stream()
+                .sorted()
+                .toList();
 
         for (ApiScore score : apiScores)
             firstSolution.updateGenerationByApi(score.getApi());
     }
 
-    private boolean looping = false;
     private void secondSolution() {
-        if (looping)
-            return;
-
-        looping = true;
-
-        while (RUNNING)
-//        for (int i = 0; i < 50; i++)
+        for (int i = 0; i < 50; i++)
             secondSolution.updateGeneration();
-
-        looping = false;
     }
 }
