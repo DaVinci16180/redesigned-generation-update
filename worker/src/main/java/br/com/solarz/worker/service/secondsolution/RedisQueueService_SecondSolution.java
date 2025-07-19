@@ -38,6 +38,10 @@ public class RedisQueueService_SecondSolution {
         redissonClient = redisClientProvider.getClient();
         queue = redissonClient.getScoredSortedSet("queue_second_solution");
 
+//        buildMeters();
+    }
+
+    private void buildMeters() {
         List<ApiScore> apiScores = apiScoreRepository.findAll();
 
         apiScores.sort(Comparator.comparingDouble(ApiScore::calculate));
