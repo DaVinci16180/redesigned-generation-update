@@ -31,7 +31,6 @@ public class MetricsScheduler {
 
     private final ApiScoreRepository apiScoreRepository;
     private final UsinaRepository usinaRepository;
-    private final MeterRegistry meterRegistry;
 
     public static Instant start = null;
     private int checkpoint = 2; // minutos

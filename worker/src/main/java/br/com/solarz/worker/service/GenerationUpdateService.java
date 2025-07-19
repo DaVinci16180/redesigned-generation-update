@@ -2,14 +2,12 @@ package br.com.solarz.worker.service;
 
 import model.Api;
 import model.Usina;
-import model.Usina.Priority;
 import repository.ApiRepository;
 import repository.UsinaRepository;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import util.ApiAverages;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Tag;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
@@ -19,13 +17,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import br.com.solarz.worker.service.RedisQueueService.QueueType;
 
 @Service
 @RequiredArgsConstructor
@@ -74,52 +68,30 @@ public class GenerationUpdateService {
     }
 
     @Async("generationUpdate")
-    public void updateGenerationByApi(Api api) {
-        // checar se está dentro da janela de atualização
+    public void updateGeneration() {
         if (!GenerationUpdateScheduler.RUNNING)
             return;
 
-        ApiAverages average = averages.get(api);
-
-        Instant start = Instant.now();
-
-        System.out.println("Iniciando atualização do portal " + api.getName());
-
-        threadCounter.replace(api, threadCounter.get(api) + 1);
-
-        meterRegistry.gauge(
-                "threads.ativas",
-                List.of(Tag.of("portal", api.getName())),
-                threadCounter.get(api));
-
-        int batchSize = 20;
-        int failedRecap = 5; // alta prioridade apenas
-
-        Set<Usina> usinas = redisQueueService.getUsinasByApi(api, QueueType.AVAILABLE_OR_FAILED, batchSize, null);
-        Set<Usina> recap = redisQueueService.getUsinasByApi(api, QueueType.FAILED, failedRecap, Priority.HIGH);
-        usinas.addAll(recap);
-
-        List<Usina> failed = new ArrayList<>();
-        for (Usina usina : usinas) {
-            boolean success = updateUsinaGeneration(usina, average);
-
-            if (!success) {
-                failed.add(usina);
-                meterRegistry.counter("simulacao.usinas.falhas").increment();
-            } else {
-                usina.setUpdated(true);
-                usinaRepository.save(usina);
-            }
+        List<Usina> usinas = redisQueueService.dequeue(1);
+        if (usinas.isEmpty()) {
+            GenerationUpdateScheduler.RUNNING = false;
+            return;
         }
 
-        redisQueueService.queueFailed(failed, api);
+        Usina usina = usinas.get(0);
+        System.out.println("Atualizando usina " + usina.getId());
 
-        Instant finish = Instant.now();
-        Duration duration = Duration.between(start, finish);
+        boolean success = updateUsinaGeneration(usina, averages.get(usina.getCredencial().getApi()));
 
-        System.out.println(usinas.size() + " usinas do portal " + api.getName() + " atualizadas em " + duration.toMillis() + " milissegundos. Falhas: " + failed.size());
-
-        threadCounter.replace(api, threadCounter.get(api) - 1);
+        if (!success) {
+            System.out.println("Falha na atualização da usina " + usina.getId());
+            redisQueueService.queueFailed(usina);
+            meterRegistry.counter("simulacao.usinas.falhas").increment();
+        } else {
+            System.out.println("Usina " + usina.getId() + " atualizada com sucesso");
+            usina.setUpdated(true);
+            usinaRepository.save(usina);
+        }
     }
 
     private boolean updateUsinaGeneration(Usina usina, ApiAverages average) {

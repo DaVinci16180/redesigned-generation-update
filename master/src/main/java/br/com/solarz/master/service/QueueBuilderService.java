@@ -6,18 +6,17 @@ import br.com.solarz.master.scheduler.MetricsScheduler;
 import config.RedisClientProvider;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import model.Api;
+import model.ApiScore;
 import model.Credencial;
 import model.Usina;
-import model.Usina.Priority;
-import org.redisson.api.RSet;
+import org.redisson.api.RScoredSortedSet;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import repository.ApiRepository;
+import repository.ApiScoreRepository;
 import repository.CredencialRepository;
 import repository.UsinaRepository;
 
@@ -29,33 +28,21 @@ import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class QueueBuilderService {
 
-    public enum QueueType {
-        AVAILABLE, // fila usinas disponíveis para atualização
-        FAILED, // fila usinas que falharam a atualização
-        AVAILABLE_OR_FAILED //usado para pegar dados das duas filas ao mesmo tempo, priorizando a fila available
-    };
-
-    /*
-     * PortalName: {
-     *     HIGH: [...ids],
-     *     NORMAL: [...ids]
-     * }
-     */
-    private final HashMap<String, HashMap<Integer, RSet<Long>>> queues = new HashMap<>();
+    Logger logger = LoggerFactory.getLogger(QueueBuilderService.class);
     private RedissonClient redissonClient;
     private final RestClient client = RestClient.create();
-    Logger logger = LoggerFactory.getLogger(QueueBuilderService.class);
 
     private final PopulateDatabaseHelper populate;
     private final CredencialRepository credencialRepository;
     private final RedisClientProvider redisClientProvider;
+    private final ApiScoreRepository apiScoreRepository;
     private final UsinaRepository usinaRepository;
-    private final ApiRepository apiRepository;
 
     @PostConstruct
     public void setup() {
@@ -63,7 +50,6 @@ public class QueueBuilderService {
 
         populate.populateDatabase();
 
-        setupQueues();
         buildQueues();
         startSim();
     }
@@ -93,46 +79,41 @@ public class QueueBuilderService {
         } catch (IOException ignored) {}
     }
 
-    public void setupQueues() {
-        List<Api> apis = apiRepository.findAll();
-        for (Api api : apis) {
-            String avaQueueName = buildName(api, QueueType.AVAILABLE);
-            HashMap<Integer, RSet<Long>> available = new HashMap<>();
-            available.put(Priority.HIGH.ordinal(), redissonClient.getSet(avaQueueName + "_" + Priority.HIGH));
-            available.put(Priority.NORMAL.ordinal(), redissonClient.getSet(avaQueueName + "_" + Priority.NORMAL));
-
-            String errQueueName = buildName(api, QueueType.FAILED);
-            HashMap<Integer, RSet<Long>> error = new HashMap<>();
-            error.put(Priority.HIGH.ordinal(), redissonClient.getSet(errQueueName + "_" + Priority.HIGH));
-            error.put(Priority.NORMAL.ordinal(), redissonClient.getSet(errQueueName + "_" + Priority.NORMAL));
-
-            queues.put(avaQueueName, available);
-            queues.put(errQueueName, error);
-        }
-    }
-
     public void buildQueues() {
         Instant start = Instant.now();
-        List<Api> apis = apiRepository.findAll();
-        clearQueues(apis);
 
-        for (Api api : apis) {
-            String avaQueueName = buildName(api, QueueType.AVAILABLE);
-            List<Credencial> credenciais = credencialRepository.findAllByApi(api);
+        RScoredSortedSet<Long> queue =  redissonClient.getScoredSortedSet("usinas_queue");
+        queue.clear();
+
+        List<ApiScore> scores = apiScoreRepository
+                .findAll()
+                .stream()
+                .sorted()
+                .toList();
+
+        // AVAILABLE_HIGH -> AVAILABLE_NORMAL -> ERROR_HIGH -> ERROR_NORMAL
+        for (int i = 0; i < scores.size(); i++) {
+            ApiScore score = scores.get(i);
+            List<Credencial> credenciais = credencialRepository.findAllByApi(score.getApi());
 
             for (Credencial credencial : credenciais) {
                 List<Usina> usinas = usinaRepository.findAllByCredencial(credencial);
                 usinas = usinas.stream().peek(Usina::reset).toList();
                 usinaRepository.saveAll(usinas);
 
-                List<Usina> usinasHigh = usinas.stream().filter(u -> u.getPriority().equals(Priority.HIGH)).toList();
-                List<Usina> usinasNorm = usinas.stream().filter(u -> u.getPriority().equals(Priority.NORMAL)).toList();
+                double finalI = i;
+                Map<Long, Double> usinasHigh = usinas
+                        .stream()
+                        .filter(u -> u.getPriority().equals(Usina.Priority.HIGH))
+                        .collect(Collectors.toMap(Usina::getId, x -> finalI));
 
-                var queueHigh = queues.get(avaQueueName).get(Priority.HIGH.ordinal());
-                var queueNorm = queues.get(avaQueueName).get(Priority.NORMAL.ordinal());
+                Map<Long, Double> usinasNorm = usinas
+                        .stream()
+                        .filter(u -> u.getPriority().equals(Usina.Priority.NORMAL))
+                        .collect(Collectors.toMap(Usina::getId, x -> finalI + scores.size()));
 
-                queueHigh.addAll(usinasHigh.stream().map(Usina::getId).toList());
-                queueNorm.addAll(usinasNorm.stream().map(Usina::getId).toList());
+                queue.addAll(usinasHigh);
+                queue.addAll(usinasNorm);
             }
         }
 
@@ -140,24 +121,5 @@ public class QueueBuilderService {
         Duration duration = Duration.between(start, finish);
 
         System.out.println("Building queues took " + duration.toSeconds() + " seconds");
-    }
-
-    public void clearQueues(List<Api> apis) {
-        for (Api api : apis) {
-            String avaQueueName = buildName(api, QueueType.AVAILABLE);
-            String errQueueName = buildName(api, QueueType.FAILED);
-
-            if (queues.containsKey(avaQueueName))
-                for (var queue : queues.get(avaQueueName).values())
-                    queue.clear();
-
-            if (queues.containsKey(errQueueName))
-                for (var queue : queues.get(errQueueName).values())
-                    queue.clear();
-        }
-    }
-
-    public String buildName(Api api, QueueType type) {
-        return api.getName() + "_" + type.name();
     }
 }
