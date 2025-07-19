@@ -74,7 +74,6 @@ public class GenerationUpdateService {
 
         List<Usina> usinas = redisQueueService.dequeue(25);
         if (usinas.isEmpty()) {
-            GenerationUpdateScheduler.RUNNING = false;
             return;
         }
 
