@@ -1,7 +1,7 @@
 package br.com.solarz.worker.controller;
 
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
-import br.com.solarz.worker.service.firstsolution.GenerationUpdateService_FirstSolution;
+import br.com.solarz.worker.service.GenerationUpdateService;
 import util.ApiAverages;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +32,7 @@ public class RunSimulationController {
 
     @GetMapping("/averages")
     public ResponseEntity<String> averages() throws JsonProcessingException {
-        var averages = GenerationUpdateService_FirstSolution.averages;
+        var averages = GenerationUpdateService.averages;
 
         Map<Long, ApiAverages> result = new HashMap<>();
         for (var avg : averages.entrySet())
