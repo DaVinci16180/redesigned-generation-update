@@ -72,25 +72,26 @@ public class GenerationUpdateService {
         if (!GenerationUpdateScheduler.RUNNING)
             return;
 
-        List<Usina> usinas = redisQueueService.dequeue(1);
+        List<Usina> usinas = redisQueueService.dequeue(25);
         if (usinas.isEmpty()) {
             GenerationUpdateScheduler.RUNNING = false;
             return;
         }
 
-        Usina usina = usinas.get(0);
-        System.out.println("Atualizando usina " + usina.getId());
+        for (Usina usina : usinas) {
+            System.out.println("Atualizando usina " + usina.getId());
 
-        boolean success = updateUsinaGeneration(usina, averages.get(usina.getCredencial().getApi()));
+            boolean success = updateUsinaGeneration(usina, averages.get(usina.getCredencial().getApi()));
 
-        if (!success) {
-            System.out.println("Falha na atualização da usina " + usina.getId());
-            redisQueueService.queueFailed(usina);
-            meterRegistry.counter("simulacao.usinas.falhas").increment();
-        } else {
-            System.out.println("Usina " + usina.getId() + " atualizada com sucesso");
-            usina.setUpdated(true);
-            usinaRepository.save(usina);
+            if (!success) {
+                System.out.println("Falha na atualização da usina " + usina.getId());
+                redisQueueService.queueFailed(usina);
+                meterRegistry.counter("simulacao.usinas.falhas").increment();
+            } else {
+                System.out.println("Usina " + usina.getId() + " atualizada com sucesso");
+                usina.setUpdated(true);
+                usinaRepository.save(usina);
+            }
         }
     }
 
