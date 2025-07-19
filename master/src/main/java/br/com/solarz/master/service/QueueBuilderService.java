@@ -18,7 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import repository.ApiRepository;
-import repository.ApiScoreRepository;
 import repository.CredencialRepository;
 import repository.UsinaRepository;
 
@@ -33,9 +32,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class QueueBuilderService_Original {
-
-    private final ApiScoreRepository apiScoreRepository;
+public class QueueBuilderService {
 
     public enum QueueType {
         AVAILABLE, // fila usinas disponíveis para atualização
@@ -52,7 +49,7 @@ public class QueueBuilderService_Original {
     private final HashMap<String, HashMap<Integer, RSet<Long>>> queues = new HashMap<>();
     private RedissonClient redissonClient;
     private final RestClient client = RestClient.create();
-    Logger logger = LoggerFactory.getLogger(QueueBuilderService_Original.class);
+    Logger logger = LoggerFactory.getLogger(QueueBuilderService.class);
 
     private final PopulateDatabaseHelper populate;
     private final CredencialRepository credencialRepository;
