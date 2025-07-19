@@ -1,18 +1,21 @@
-package br.com.solarz.worker.service;
+package br.com.solarz.worker.service.firstsolution;
 
+import br.com.solarz.worker.service.original.RedisQueueService;
 import model.Api;
 import model.Usina;
 import model.Usina.Priority;
 import repository.ApiRepository;
+import repository.ApiScoreRepository;
 import repository.UsinaRepository;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
+import util.ApiAverages;
 import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -24,35 +27,36 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import br.com.solarz.worker.service.RedisQueueService.QueueType;
+import br.com.solarz.worker.service.original.RedisQueueService.QueueType;
 
-@Primary
-@Service("original")
+@Service
 @RequiredArgsConstructor
-public class GenerationUpdateService_Original {
+public class GenerationUpdateService_FirstSolution {
 
     private final RedisQueueService redisQueueService;
     private final UsinaRepository usinaRepository;
     private final MeterRegistry meterRegistry;
+    private final ApiScoreRepository apiScoreRepository;
     private final ApiRepository apiRepository;
     private OkHttpClient client;
 
     @Value("${DOCKER_ADDR}")
     private String DOCKER_ADDR;
 
-    private final HashMap<Long, Integer> threadCounter = new HashMap<>();
+    public static final HashMap<Api, ApiAverages> averages = new HashMap<>();
+    private static final HashMap<Api, Integer> threadCounter = new HashMap<>();
     private String API_SIM_URL;
 
     @PostConstruct
     public void setup() {
+        API_SIM_URL = "http://" + DOCKER_ADDR + ":8082";
+
         client = new OkHttpClient.Builder()
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .writeTimeout(120, TimeUnit.SECONDS)
                 .readTimeout(120, TimeUnit.SECONDS)
                 .connectionPool(new ConnectionPool())
                 .build();
-
-        API_SIM_URL = "http://" + DOCKER_ADDR + ":8082";
 
         buildMeters();
     }
@@ -61,11 +65,14 @@ public class GenerationUpdateService_Original {
         List<Api> apis = apiRepository.findAll();
 
         for (Api api : apis) {
-            threadCounter.put(api.getId(), 0);
+            threadCounter.put(api, 0);
 
-            Gauge.builder("thread.count", threadCounter, tc -> tc.get(api.getId()))
+            Gauge.builder("thread.count", threadCounter, tc -> tc.get(api))
                     .tags("portal", api.getName())
                     .register(meterRegistry);
+
+            int usinasAmount = usinaRepository.countByCredencial_Api(api);
+            averages.put(api, new ApiAverages(usinasAmount));
         }
     }
 
@@ -75,13 +82,18 @@ public class GenerationUpdateService_Original {
         if (!GenerationUpdateScheduler.RUNNING)
             return;
 
+        ApiAverages average = averages.get(api);
+
         Instant start = Instant.now();
 
-        threadCounter.replace(api.getId(), threadCounter.get(api.getId()) + 1);
+        System.out.println("Iniciando atualização do portal " + api.getName());
 
-        meterRegistry
-                .summary("threads.ativas", "portal", api.getName())
-                .record(threadCounter.get(api.getId()));
+        threadCounter.replace(api, threadCounter.get(api) + 1);
+
+        meterRegistry.gauge(
+                "threads.ativas",
+                List.of(Tag.of("portal", api.getName())),
+                threadCounter.get(api));
 
         int batchSize = 20;
         int failedRecap = 5; // alta prioridade apenas
@@ -90,14 +102,9 @@ public class GenerationUpdateService_Original {
         Set<Usina> recap = redisQueueService.getUsinasByApi(api, QueueType.FAILED, failedRecap, Priority.HIGH);
         usinas.addAll(recap);
 
-        if (usinas.isEmpty())
-            return;
-
-        System.out.println("Iniciando atualização do portal " + api.getName());
-
         List<Usina> failed = new ArrayList<>();
         for (Usina usina : usinas) {
-            boolean success = updateUsinaGeneration(usina);
+            boolean success = updateUsinaGeneration(usina, average);
 
             if (!success) {
                 failed.add(usina);
@@ -115,10 +122,15 @@ public class GenerationUpdateService_Original {
 
         System.out.println(usinas.size() + " usinas do portal " + api.getName() + " atualizadas em " + duration.toMillis() + " milissegundos. Falhas: " + failed.size());
 
-        threadCounter.replace(api.getId(), threadCounter.get(api.getId()) - 1);
+        threadCounter.replace(api, threadCounter.get(api) - 1);
     }
 
-    private boolean updateUsinaGeneration(Usina usina) {
+    private boolean updateUsinaGeneration(Usina usina, ApiAverages average) {
+        int MAX_UPDATE_ATTEMPTS = 10;
+
+        boolean success;
+        Instant start = Instant.now();
+
         Request request = new Request.Builder()
                 .url(API_SIM_URL + "/portal/generation?portalId=" + usina.getCredencial().getApi().getId())
                 .build();
@@ -131,17 +143,22 @@ public class GenerationUpdateService_Original {
 
             meterRegistry.counter("simulacao.usinas.processadas").increment();
 
-            return true;
+            success = true;
         } catch (Exception e) {
-            int MAX_UPDATE_ATTEMPTS = 10;
-
             usina.incrementUpdateAttempts();
             usina = usinaRepository.save(usina);
 
-            if (usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS)
-                meterRegistry.counter("simulacao.usinas.expiradas").increment();
-
-            return usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS;
+            success = false;
         }
+
+        Instant finish = Instant.now();
+        Duration duration = Duration.between(start, finish);
+
+        average.register(duration.toMillis(), !success);
+
+        if (usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS)
+            meterRegistry.counter("simulacao.usinas.expiradas").increment();
+
+        return success || usina.getUpdateAttempts() >= MAX_UPDATE_ATTEMPTS;
     }
 }

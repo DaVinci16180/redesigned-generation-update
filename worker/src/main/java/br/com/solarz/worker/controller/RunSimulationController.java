@@ -1,7 +1,7 @@
 package br.com.solarz.worker.controller;
 
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
-import br.com.solarz.worker.service.GenerationUpdateService_FirstSolution;
+import br.com.solarz.worker.service.firstsolution.GenerationUpdateService_FirstSolution;
 import util.ApiAverages;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

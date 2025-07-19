@@ -4,9 +4,9 @@ import model.Api;
 import model.ApiScore;
 import repository.ApiRepository;
 import repository.ApiScoreRepository;
-import br.com.solarz.worker.service.GenerationUpdateService_FirstSolution;
-import br.com.solarz.worker.service.GenerationUpdateService_Original;
-import br.com.solarz.worker.service.GenerationUpdateService_SecondSolution;
+import br.com.solarz.worker.service.firstsolution.GenerationUpdateService_FirstSolution;
+import br.com.solarz.worker.service.original.GenerationUpdateService_Original;
+import br.com.solarz.worker.service.secondsolution.GenerationUpdateService_SecondSolution;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -58,15 +58,15 @@ public class GenerationUpdateScheduler {
 
     private boolean looping = false;
     private void secondSolution() {
-//        if (looping)
-//            return;
-//
-//        looping = true;
-//
-//        while (RUNNING)
-        for (int i = 0; i < 50; i++)
+        if (looping)
+            return;
+
+        looping = true;
+
+        while (RUNNING)
+//        for (int i = 0; i < 50; i++)
             secondSolution.updateGeneration();
 
-//        looping = false;
+        looping = false;
     }
 }

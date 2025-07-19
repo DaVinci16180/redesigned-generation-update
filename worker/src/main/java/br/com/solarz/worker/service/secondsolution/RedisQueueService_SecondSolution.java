@@ -1,4 +1,4 @@
-package br.com.solarz.worker.service;
+package br.com.solarz.worker.service.secondsolution;
 
 import config.RedisClientProvider;
 import model.Api;

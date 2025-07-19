@@ -1,4 +1,4 @@
-package br.com.solarz.worker.service;
+package br.com.solarz.worker.service.secondsolution;
 
 import model.Api;
 import model.Usina;
@@ -70,13 +70,14 @@ public class GenerationUpdateService_SecondSolution {
         if (!GenerationUpdateScheduler.RUNNING)
             return;
 
-        List<Usina> usinas = redisQueueService.dequeue(25);
+        List<Usina> usinas = redisQueueService.dequeue(1);
         if (usinas.isEmpty()) {
             GenerationUpdateScheduler.RUNNING = false;
             return;
         }
 
-        for (Usina usina : usinas) {
+        Usina usina = usinas.get(0);
+//        for (Usina usina : usinas) {
             System.out.println("Atualizando usina " + usina.getId());
 
             boolean success = updateUsinaGeneration(usina);
@@ -90,7 +91,7 @@ public class GenerationUpdateService_SecondSolution {
                 usina.setUpdated(true);
                 usinaRepository.save(usina);
             }
-        }
+//        }
     }
 
     private boolean updateUsinaGeneration(Usina usina) {
