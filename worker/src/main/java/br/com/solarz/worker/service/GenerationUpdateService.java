@@ -1,4 +1,4 @@
-package br.com.solarz.worker.service.original;
+package br.com.solarz.worker.service;
 
 import model.Api;
 import model.Usina;
@@ -24,12 +24,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import br.com.solarz.worker.service.original.RedisQueueService.QueueType;
+import br.com.solarz.worker.service.RedisQueueService.QueueType;
 
 @Primary
 @Service("original")
 @RequiredArgsConstructor
-public class GenerationUpdateService_Original {
+public class GenerationUpdateService {
 
     private final RedisQueueService redisQueueService;
     private final UsinaRepository usinaRepository;

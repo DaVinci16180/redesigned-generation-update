@@ -142,7 +142,7 @@ public class QueueBuilderService_Original {
         Instant finish = Instant.now();
         Duration duration = Duration.between(start, finish);
 
-        System.out.println("Building queues took " + duration.toSeconds() + " seconds");
+        logger.info("Building queues took {} seconds", duration.toSeconds());
     }
 
     public void clearQueues(List<Api> apis) {

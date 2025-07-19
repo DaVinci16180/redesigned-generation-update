@@ -1,0 +1,75 @@
+================== ORIGINAL ==================
+
+2025-07-17 23:49:28 - Simulation started
+2025-07-17 23:51:29 - Usinas atualizadas em 2 minutos: 5788
+2025-07-17 23:53:29 - Usinas atualizadas em 4 minutos: 11652
+2025-07-17 23:55:29 - Usinas atualizadas em 6 minutos: 17449
+2025-07-17 23:57:29 - Usinas atualizadas em 8 minutos: 23222
+2025-07-17 23:59:29 - Usinas atualizadas em 10 minutos: 29191
+2025-07-17 00:01:29 - Usinas atualizadas em 12 minutos: 35094
+2025-07-17 00:03:29 - Usinas atualizadas em 14 minutos: 37699
+2025-07-17 00:05:29 - Usinas atualizadas em 16 minutos: 38943
+2025-07-17 00:07:29 - Usinas atualizadas em 18 minutos: 39319
+2025-07-17 00:09:29 - Usinas atualizadas em 20 minutos: 39319
+
+2025-07-17 00:43:23 - Simulation started
+2025-07-17 00:45:24 - Usinas atualizadas em 2 minutos: 5710
+2025-07-17 00:47:24 - Usinas atualizadas em 4 minutos: 11525
+2025-07-17 00:49:24 - Usinas atualizadas em 6 minutos: 17248
+2025-07-17 00:51:24 - Usinas atualizadas em 8 minutos: 22965
+2025-07-17 00:53:24 - Usinas atualizadas em 10 minutos: 28795
+2025-07-17 00:55:24 - Usinas atualizadas em 12 minutos: 34831
+2025-07-17 00:57:24 - Usinas atualizadas em 14 minutos: 37596
+2025-07-17 00:59:24 - Usinas atualizadas em 16 minutos: 38959
+2025-07-17 01:01:24 - Usinas atualizadas em 18 minutos: 39319
+2025-07-17 01:03:24 - Usinas atualizadas em 20 minutos: 39319
+
+2025-07-17 01:08:27 - Simulation started
+2025-07-17 01:10:28 - Usinas atualizadas em 2 minutos: 5760
+2025-07-17 01:12:28 - Usinas atualizadas em 4 minutos: 11627
+2025-07-17 01:14:28 - Usinas atualizadas em 6 minutos: 17284
+2025-07-17 01:16:28 - Usinas atualizadas em 8 minutos: 23074
+2025-07-17 01:18:28 - Usinas atualizadas em 10 minutos: 29033
+2025-07-17 01:20:28 - Usinas atualizadas em 12 minutos: 34952
+2025-07-17 01:22:28 - Usinas atualizadas em 14 minutos: 37671
+2025-07-17 01:24:28 - Usinas atualizadas em 16 minutos: 38900
+2025-07-17 01:26:28 - Usinas atualizadas em 18 minutos: 39319
+2025-07-17 01:28:28 - Usinas atualizadas em 20 minutos: 39319
+
+================== FIRST SOLUTION ==================
+
+2025-07-18 22:57:45 - Simulation started
+2025-07-18 22:59:46 - Usinas atualizadas em 2 minutos: 6045
+2025-07-18 23:01:46 - Usinas atualizadas em 4 minutos: 11867
+2025-07-18 23:03:46 - Usinas atualizadas em 6 minutos: 17486
+2025-07-18 23:05:46 - Usinas atualizadas em 8 minutos: 23207
+2025-07-18 23:07:46 - Usinas atualizadas em 10 minutos: 29212
+2025-07-18 23:09:46 - Usinas atualizadas em 12 minutos: 35150
+2025-07-18 23:11:46 - Usinas atualizadas em 14 minutos: 37748
+2025-07-18 23:13:46 - Usinas atualizadas em 16 minutos: 39092
+2025-07-18 23:15:46 - Usinas atualizadas em 18 minutos: 39319
+2025-07-18 23:17:46 - Usinas atualizadas em 20 minutos: 39319
+
+2025-07-18 23:39:54 - Simulation started
+2025-07-18 23:41:55 - Usinas atualizadas em 2 minutos: 5839
+2025-07-18 23:43:55 - Usinas atualizadas em 4 minutos: 11624
+2025-07-18 23:45:55 - Usinas atualizadas em 6 minutos: 17383
+2025-07-18 23:47:55 - Usinas atualizadas em 8 minutos: 23175
+2025-07-18 23:49:55 - Usinas atualizadas em 10 minutos: 29241
+2025-07-18 23:51:55 - Usinas atualizadas em 12 minutos: 35063
+2025-07-18 23:53:55 - Usinas atualizadas em 14 minutos: 37633
+2025-07-18 23:55:55 - Usinas atualizadas em 16 minutos: 38985
+2025-07-18 23:57:55 - Usinas atualizadas em 18 minutos: 39319
+2025-07-18 23:59:55 - Usinas atualizadas em 20 minutos: 39319
+
+2025-07-19 00:17:44 - Simulation started
+2025-07-19 00:19:45 - Usinas atualizadas em 2 minutos: 6009
+2025-07-19 00:21:45 - Usinas atualizadas em 4 minutos: 11778
+2025-07-19 00:23:45 - Usinas atualizadas em 6 minutos: 17460
+2025-07-19 00:25:45 - Usinas atualizadas em 8 minutos: 23207
+2025-07-19 00:27:45 - Usinas atualizadas em 10 minutos: 29234
+2025-07-19 00:29:45 - Usinas atualizadas em 12 minutos: 35033
+2025-07-19 00:31:45 - Usinas atualizadas em 14 minutos: 37571
+2025-07-19 00:33:45 - Usinas atualizadas em 16 minutos: 38963
+2025-07-19 00:35:45 - Usinas atualizadas em 18 minutos: 39319
+2025-07-19 00:37:45 - Usinas atualizadas em 20 minutos: 39319
