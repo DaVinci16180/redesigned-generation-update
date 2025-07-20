@@ -1,12 +1,13 @@
 package br.com.solarz.worker.service;
 
+import io.micrometer.core.instrument.Gauge;
 import model.Api;
 import model.Usina;
+import model.Usina.Priority;
 import repository.ApiRepository;
 import repository.UsinaRepository;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import util.ApiAverages;
-import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -37,6 +39,8 @@ public class GenerationUpdateService {
     public static final HashMap<Api, ApiAverages> averages = new HashMap<>();
     private static final HashMap<Api, Integer> threadCounter = new HashMap<>();
     private String API_SIM_URL;
+
+    Map<Priority, Integer> pending = new HashMap<>();
 
     @PostConstruct
     public void setup() {
@@ -58,19 +62,35 @@ public class GenerationUpdateService {
         for (Api api : apis) {
             threadCounter.put(api, 0);
 
-            Gauge.builder("thread.count", threadCounter, tc -> tc.get(api))
-                    .tags("portal", api.getName())
-                    .register(meterRegistry);
-
             int usinasAmount = usinaRepository.countByCredencial_Api(api);
             averages.put(api, new ApiAverages(usinasAmount));
         }
+
+        int pendingHigh = usinaRepository.countByUpdatedAndPriority(false, Priority.HIGH);
+        int pendingNormal = usinaRepository.countByUpdatedAndPriority(false, Priority.NORMAL);
+
+        pending.put(Priority.HIGH, pendingHigh);
+        pending.put(Priority.NORMAL, pendingNormal);
+
+        Gauge.builder("simulacao.usinas.pending", pending, p -> p.get(Priority.HIGH))
+                .tags("priority", "HIGH")
+                .register(meterRegistry);
+
+        Gauge.builder("simulacao.usinas.pending", pending, p -> p.get(Priority.NORMAL))
+                .tags("priority", "NORMAL")
+                .register(meterRegistry);
     }
 
     @Async("generationUpdate")
     public void updateGeneration() {
         if (!GenerationUpdateScheduler.RUNNING)
             return;
+
+        int pendingHigh = usinaRepository.countByUpdatedAndPriority(false, Priority.HIGH);
+        int pendingNormal = usinaRepository.countByUpdatedAndPriority(false, Priority.NORMAL);
+
+        pending.put(Priority.HIGH, pendingHigh);
+        pending.put(Priority.NORMAL, pendingNormal);
 
         List<Usina> usinas = redisQueueService.dequeue(25);
         if (usinas.isEmpty()) {

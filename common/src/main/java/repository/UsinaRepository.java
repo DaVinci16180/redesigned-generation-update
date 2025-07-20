@@ -18,4 +18,6 @@ public interface UsinaRepository extends JpaRepository<Usina, Long> {
     int countByUpdated(boolean updated);
 
     int countByUpdatedAndCredencial_Api(boolean updated, Api credencialApi);
+
+    int countByUpdatedAndPriority(boolean updated, Usina.Priority priority);
 }

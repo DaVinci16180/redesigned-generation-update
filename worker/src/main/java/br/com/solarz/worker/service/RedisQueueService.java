@@ -85,14 +85,14 @@ public class RedisQueueService {
         return usinaRepository.findAllById(queue.pollFirst(amount));
     }
 
-    public void queueFailed(Usina usina) {
+    public synchronized void queueFailed(Usina usina) {
         long apiId = usina.getCredencial().getApi().getId();
-        double score = errorScores.get(apiId);
+        double score;
 
         if (usina.getPriority().equals(Usina.Priority.HIGH))
-            score += availableScores.size() * 2;
+            score = Math.min(queue.firstScore(), availableScores.size() * 2 - 1);
         else
-            score += availableScores.size() * 3;
+            score = errorScores.get(apiId) + errorScores.size() * 2;
 
         queue.add(score, usina.getId());
     }
