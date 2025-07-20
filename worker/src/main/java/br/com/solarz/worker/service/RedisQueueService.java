@@ -86,13 +86,12 @@ public class RedisQueueService {
     }
 
     public synchronized void queueFailed(Usina usina) {
-        long apiId = usina.getCredencial().getApi().getId();
         double score;
 
         if (usina.getPriority().equals(Usina.Priority.HIGH))
-            score = Math.min(queue.firstScore(), availableScores.size() * 2 - 1);
+            score = availableScores.size() - .5;
         else
-            score = errorScores.get(apiId) + errorScores.size() * 2;
+            score = availableScores.size() * 2 - .5;
 
         queue.add(score, usina.getId());
     }
