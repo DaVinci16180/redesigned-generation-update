@@ -66,8 +66,8 @@ public class RedisQueueService {
             ApiScore apiScore = apiScores.get(i);
             Api api = apiScore.getApi();
 
-            double scoreHigh = i + apiScores.size() * 2;
-            double scoreNormal = i + apiScores.size() * 3;
+            double scoreHigh = apiScores.size() - .5;
+            double scoreNormal = apiScores.size() * 2 - .5;
 
             errorScores.put(apiScore.getId(), (double) i);
 
