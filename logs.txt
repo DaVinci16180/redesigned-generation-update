@@ -1,0 +1,229 @@
+================== ORIGINAL ==================
+
+2025-07-17 23:49:28 - Simulation started
+2025-07-17 23:51:29 - Usinas atualizadas em 2 minutos: 5788
+2025-07-17 23:53:29 - Usinas atualizadas em 4 minutos: 11652
+2025-07-17 23:55:29 - Usinas atualizadas em 6 minutos: 17449
+2025-07-17 23:57:29 - Usinas atualizadas em 8 minutos: 23222
+2025-07-17 23:59:29 - Usinas atualizadas em 10 minutos: 29191
+2025-07-17 00:01:29 - Usinas atualizadas em 12 minutos: 35094
+2025-07-17 00:03:29 - Usinas atualizadas em 14 minutos: 37699
+2025-07-17 00:05:29 - Usinas atualizadas em 16 minutos: 38943
+2025-07-17 00:07:29 - Usinas atualizadas em 18 minutos: 39319
+
+2025-07-17 00:43:23 - Simulation started
+2025-07-17 00:45:24 - Usinas atualizadas em 2 minutos: 5710
+2025-07-17 00:47:24 - Usinas atualizadas em 4 minutos: 11525
+2025-07-17 00:49:24 - Usinas atualizadas em 6 minutos: 17248
+2025-07-17 00:51:24 - Usinas atualizadas em 8 minutos: 22965
+2025-07-17 00:53:24 - Usinas atualizadas em 10 minutos: 28795
+2025-07-17 00:55:24 - Usinas atualizadas em 12 minutos: 34831
+2025-07-17 00:57:24 - Usinas atualizadas em 14 minutos: 37596
+2025-07-17 00:59:24 - Usinas atualizadas em 16 minutos: 38959
+2025-07-17 01:01:24 - Usinas atualizadas em 18 minutos: 39319
+
+2025-07-17 01:08:27 - Simulation started
+2025-07-17 01:10:28 - Usinas atualizadas em 2 minutos: 5760
+2025-07-17 01:12:28 - Usinas atualizadas em 4 minutos: 11627
+2025-07-17 01:14:28 - Usinas atualizadas em 6 minutos: 17284
+2025-07-17 01:16:28 - Usinas atualizadas em 8 minutos: 23074
+2025-07-17 01:18:28 - Usinas atualizadas em 10 minutos: 29033
+2025-07-17 01:20:28 - Usinas atualizadas em 12 minutos: 34952
+2025-07-17 01:22:28 - Usinas atualizadas em 14 minutos: 37671
+2025-07-17 01:24:28 - Usinas atualizadas em 16 minutos: 38900
+2025-07-17 01:26:28 - Usinas atualizadas em 18 minutos: 39319
+
+================== SCORE SOLUTION ==================
+
+2025-07-18 22:57:45 - Simulation started
+2025-07-18 22:59:46 - Usinas atualizadas em 2 minutos: 6045
+2025-07-18 23:01:46 - Usinas atualizadas em 4 minutos: 11867
+2025-07-18 23:03:46 - Usinas atualizadas em 6 minutos: 17486
+2025-07-18 23:05:46 - Usinas atualizadas em 8 minutos: 23207
+2025-07-18 23:07:46 - Usinas atualizadas em 10 minutos: 29212
+2025-07-18 23:09:46 - Usinas atualizadas em 12 minutos: 35150
+2025-07-18 23:11:46 - Usinas atualizadas em 14 minutos: 37748
+2025-07-18 23:13:46 - Usinas atualizadas em 16 minutos: 39092
+2025-07-18 23:15:46 - Usinas atualizadas em 18 minutos: 39319
+
+2025-07-18 23:39:54 - Simulation started
+2025-07-18 23:41:55 - Usinas atualizadas em 2 minutos: 5839
+2025-07-18 23:43:55 - Usinas atualizadas em 4 minutos: 11624
+2025-07-18 23:45:55 - Usinas atualizadas em 6 minutos: 17383
+2025-07-18 23:47:55 - Usinas atualizadas em 8 minutos: 23175
+2025-07-18 23:49:55 - Usinas atualizadas em 10 minutos: 29241
+2025-07-18 23:51:55 - Usinas atualizadas em 12 minutos: 35063
+2025-07-18 23:53:55 - Usinas atualizadas em 14 minutos: 37633
+2025-07-18 23:55:55 - Usinas atualizadas em 16 minutos: 38985
+2025-07-18 23:57:55 - Usinas atualizadas em 18 minutos: 39319
+
+2025-07-19 00:17:44 - Simulation started
+2025-07-19 00:19:45 - Usinas atualizadas em 2 minutos: 6009
+2025-07-19 00:21:45 - Usinas atualizadas em 4 minutos: 11778
+2025-07-19 00:23:45 - Usinas atualizadas em 6 minutos: 17460
+2025-07-19 00:25:45 - Usinas atualizadas em 8 minutos: 23207
+2025-07-19 00:27:45 - Usinas atualizadas em 10 minutos: 29234
+2025-07-19 00:29:45 - Usinas atualizadas em 12 minutos: 35033
+2025-07-19 00:31:45 - Usinas atualizadas em 14 minutos: 37571
+2025-07-19 00:33:45 - Usinas atualizadas em 16 minutos: 38963
+2025-07-19 00:35:45 - Usinas atualizadas em 18 minutos: 39319
+
+================== SCORE SOLUTION 2 ==================
+
+2025-07-19 17:09:12 - Simulation started
+2025-07-19 17:11:15 - Usinas atualizadas em 2 minutos: 6954
+2025-07-19 17:13:15 - Usinas atualizadas em 4 minutos: 15171
+2025-07-19 17:15:15 - Usinas atualizadas em 6 minutos: 21274
+2025-07-19 17:17:15 - Usinas atualizadas em 8 minutos: 25063
+2025-07-19 17:19:15 - Usinas atualizadas em 10 minutos: 30009
+2025-07-19 17:21:15 - Usinas atualizadas em 12 minutos: 34857
+2025-07-19 17:23:15 - Usinas atualizadas em 14 minutos: 38735
+2025-07-19 17:25:15 - Usinas atualizadas em 16 minutos: 39319
+
+2025-07-19 17:53:59 - Simulation started
+2025-07-19 17:56:00 - Usinas atualizadas em 2 minutos: 6804
+2025-07-19 17:58:00 - Usinas atualizadas em 4 minutos: 15151
+2025-07-19 18:00:00 - Usinas atualizadas em 6 minutos: 21234
+2025-07-19 18:02:00 - Usinas atualizadas em 8 minutos: 25058
+2025-07-19 18:04:00 - Usinas atualizadas em 10 minutos: 29659
+2025-07-19 18:06:00 - Usinas atualizadas em 12 minutos: 34706
+2025-07-19 18:08:00 - Usinas atualizadas em 14 minutos: 38549
+2025-07-19 18:10:00 - Usinas atualizadas em 16 minutos: 39319
+
+2025-07-19 18:12:55 - Simulation started
+2025-07-19 18:15:00 - Usinas atualizadas em 2 minutos: 7048
+2025-07-19 18:17:00 - Usinas atualizadas em 4 minutos: 15290
+2025-07-19 18:19:00 - Usinas atualizadas em 6 minutos: 21376
+2025-07-19 18:21:00 - Usinas atualizadas em 8 minutos: 25118
+2025-07-19 18:23:00 - Usinas atualizadas em 10 minutos: 29926
+2025-07-19 18:25:00 - Usinas atualizadas em 12 minutos: 34865
+2025-07-19 18:27:00 - Usinas atualizadas em 14 minutos: 38682
+2025-07-19 18:29:00 - Usinas atualizadas em 16 minutos: 39319
+
+2025-07-20T19:12:09.133252300-03:00[America/Fortaleza] - Simulation started
+2025-07-20T19:14:10.018267900-03:00[America/Fortaleza] - Usinas atualizadas em 2 minutos: 6825
+2025-07-20T19:16:10.011561300-03:00[America/Fortaleza] - Usinas atualizadas em 4 minutos: 15070
+2025-07-20T19:18:10.019666600-03:00[America/Fortaleza] - Usinas atualizadas em 6 minutos: 21189
+2025-07-20T19:20:10.012526300-03:00[America/Fortaleza] - Usinas atualizadas em 8 minutos: 25078
+2025-07-20T19:22:10.020316700-03:00[America/Fortaleza] - Usinas atualizadas em 10 minutos: 29623
+2025-07-20T19:24:10.019233800-03:00[America/Fortaleza] - Usinas atualizadas em 12 minutos: 34592
+2025-07-20T19:26:10.014224700-03:00[America/Fortaleza] - Usinas atualizadas em 14 minutos: 38550
+2025-07-20T19:28:10.013316100-03:00[America/Fortaleza] - Usinas atualizadas em 16 minutos: 39319
+
+================== SCORE SOLUTION 3 - REPESCAGEM ==================
+
+2025-07-20T18:24:27.064989300-03:00[America/Fortaleza] - Simulation started
+2025-07-20T18:26:30.027019700-03:00[America/Fortaleza] - Usinas atualizadas em 2 minutos: 7248
+2025-07-20T18:28:30.010115900-03:00[America/Fortaleza] - Usinas atualizadas em 4 minutos: 11263
+2025-07-20T18:30:30.014324700-03:00[America/Fortaleza] - Usinas atualizadas em 6 minutos: 19789
+2025-07-20T18:32:30.016724900-03:00[America/Fortaleza] - Usinas atualizadas em 8 minutos: 25589
+2025-07-20T18:34:30.021149100-03:00[America/Fortaleza] - Usinas atualizadas em 10 minutos: 29478
+2025-07-20T18:36:30.021337-03:00[America/Fortaleza] - Usinas atualizadas em 12 minutos: 34035
+2025-07-20T18:38:30.020973200-03:00[America/Fortaleza] - Usinas atualizadas em 14 minutos: 36234
+2025-07-20T18:40:30.016003400-03:00[America/Fortaleza] - Usinas atualizadas em 16 minutos: 38757
+2025-07-20T18:42:30.019788400-03:00[America/Fortaleza] - Usinas atualizadas em 18 minutos: 39319
+
+2025-07-20T21:58:07.085735-03:00[America/Fortaleza] - Simulation started
+2025-07-20T22:00:10.018773500-03:00[America/Fortaleza] - Usinas atualizadas em 2 minutos: 7258
+2025-07-20T22:02:10.015808500-03:00[America/Fortaleza] - Usinas atualizadas em 4 minutos: 11767
+2025-07-20T22:04:10.015614400-03:00[America/Fortaleza] - Usinas atualizadas em 6 minutos: 20010
+2025-07-20T22:06:10.019677400-03:00[America/Fortaleza] - Usinas atualizadas em 8 minutos: 25716
+2025-07-20T22:08:10.017178500-03:00[America/Fortaleza] - Usinas atualizadas em 10 minutos: 29437
+2025-07-20T22:10:10.018581-03:00[America/Fortaleza] - Usinas atualizadas em 12 minutos: 34150
+2025-07-20T22:12:10.037743500-03:00[America/Fortaleza] - Usinas atualizadas em 14 minutos: 36375
+2025-07-20T22:14:10.030072800-03:00[America/Fortaleza] - Usinas atualizadas em 16 minutos: 38757
+2025-07-20T22:16:10.011198500-03:00[America/Fortaleza] - Usinas atualizadas em 18 minutos: 39319
+
+2025-07-20T23:19:43.703992500-03:00[America/Fortaleza] - Simulation started
+2025-07-20T23:21:45.021257600-03:00[America/Fortaleza] - Usinas atualizadas em 2 minutos: 7244
+2025-07-20T23:23:45.015650300-03:00[America/Fortaleza] - Usinas atualizadas em 4 minutos: 11712
+2025-07-20T23:25:45.010770700-03:00[America/Fortaleza] - Usinas atualizadas em 6 minutos: 20021
+2025-07-20T23:27:45.008243600-03:00[America/Fortaleza] - Usinas atualizadas em 8 minutos: 25844
+2025-07-20T23:29:45.013580900-03:00[America/Fortaleza] - Usinas atualizadas em 10 minutos: 29778
+2025-07-20T23:31:45.006918500-03:00[America/Fortaleza] - Usinas atualizadas em 12 minutos: 34253
+2025-07-20T23:33:45.013556400-03:00[America/Fortaleza] - Usinas atualizadas em 14 minutos: 36583
+2025-07-20T23:35:45.017180700-03:00[America/Fortaleza] - Usinas atualizadas em 16 minutos: 39119
+
+================== SCORE SOLUTION 4 - HIGH FIRST ==================
+
+2025-07-20T20:27:09.917596500-03:00[America/Fortaleza] - Simulation started
+2025-07-20T20:29:10.024784200-03:00[America/Fortaleza] - Usinas atualizadas em 2 minutos: 6917
+2025-07-20T20:31:10.008223800-03:00[America/Fortaleza] - Usinas atualizadas em 4 minutos: 11516
+2025-07-20T20:33:10.015139300-03:00[America/Fortaleza] - Usinas atualizadas em 6 minutos: 20492
+2025-07-20T20:35:10.020536700-03:00[America/Fortaleza] - Usinas atualizadas em 8 minutos: 26049
+2025-07-20T20:37:10.019985-03:00[America/Fortaleza] - Usinas atualizadas em 10 minutos: 29650
+2025-07-20T20:39:10.017394200-03:00[America/Fortaleza] - Usinas atualizadas em 12 minutos: 33986
+2025-07-20T20:41:10.024010100-03:00[America/Fortaleza] - Usinas atualizadas em 14 minutos: 37907
+2025-07-20T20:43:10.021897600-03:00[America/Fortaleza] - Usinas atualizadas em 16 minutos: 39319
+
+2025-07-21T00:30:32.074337100-03:00[America/Fortaleza] - Simulation started
+2025-07-21T00:32:35.028703100-03:00[America/Fortaleza] - Usinas atualizadas em 2 minutos: 6821
+2025-07-21T00:34:35.016158-03:00[America/Fortaleza] - Usinas atualizadas em 4 minutos: 11596
+2025-07-21T00:36:35.017885800-03:00[America/Fortaleza] - Usinas atualizadas em 6 minutos: 20510
+2025-07-21T00:38:35.011046-03:00[America/Fortaleza] - Usinas atualizadas em 8 minutos: 25979
+2025-07-21T00:40:35.015925400-03:00[America/Fortaleza] - Usinas atualizadas em 10 minutos: 29548
+2025-07-21T00:42:35.015989200-03:00[America/Fortaleza] - Usinas atualizadas em 12 minutos: 33726
+2025-07-21T00:44:35.020735100-03:00[America/Fortaleza] - Usinas atualizadas em 14 minutos: 37655
+2025-07-21T00:46:35.019207700-03:00[America/Fortaleza] - Usinas atualizadas em 16 minutos: 39316
+
+2025-07-21T19:15:38.773705700-03:00[America/Fortaleza] - Simulation started
+2025-07-21T19:17:40.015026300-03:00[America/Fortaleza] - Usinas atualizadas em 2 minutos: 6781
+2025-07-21T19:19:40.008803400-03:00[America/Fortaleza] - Usinas atualizadas em 4 minutos: 11274
+2025-07-21T19:21:40.012841500-03:00[America/Fortaleza] - Usinas atualizadas em 6 minutos: 20318
+2025-07-21T19:23:40.012016700-03:00[America/Fortaleza] - Usinas atualizadas em 8 minutos: 25902
+
+2025-07-21T19:30:33.412852-03:00[America/Fortaleza] - Simulation started
+2025-07-21T19:32:35.027496300-03:00[America/Fortaleza] - Usinas atualizadas em 2 minutos: 6786
+2025-07-21T19:34:35.010167300-03:00[America/Fortaleza] - Usinas atualizadas em 4 minutos: 11510
+2025-07-21T19:36:35.016405300-03:00[America/Fortaleza] - Usinas atualizadas em 6 minutos: 20537
+2025-07-21T19:38:35.008854-03:00[America/Fortaleza] - Usinas atualizadas em 8 minutos: 26010
+2025-07-21T19:40:35.012389200-03:00[America/Fortaleza] - Usinas atualizadas em 10 minutos: 29568
+2025-07-21T19:42:35.014355600-03:00[America/Fortaleza] - Usinas atualizadas em 12 minutos: 34020
+2025-07-21T19:44:35.009845300-03:00[America/Fortaleza] - Usinas atualizadas em 14 minutos: 38171
+2025-07-21T19:46:35.027570500-03:00[America/Fortaleza] - Usinas atualizadas em 16 minutos: 39319
+2025-07-21T19:48:35.009521200-03:00[America/Fortaleza] - Usinas atualizadas em 18 minutos: 39319
+2025-07-21T19:50:35.016294700-03:00[America/Fortaleza] - Usinas atualizadas em 20 minutos: 39319
+2025-07-21T19:52:35.025799800-03:00[America/Fortaleza] - Usinas atualizadas em 22 minutos: 39319
+2025-07-21T19:54:35.021094500-03:00[America/Fortaleza] - Usinas atualizadas em 24 minutos: 39319
+2025-07-21T19:56:35.009669700-03:00[America/Fortaleza] - Usinas atualizadas em 26 minutos: 39319
+2025-07-21T19:58:35.011699800-03:00[America/Fortaleza] - Usinas atualizadas em 28 minutos: 39319
+2025-07-21T20:00:35.008864100-03:00[America/Fortaleza] - Usinas atualizadas em 30 minutos: 39319
+2025-07-21T20:02:35.010652300-03:00[America/Fortaleza] - Usinas atualizadas em 32 minutos: 39319
+2025-07-21T20:04:35.008715100-03:00[America/Fortaleza] - Usinas atualizadas em 34 minutos: 39319
+2025-07-21T20:06:35.008139600-03:00[America/Fortaleza] - Usinas atualizadas em 36 minutos: 39319
+2025-07-21T20:08:35.023546600-03:00[America/Fortaleza] - Usinas atualizadas em 38 minutos: 39319
+2025-07-21T20:10:35.010307100-03:00[America/Fortaleza] - Usinas atualizadas em 40 minutos: 39319
+2025-07-21T20:12:35.020576100-03:00[America/Fortaleza] - Usinas atualizadas em 42 minutos: 39319
+2025-07-21T20:14:35.012829600-03:00[America/Fortaleza] - Usinas atualizadas em 44 minutos: 39319
+2025-07-21T20:16:35.020169800-03:00[America/Fortaleza] - Usinas atualizadas em 46 minutos: 39319
+2025-07-21T20:18:35.017033200-03:00[America/Fortaleza] - Usinas atualizadas em 48 minutos: 39319
+2025-07-21T20:20:35.017424300-03:00[America/Fortaleza] - Usinas atualizadas em 50 minutos: 39319
+2025-07-21T20:22:35.016100900-03:00[America/Fortaleza] - Usinas atualizadas em 52 minutos: 39319
+2025-07-21T20:24:35.009455900-03:00[America/Fortaleza] - Usinas atualizadas em 54 minutos: 39319
+2025-07-21T20:26:35.014299200-03:00[America/Fortaleza] - Usinas atualizadas em 56 minutos: 39319
+2025-07-21T20:28:35.009106700-03:00[America/Fortaleza] - Usinas atualizadas em 58 minutos: 39319
+2025-07-21T20:30:35.020818-03:00[America/Fortaleza] - Usinas atualizadas em 60 minutos: 39319
+2025-07-21T20:32:35.007447100-03:00[America/Fortaleza] - Usinas atualizadas em 62 minutos: 39319
+2025-07-21T20:34:35.012290400-03:00[America/Fortaleza] - Usinas atualizadas em 64 minutos: 39319
+2025-07-21T20:36:35.015840300-03:00[America/Fortaleza] - Usinas atualizadas em 66 minutos: 39319
+2025-07-21T20:38:35.009285900-03:00[America/Fortaleza] - Usinas atualizadas em 68 minutos: 39319
+2025-07-21T20:40:35.018803200-03:00[America/Fortaleza] - Usinas atualizadas em 70 minutos: 39319
+2025-07-21T20:42:35.011595100-03:00[America/Fortaleza] - Usinas atualizadas em 72 minutos: 39319
+2025-07-21T20:44:35.023221-03:00[America/Fortaleza] - Usinas atualizadas em 74 minutos: 39319
+2025-07-21T20:46:35.010206-03:00[America/Fortaleza] - Usinas atualizadas em 76 minutos: 39319
+2025-07-21T20:48:35.015697200-03:00[America/Fortaleza] - Usinas atualizadas em 78 minutos: 39319
+2025-07-21T20:50:35.015358500-03:00[America/Fortaleza] - Usinas atualizadas em 80 minutos: 39319
+
+2025-07-21T22:06:24.125265300-03:00[America/Fortaleza] - Simulation started
+2025-07-21T22:08:25.019774900-03:00[America/Fortaleza] - Usinas atualizadas em 2 minutos: 6846
+2025-07-21T22:10:25.020941700-03:00[America/Fortaleza] - Usinas atualizadas em 4 minutos: 11502
+2025-07-21T22:12:25.019790700-03:00[America/Fortaleza] - Usinas atualizadas em 6 minutos: 20407
+2025-07-21T22:14:25.017609500-03:00[America/Fortaleza] - Usinas atualizadas em 8 minutos: 25951
+2025-07-21T22:16:25.019936500-03:00[America/Fortaleza] - Usinas atualizadas em 10 minutos: 29605
+2025-07-21T22:18:25.022766200-03:00[America/Fortaleza] - Usinas atualizadas em 12 minutos: 33949
+2025-07-21T22:20:25.018615200-03:00[America/Fortaleza] - Usinas atualizadas em 14 minutos: 37519
+2025-07-21T22:22:25.015115-03:00[America/Fortaleza] - Usinas atualizadas em 16 minutos: 39294
+2025-07-21T22:24:25.015118100-03:00[America/Fortaleza] - Usinas atualizadas em 18 minutos: 39294
+2025-07-21T22:26:25.008771900-03:00[America/Fortaleza] - Usinas atualizadas em 20 minutos: 39294
+2025-07-21T22:28:25.022184400-03:00[America/Fortaleza] - Usinas atualizadas em 22 minutos: 39294
+2025-07-21T22:30:25.013393100-03:00[America/Fortaleza] - Usinas atualizadas em 24 minutos: 39294
