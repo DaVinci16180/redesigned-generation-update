@@ -48,7 +48,7 @@ public class RedisQueueService {
             Api api = apiScore.getApi();
 
             double scoreHigh = i;
-            double scoreNormal = i + apiScores.size();
+            double scoreNormal = i + apiScores.size() * 2;
 
             availableScores.put(apiScore.getId(), scoreHigh);
 
@@ -66,8 +66,8 @@ public class RedisQueueService {
             ApiScore apiScore = apiScores.get(i);
             Api api = apiScore.getApi();
 
-            double scoreHigh = apiScores.size() - .5;
-            double scoreNormal = apiScores.size() * 2 - .5;
+            double scoreHigh = i + apiScores.size();
+            double scoreNormal = i + apiScores.size() * 3;
 
             errorScores.put(apiScore.getId(), (double) i);
 
@@ -86,12 +86,13 @@ public class RedisQueueService {
     }
 
     public synchronized void queueFailed(Usina usina) {
+        long apiId = usina.getCredencial().getApi().getId();
         double score;
 
         if (usina.getPriority().equals(Usina.Priority.HIGH))
-            score = availableScores.size() - .5;
+            score = errorScores.get(apiId) + errorScores.size();
         else
-            score = availableScores.size() * 2 - .5;
+            score = errorScores.get(apiId) + errorScores.size() * 3;
 
         queue.add(score, usina.getId());
     }

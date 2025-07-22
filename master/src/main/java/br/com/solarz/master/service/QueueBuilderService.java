@@ -91,7 +91,7 @@ public class QueueBuilderService {
                 .sorted()
                 .toList();
 
-        // AVAILABLE_HIGH -> AVAILABLE_NORMAL -> ERROR_HIGH -> ERROR_NORMAL
+        // AVAILABLE_HIGH -> ERROR_HIGH -> AVAILABLE_NORMAL -> ERROR_NORMAL
         for (int i = 0; i < scores.size(); i++) {
             ApiScore score = scores.get(i);
             List<Credencial> credenciais = credencialRepository.findAllByApi(score.getApi());
@@ -110,7 +110,7 @@ public class QueueBuilderService {
                 Map<Long, Double> usinasNorm = usinas
                         .stream()
                         .filter(u -> u.getPriority().equals(Usina.Priority.NORMAL))
-                        .collect(Collectors.toMap(Usina::getId, x -> finalI + scores.size()));
+                        .collect(Collectors.toMap(Usina::getId, x -> finalI + scores.size() * 2));
 
                 queue.addAll(usinasHigh);
                 queue.addAll(usinasNorm);
