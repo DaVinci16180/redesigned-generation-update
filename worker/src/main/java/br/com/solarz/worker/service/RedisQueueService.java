@@ -82,7 +82,9 @@ public class RedisQueueService {
     }
 
     public synchronized List<Usina> dequeue(int amount) {
-        return usinaRepository.findAllById(queue.pollFirst(amount));
+        var ids = queue.pollFirst(amount);
+        meterRegistry.counter("usinas.dequeued").increment(ids.size());
+        return usinaRepository.findAllById(ids);
     }
 
     public synchronized void queueFailed(Usina usina) {
