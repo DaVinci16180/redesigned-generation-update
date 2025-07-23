@@ -15,24 +15,31 @@ public class RunSimulationController {
     public ResponseEntity<?> controlRunningState(@RequestBody Map<String, String> params) {
         String operation = params.get("operation");
 
-        if (operation.equals("original")) {
-            GenerationUpdateScheduler.solution = RunningSolution.ORIGINAL_SOLUTION;
-            return ResponseEntity.ok("Simulação iniciada");
-        } if (operation.equals("1")) {
-            GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_1;
-            return ResponseEntity.ok("Simulação iniciada");
-        } if (operation.equals("2")) {
-            GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_2;
-            return ResponseEntity.ok("Simulação iniciada");
-        } if (operation.equals("3")) {
-            GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_3;
-            return ResponseEntity.ok("Simulação iniciada");
-        } if (operation.equals("4")) {
-            GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_4;
-            return ResponseEntity.ok("Simulação iniciada");
-        } else if (operation.equals("stop")) {
-            GenerationUpdateScheduler.solution = null;
-            return ResponseEntity.ok("Simulação interrompida");
+        switch (operation) {
+            case "original" -> {
+                GenerationUpdateScheduler.solution = RunningSolution.ORIGINAL_SOLUTION;
+                return ResponseEntity.ok("Simulação iniciada");
+            }
+            case "1" -> {
+                GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_1;
+                return ResponseEntity.ok("Simulação iniciada");
+            }
+            case "2" -> {
+                GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_2;
+                return ResponseEntity.ok("Simulação iniciada");
+            }
+            case "3" -> {
+                GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_3;
+                return ResponseEntity.ok("Simulação iniciada");
+            }
+            case "4" -> {
+                GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_4;
+                return ResponseEntity.ok("Simulação iniciada");
+            }
+            case "stop" -> {
+                GenerationUpdateScheduler.solution = null;
+                return ResponseEntity.ok("Simulação interrompida");
+            }
         }
 
         return ResponseEntity.badRequest().build();

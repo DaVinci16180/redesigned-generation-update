@@ -49,6 +49,20 @@ public class SolutionService {
         };
     }
 
+    public Runnable solution3() {
+        return () -> {
+            singleQueueService.buildQueues(0, 1);
+            startSim("3");
+        };
+    }
+
+    public Runnable solution4() {
+        return () -> {
+            singleQueueService.buildQueues(0, 2);
+            startSim("4");
+        };
+    }
+
     public void startSim(String solution) {
         Map<String, String> body = new HashMap<>();
         body.put("operation", "start");

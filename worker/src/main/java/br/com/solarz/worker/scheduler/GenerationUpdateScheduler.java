@@ -67,10 +67,12 @@ public class GenerationUpdateScheduler {
     }
 
     private void solution3() {
-
+        for (int i = 0; i < 50; i++)
+            generationUpdateService.updateGeneration();
     }
 
     private void solution4() {
-
+        for (int i = 0; i < 50; i++)
+            generationUpdateService.updateGeneration();
     }
 }

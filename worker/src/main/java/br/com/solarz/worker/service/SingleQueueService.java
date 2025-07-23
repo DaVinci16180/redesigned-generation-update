@@ -114,7 +114,7 @@ public class SingleQueueService {
     private Map<String, Double> solution2(double rank) {
         List<ApiScore> apiScores = apiScoreRepository.findAll();
         return Map.of(
-                "AVAILABLE_HIGH",       rank,
+                "AVAILABLE_HIGH",   rank,
                 "AVAILABLE_NORMAL", rank + apiScores.size(),
                 "FAILED_HIGH",      rank + apiScores.size() * 2,
                 "FAILED_NORMAL",    rank + apiScores.size() * 3
@@ -122,10 +122,22 @@ public class SingleQueueService {
     }
 
     private Map<String, Double> solution3(double rank) {
-        return null;
+        List<ApiScore> apiScores = apiScoreRepository.findAll();
+        return Map.of(
+                "AVAILABLE_HIGH",   rank,
+                "AVAILABLE_NORMAL", rank + apiScores.size(),
+                "FAILED_HIGH",      Math.min(queue.firstScore(), availableScores.size() * 2 - 1),
+                "FAILED_NORMAL",    rank + apiScores.size() * 2
+        );
     }
 
     private Map<String, Double> solution4(double rank) {
-        return null;
+        List<ApiScore> apiScores = apiScoreRepository.findAll();
+        return Map.of(
+                "AVAILABLE_HIGH",   rank,
+                "AVAILABLE_NORMAL", rank + apiScores.size() * 2,
+                "FAILED_HIGH",      rank + apiScores.size(),
+                "FAILED_NORMAL",    rank + apiScores.size() * 3
+        );
     }
 }
