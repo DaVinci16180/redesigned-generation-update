@@ -18,7 +18,7 @@ import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class RedisQueueService {
+public class CompositeQueueService {
 
     public enum QueueType {
         AVAILABLE, // fila usinas disponíveis para atualização

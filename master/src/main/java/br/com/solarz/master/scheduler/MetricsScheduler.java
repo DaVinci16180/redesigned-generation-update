@@ -21,7 +21,7 @@ public class MetricsScheduler {
     private final UsinaRepository usinaRepository;
 
     public static Instant start = null;
-    private int checkpoint = 2; // minutos
+    private int checkpoint = 1; // minutos
 
     @Scheduled(cron = "*/5 * * * * *")
     public void processarAtualizacaoDeGeracaoFila() throws IOException {
@@ -31,13 +31,19 @@ public class MetricsScheduler {
         Instant now = Instant.now();
         if (Duration.between(start, now).toMinutes() >= checkpoint) {
             int updated = usinaRepository.countByUpdated(true);
+            int notUpdated = usinaRepository.countByUpdated(false);
             logger.info("Usinas atualizadas em {} minutos: {}", checkpoint, updated);
 
             FileOutputStream fos = new FileOutputStream("logs.txt", true);
             fos.write((ZonedDateTime.now() + " - Usinas atualizadas em " + checkpoint + " minutos: " + updated + "\n").getBytes());
             fos.close();
 
-            checkpoint += 2;
+            checkpoint += 1;
+
+            if (notUpdated == 0) {
+                start = null;
+                checkpoint = 1;
+            }
         }
     }
 }

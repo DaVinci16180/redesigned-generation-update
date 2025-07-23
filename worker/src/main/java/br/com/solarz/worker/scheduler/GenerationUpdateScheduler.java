@@ -3,7 +3,6 @@ package br.com.solarz.worker.scheduler;
 import model.Api;
 import repository.ApiRepository;
 import br.com.solarz.worker.service.GenerationUpdateService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -14,24 +13,52 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GenerationUpdateScheduler {
 
+    public enum RunningSolution {
+        ORIGINAL_SOLUTION,
+        SOLUTION_1,
+        SOLUTION_2,
+        SOLUTION_3,
+        SOLUTION_4,
+    }
     private final GenerationUpdateService generationUpdateService;
     private final ApiRepository apiRepository;
 
-    public static boolean RUNNING = false;
-
-    @PostConstruct
-    public void setup() {
-
-    }
+    public static RunningSolution solution = null;
 
     @Scheduled(cron = "*/5 * * * * *")
     public void processarAtualizacaoDeGeracaoFila() {
-        if (!RUNNING)
+        if (solution == null)
             return;
 
+        switch(solution) {
+            case ORIGINAL_SOLUTION: originalSolution(); break;
+            case SOLUTION_1: solution1(); break;
+            case SOLUTION_2: solution2(); break;
+            case SOLUTION_3: solution3(); break;
+            case SOLUTION_4: solution4(); break;
+        }
+    }
+
+    private void originalSolution() {
         List<Api> apis = apiRepository.findAll();
 
         for (Api api : apis)
             generationUpdateService.updateGenerationByApi(api);
+    }
+
+    private void solution1() {
+
+    }
+
+    private void solution2() {
+
+    }
+
+    private void solution3() {
+
+    }
+
+    private void solution4() {
+
     }
 }

@@ -6,7 +6,6 @@ import model.Usina.Priority;
 import repository.ApiRepository;
 import repository.UsinaRepository;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
-import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -16,22 +15,20 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import br.com.solarz.worker.service.RedisQueueService.QueueType;
+import br.com.solarz.worker.service.CompositeQueueService.QueueType;
 
 @Primary
 @Service("original")
 @RequiredArgsConstructor
 public class GenerationUpdateService {
 
-    private final RedisQueueService redisQueueService;
+    private final CompositeQueueService compositeQueueService;
     private final UsinaRepository usinaRepository;
     private final MeterRegistry meterRegistry;
     private final ApiRepository apiRepository;
@@ -53,30 +50,10 @@ public class GenerationUpdateService {
                 .build();
 
         API_SIM_URL = "http://" + DOCKER_ADDR + ":8082";
-
-        buildMeters();
-    }
-
-    private void buildMeters() {
-        List<Api> apis = apiRepository.findAll();
-
-        for (Api api : apis) {
-            threadCounter.put(api.getId(), 0);
-
-            Gauge.builder("thread.count", threadCounter, tc -> tc.get(api.getId()))
-                    .tags("portal", api.getName())
-                    .register(meterRegistry);
-        }
     }
 
     @Async("generationUpdate")
     public void updateGenerationByApi(Api api) {
-        // checar se está dentro da janela de atualização
-        if (!GenerationUpdateScheduler.RUNNING)
-            return;
-
-        Instant start = Instant.now();
-
         threadCounter.replace(api.getId(), threadCounter.get(api.getId()) + 1);
 
         meterRegistry
@@ -86,12 +63,14 @@ public class GenerationUpdateService {
         int batchSize = 20;
         int failedRecap = 5; // alta prioridade apenas
 
-        Set<Usina> usinas = redisQueueService.getUsinasByApi(api, QueueType.AVAILABLE_OR_FAILED, batchSize, null);
-        Set<Usina> recap = redisQueueService.getUsinasByApi(api, QueueType.FAILED, failedRecap, Priority.HIGH);
+        Set<Usina> usinas = compositeQueueService.getUsinasByApi(api, QueueType.AVAILABLE_OR_FAILED, batchSize, null);
+        Set<Usina> recap = compositeQueueService.getUsinasByApi(api, QueueType.FAILED, failedRecap, Priority.HIGH);
         usinas.addAll(recap);
 
-        if (usinas.isEmpty())
+        if (usinas.isEmpty()) {
+            GenerationUpdateScheduler.solution = null;
             return;
+        }
 
         System.out.println("Iniciando atualização do portal " + api.getName());
 
@@ -108,12 +87,9 @@ public class GenerationUpdateService {
             }
         }
 
-        redisQueueService.queueFailed(failed, api);
+        compositeQueueService.queueFailed(failed, api);
 
-        Instant finish = Instant.now();
-        Duration duration = Duration.between(start, finish);
-
-        System.out.println(usinas.size() + " usinas do portal " + api.getName() + " atualizadas em " + duration.toMillis() + " milissegundos. Falhas: " + failed.size());
+        System.out.println(usinas.size() + " usinas do portal " + api.getName() + " processadas. Falhas: " + failed.size());
 
         threadCounter.replace(api.getId(), threadCounter.get(api.getId()) - 1);
     }

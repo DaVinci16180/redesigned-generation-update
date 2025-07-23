@@ -1,8 +1,5 @@
 package br.com.solarz.master.service;
 
-import br.com.solarz.master.MasterApplication;
-import br.com.solarz.master.helpers.PopulateDatabaseHelper;
-import br.com.solarz.master.scheduler.MetricsScheduler;
 import config.RedisClientProvider;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -14,26 +11,20 @@ import org.redisson.api.RSet;
 import org.redisson.api.RedissonClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClient;
 import repository.ApiRepository;
 import repository.ApiScoreRepository;
 import repository.CredencialRepository;
 import repository.UsinaRepository;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class QueueBuilderService_Original {
+public class CompositeQueueService {
 
     private final ApiScoreRepository apiScoreRepository;
 
@@ -51,10 +42,8 @@ public class QueueBuilderService_Original {
      */
     private final HashMap<String, HashMap<Integer, RSet<Long>>> queues = new HashMap<>();
     private RedissonClient redissonClient;
-    private final RestClient client = RestClient.create();
-    Logger logger = LoggerFactory.getLogger(QueueBuilderService_Original.class);
+    Logger logger = LoggerFactory.getLogger(CompositeQueueService.class);
 
-    private final PopulateDatabaseHelper populate;
     private final CredencialRepository credencialRepository;
     private final RedisClientProvider redisClientProvider;
     private final UsinaRepository usinaRepository;
@@ -63,37 +52,6 @@ public class QueueBuilderService_Original {
     @PostConstruct
     public void setup() {
         this.redissonClient = redisClientProvider.getClient();
-
-        populate.populateDatabase();
-
-        setupQueues();
-        buildQueues();
-        startSim();
-    }
-
-    public void startSim() {
-        Map<String, String> body = new HashMap<>();
-        body.put("operation", "start");
-
-        for (String addr : MasterApplication.WORKERS_ADDR) {
-            client.post()
-                    .uri("http://" + addr + ":8081/simulation/change-state")
-                    .body(body)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .retrieve()
-                    .body(String.class);
-        }
-
-        if (MetricsScheduler.start == null)
-            MetricsScheduler.start = Instant.now();
-
-        logger.info("Simulation started");
-
-        try {
-            FileOutputStream fos = new FileOutputStream("logs.txt", true);
-            fos.write(("\n" + ZonedDateTime.now() + " - Simulation started\n").getBytes());
-            fos.close();
-        } catch (IOException ignored) {}
     }
 
     public void setupQueues() {
