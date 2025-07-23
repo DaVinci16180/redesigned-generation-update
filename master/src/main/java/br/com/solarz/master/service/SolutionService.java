@@ -18,25 +18,38 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class SolutionService implements Runnable {
+public class SolutionService {
 
     private final Logger logger = LoggerFactory.getLogger(SolutionService.class);
     private final RestClient client = RestClient.create();
 
     private final CompositeQueueService compositeQueueService;
+    private final SingleQueueService singleQueueService;
 
-    @Override
-    public void run() {
-        originalSolution();
+    public Runnable originalSolution() {
+        return () -> {
+            compositeQueueService.setupQueues();
+            compositeQueueService.buildQueues();
+            startSim("original");
+        };
     }
 
-    public void originalSolution() {
-        compositeQueueService.setupQueues();
-        compositeQueueService.buildQueues();
-        startSim();
+    public Runnable solution1() {
+        return () -> {
+            compositeQueueService.setupQueues();
+            compositeQueueService.buildQueues();
+            startSim("1");
+        };
     }
 
-    public void startSim() {
+    public Runnable solution2() {
+        return () -> {
+            singleQueueService.buildQueues(0, 1);
+            startSim("2");
+        };
+    }
+
+    public void startSim(String solution) {
         Map<String, String> body = new HashMap<>();
         body.put("operation", "start");
 

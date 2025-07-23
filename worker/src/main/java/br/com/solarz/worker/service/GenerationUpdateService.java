@@ -1,5 +1,6 @@
 package br.com.solarz.worker.service;
 
+import io.micrometer.core.instrument.Gauge;
 import model.Api;
 import model.Usina;
 import model.Usina.Priority;
@@ -29,6 +30,7 @@ import br.com.solarz.worker.service.CompositeQueueService.QueueType;
 public class GenerationUpdateService {
 
     private final CompositeQueueService compositeQueueService;
+    private final SingleQueueService singleQueueService;
     private final UsinaRepository usinaRepository;
     private final MeterRegistry meterRegistry;
     private final ApiRepository apiRepository;
@@ -50,6 +52,29 @@ public class GenerationUpdateService {
                 .build();
 
         API_SIM_URL = "http://" + DOCKER_ADDR + ":8082";
+
+        buildMeters();
+    }
+
+    private void buildMeters() {
+//        List<Api> apis = apiRepository.findAll();
+//
+//        for (Api api : apis) {
+//            threadCounter.put(api, 0);
+//
+//            int usinasAmount = usinaRepository.countByCredencial_Api(api);
+//            averages.put(api, new ApiAverages(usinasAmount));
+//        }
+
+        Gauge.builder("simulacao.usinas.pending", usinaRepository,
+                        ur -> ur.countByUpdatedAndPriority(false, Priority.HIGH))
+                .tags("priority", "HIGH")
+                .register(meterRegistry);
+
+        Gauge.builder("simulacao.usinas.pending", usinaRepository,
+                        ur -> ur.countByUpdatedAndPriority(false, Priority.NORMAL))
+                .tags("priority", "NORMAL")
+                .register(meterRegistry);
     }
 
     @Async("generationUpdate")
@@ -92,6 +117,30 @@ public class GenerationUpdateService {
         System.out.println(usinas.size() + " usinas do portal " + api.getName() + " processadas. Falhas: " + failed.size());
 
         threadCounter.replace(api.getId(), threadCounter.get(api.getId()) - 1);
+    }
+
+    @Async("generationUpdate")
+    public void updateGeneration() {
+        List<Usina> usinas = singleQueueService.dequeue(25);
+        if (usinas.isEmpty()) {
+            return;
+        }
+
+        for (Usina usina : usinas) {
+            System.out.println("Atualizando usina " + usina.getId());
+
+            boolean success = updateUsinaGeneration(usina);
+
+            if (!success) {
+                System.out.println("Falha na atualização da usina " + usina.getId());
+                singleQueueService.queueFailed(usina);
+                meterRegistry.counter("simulacao.usinas.falhas").increment();
+            } else {
+                System.out.println("Usina " + usina.getId() + " atualizada com sucesso");
+                usina.setUpdated(true);
+                usinaRepository.save(usina);
+            }
+        }
     }
 
     private boolean updateUsinaGeneration(Usina usina) {
