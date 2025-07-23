@@ -1,5 +1,6 @@
 package br.com.solarz.master.scheduler;
 
+import br.com.solarz.master.service.SolutionService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,22 +12,48 @@ import java.io.*;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class MetricsScheduler {
+public class SimulationScheduler {
 
-    Logger logger = LoggerFactory.getLogger(MetricsScheduler.class);
+    Logger logger = LoggerFactory.getLogger(SimulationScheduler.class);
 
     private final UsinaRepository usinaRepository;
+    private final SolutionService solutionService;
 
+    private boolean settingUp = false;
     public static Instant start = null;
     private int checkpoint = 1; // minutos
+    Deque<Runnable> solutions = new ArrayDeque<>(List.of(
+            solutionService.originalSolution(),
+            solutionService.solution1(),
+            solutionService.solution2(),
+            solutionService.solution3(),
+            solutionService.solution4()
+    ));
 
     @Scheduled(cron = "*/5 * * * * *")
-    public void processarAtualizacaoDeGeracaoFila() throws IOException {
-        if (start == null)
+    public void simulate() throws IOException {
+        if (settingUp)
             return;
+
+        if (start == null) {
+            settingUp = true;
+            System.out.println("Iniciando setup da próxima solução pega da fila.");
+
+            Runnable solution = solutions.poll();
+            if (solution == null)
+                return;
+
+            solution.run();
+
+            System.out.println("Setup concluido.");
+            settingUp = false;
+        }
 
         Instant now = Instant.now();
         if (Duration.between(start, now).toMinutes() >= checkpoint) {

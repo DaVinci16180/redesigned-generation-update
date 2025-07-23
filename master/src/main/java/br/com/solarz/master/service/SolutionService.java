@@ -1,7 +1,7 @@
 package br.com.solarz.master.service;
 
 import br.com.solarz.master.MasterApplication;
-import br.com.solarz.master.scheduler.MetricsScheduler;
+import br.com.solarz.master.scheduler.SimulationScheduler;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +65,7 @@ public class SolutionService {
 
     public void startSim(String solution) {
         Map<String, String> body = new HashMap<>();
-        body.put("operation", "start");
+        body.put("operation", solution);
 
         for (String addr : MasterApplication.WORKERS_ADDR) {
             client.post()
@@ -76,14 +76,14 @@ public class SolutionService {
                     .body(String.class);
         }
 
-        if (MetricsScheduler.start == null)
-            MetricsScheduler.start = Instant.now();
+        if (SimulationScheduler.start == null)
+            SimulationScheduler.start = Instant.now();
 
-        logger.info("Simulation started");
+        logger.info("Solução {} iniciada.", solution);
 
         try {
             FileOutputStream fos = new FileOutputStream("logs.txt", true);
-            fos.write(("\n" + ZonedDateTime.now() + " - Simulation started\n").getBytes());
+            fos.write(("\n" + ZonedDateTime.now() + " - Solução " + solution + " iniciada.\n").getBytes());
             fos.close();
         } catch (IOException ignored) {}
     }
@@ -101,8 +101,8 @@ public class SolutionService {
                     .body(String.class);
         }
 
-        if (MetricsScheduler.start == null)
-            MetricsScheduler.start = Instant.now();
+        if (SimulationScheduler.start == null)
+            SimulationScheduler.start = Instant.now();
 
         logger.info("Simulation stopped");
 

@@ -1,7 +1,7 @@
 package br.com.solarz.master.controller;
 
 import br.com.solarz.master.MasterApplication;
-import br.com.solarz.master.scheduler.MetricsScheduler;
+import br.com.solarz.master.scheduler.SimulationScheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
@@ -37,8 +37,8 @@ public class MasterController {
                     .body(String.class);
         }
 
-        if (MetricsScheduler.start == null)
-            MetricsScheduler.start = Instant.now();
+        if (SimulationScheduler.start == null)
+            SimulationScheduler.start = Instant.now();
 
         logger.info("Simulation started");
 
