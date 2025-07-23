@@ -1,6 +1,7 @@
 package br.com.solarz.master.scheduler;
 
 import br.com.solarz.master.service.SolutionService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,13 +29,16 @@ public class SimulationScheduler {
     private boolean settingUp = false;
     public static Instant start = null;
     private int checkpoint = 1; // minutos
-    Deque<Runnable> solutions = new ArrayDeque<>(List.of(
-            solutionService.originalSolution(),
-            solutionService.solution1(),
-            solutionService.solution2(),
-            solutionService.solution3(),
-            solutionService.solution4()
-    ));
+    Deque<Runnable> solutions = new ArrayDeque<>();
+
+    @PostConstruct
+    public void init() {
+        solutions.push(solutionService.originalSolution());
+        solutions.push(solutionService.solution1());
+        solutions.push(solutionService.solution2());
+        solutions.push(solutionService.solution3());
+        solutions.push(solutionService.solution4());
+    }
 
     @Scheduled(cron = "*/5 * * * * *")
     public void simulate() throws IOException {
