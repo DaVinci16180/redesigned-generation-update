@@ -2,6 +2,7 @@ package br.com.solarz.worker.service;
 
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import config.RedisClientProvider;
+import io.micrometer.core.instrument.Meter;
 import model.Api;
 import model.ApiScore;
 import model.Usina;
@@ -32,15 +33,17 @@ public class SingleQueueService {
     Map<Long, Double> availableScores = new HashMap<>();
     Map<Long, Double> errorScores = new HashMap<>();
 
+    List<Meter> meters = new ArrayList<>();
+
     @PostConstruct
     public void setup() {
         redissonClient = redisClientProvider.getClient();
         queue = redissonClient.getScoredSortedSet("usinas_queue");
-
-        buildMeters();
     }
 
-    private void buildMeters() {
+    public void buildMeters() {
+        meters.forEach(meterRegistry::remove);
+
         List<ApiScore> apiScores = apiScoreRepository.findAll();
 
         apiScores.sort(Comparator.comparingDouble(ApiScore::calculate));
@@ -54,13 +57,13 @@ public class SingleQueueService {
 
             availableScores.put(apiScore.getId(), scoreHigh);
 
-            Gauge.builder("available.queue.size", queue, q -> q.count(scoreHigh, true, scoreHigh, true))
+            meters.add(Gauge.builder("available.queue.size", queue, q -> q.count(scoreHigh, true, scoreHigh, true))
                     .tags("portal", api.getName(), "priority", "HIGH")
-                    .register(meterRegistry);
+                    .register(meterRegistry));
 
-            Gauge.builder("available.queue.size", queue, q -> q.count(scoreNormal, true, scoreNormal, true))
+            meters.add(Gauge.builder("available.queue.size", queue, q -> q.count(scoreNormal, true, scoreNormal, true))
                     .tags("portal", api.getName(), "priority", "NORMAL")
-                    .register(meterRegistry);
+                    .register(meterRegistry));
         }
 
         apiScores.sort(Comparator.comparingDouble(ApiScore::getErrorRate));
@@ -74,13 +77,13 @@ public class SingleQueueService {
 
             errorScores.put(apiScore.getId(), (double) i);
 
-            Gauge.builder("error.queue.size", queue, q -> q.count(scoreHigh, true, scoreHigh, true))
+            meters.add(Gauge.builder("error.queue.size", queue, q -> q.count(scoreHigh, true, scoreHigh, true))
                     .tags("portal", api.getName(), "priority", "HIGH")
-                    .register(meterRegistry);
+                    .register(meterRegistry));
 
-            Gauge.builder("error.queue.size", queue, q -> q.count(scoreNormal, true, scoreNormal, true))
+            meters.add(Gauge.builder("error.queue.size", queue, q -> q.count(scoreNormal, true, scoreNormal, true))
                     .tags("portal", api.getName(), "priority", "NORMAL")
-                    .register(meterRegistry);
+                    .register(meterRegistry));
         }
     }
 

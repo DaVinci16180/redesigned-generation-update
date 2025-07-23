@@ -2,6 +2,8 @@ package br.com.solarz.worker.controller;
 
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler.*;
+import br.com.solarz.worker.service.SingleQueueService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +11,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/simulation")
+@RequiredArgsConstructor
 public class RunSimulationController {
+
+    private final SingleQueueService singleQueueService;
 
     @PostMapping("/change-state")
     public ResponseEntity<?> controlRunningState(@RequestBody Map<String, String> params) {
@@ -26,14 +31,17 @@ public class RunSimulationController {
             }
             case "2" -> {
                 GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_2;
+                singleQueueService.buildMeters();
                 return ResponseEntity.ok("Simulação iniciada");
             }
             case "3" -> {
                 GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_3;
+                singleQueueService.buildMeters();
                 return ResponseEntity.ok("Simulação iniciada");
             }
             case "4" -> {
                 GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_4;
+                singleQueueService.buildMeters();
                 return ResponseEntity.ok("Simulação iniciada");
             }
             case "stop" -> {
