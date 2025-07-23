@@ -1,8 +1,6 @@
 package model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,6 +26,7 @@ public class Usina {
     @ManyToOne
     private Credencial credencial;
 
+    @Enumerated(EnumType.STRING)
     private Priority priority = Priority.NORMAL;
     private int updateAttempts = 0;
     private boolean updated = false;
