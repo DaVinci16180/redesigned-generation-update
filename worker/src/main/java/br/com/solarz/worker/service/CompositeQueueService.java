@@ -37,7 +37,6 @@ public class CompositeQueueService {
     @PostConstruct
     public void setup() {
         this.redissonClient = redisClientProvider.getClient();
-        setupQueues();
     }
 
     public void setupQueues() {

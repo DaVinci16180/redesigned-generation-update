@@ -2,6 +2,7 @@ package br.com.solarz.worker.controller;
 
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler.*;
+import br.com.solarz.worker.service.CompositeQueueService;
 import br.com.solarz.worker.service.SingleQueueService;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,7 @@ public class RunSimulationController {
     private final ThreadPoolTaskExecutor executor;
     private final SingleQueueService singleQueueService;
     private final MeterRegistry meterRegistry;
+    private final CompositeQueueService compositeQueueService;
 
     @PostMapping("/change-state")
     public ResponseEntity<?> controlRunningState(@RequestBody Map<String, String> params) {
@@ -28,10 +30,12 @@ public class RunSimulationController {
 
         switch (operation) {
             case "original" -> {
+                compositeQueueService.setupQueues();
                 GenerationUpdateScheduler.solution = RunningSolution.ORIGINAL_SOLUTION;
                 return ResponseEntity.ok("Simulação iniciada");
             }
             case "1" -> {
+                compositeQueueService.setupQueues();
                 GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_1;
                 return ResponseEntity.ok("Simulação iniciada");
             }
