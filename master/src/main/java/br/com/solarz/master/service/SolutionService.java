@@ -69,6 +69,12 @@ public class SolutionService {
     }
 
     public void startSim(String solution) {
+        try {
+            Thread.sleep(20000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         Map<String, String> body = new HashMap<>();
         body.put("operation", solution);
 
