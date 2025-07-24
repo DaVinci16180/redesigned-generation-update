@@ -70,7 +70,7 @@ public class SolutionService {
 
     public void startSim(String solution) {
         try {
-            Thread.sleep(20000);
+            Thread.sleep(35000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

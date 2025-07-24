@@ -34,9 +34,19 @@ public class SimulationScheduler {
     @PostConstruct
     public void init() {
         solutions.push(solutionService.originalSolution());
+        solutions.push(solutionService.originalSolution());
+        solutions.push(solutionService.originalSolution());
+        solutions.push(solutionService.solution1());
+        solutions.push(solutionService.solution1());
         solutions.push(solutionService.solution1());
         solutions.push(solutionService.solution2());
+        solutions.push(solutionService.solution2());
+        solutions.push(solutionService.solution2());
         solutions.push(solutionService.solution3());
+        solutions.push(solutionService.solution3());
+        solutions.push(solutionService.solution3());
+        solutions.push(solutionService.solution4());
+        solutions.push(solutionService.solution4());
         solutions.push(solutionService.solution4());
     }
 
