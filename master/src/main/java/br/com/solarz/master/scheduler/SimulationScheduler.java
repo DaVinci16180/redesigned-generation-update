@@ -47,11 +47,12 @@ public class SimulationScheduler {
 
         if (start == null) {
             settingUp = true;
-            System.out.println("Iniciando setup da próxima solução pega da fila.");
 
-            Runnable solution = solutions.poll();
+            Runnable solution = solutions.pollLast();
             if (solution == null)
                 return;
+
+            System.out.println("Iniciando setup da próxima solução pega da fila.");
 
             solution.run();
 

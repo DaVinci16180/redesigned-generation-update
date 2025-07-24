@@ -94,7 +94,7 @@
     "name": "Portal 10",
     "minResponseTime": 844,
     "maxResponseTime": 1069,
-    "requestsPerMinute": 30,
+    "requestsPerMinute": 180,
     "failureRate": 0.05,
     "timeoutRate": 0.14,
     "timeoutDuration": 10000
@@ -114,7 +114,7 @@
     "name": "Portal 12",
     "minResponseTime": 613,
     "maxResponseTime": 2681,
-    "requestsPerMinute": 30,
+    "requestsPerMinute": 200,
     "failureRate": 0.07,
     "timeoutRate": 0.02,
     "timeoutDuration": 10000
@@ -134,7 +134,7 @@
     "name": "Portal 14",
     "minResponseTime": 529,
     "maxResponseTime": 2658,
-    "requestsPerMinute": 30,
+    "requestsPerMinute": 800,
     "failureRate": 0.12,
     "timeoutRate": 0.2,
     "timeoutDuration": 10000
@@ -274,7 +274,7 @@
     "name": "Portal 28",
     "minResponseTime": 687,
     "maxResponseTime": 2147,
-    "requestsPerMinute": 30,
+    "requestsPerMinute": -1,
     "failureRate": 0.17,
     "timeoutRate": 0.14,
     "timeoutDuration": 10000
@@ -284,7 +284,7 @@
     "name": "Portal 29",
     "minResponseTime": 677,
     "maxResponseTime": 1850,
-    "requestsPerMinute": 100,
+    "requestsPerMinute": -1,
     "failureRate": 0.2,
     "timeoutRate": 0.13,
     "timeoutDuration": 10000
@@ -294,7 +294,7 @@
     "name": "Portal 30",
     "minResponseTime": 968,
     "maxResponseTime": 1812,
-    "requestsPerMinute": 60,
+    "requestsPerMinute": 200,
     "failureRate": 0.12,
     "timeoutRate": 0.14,
     "timeoutDuration": 10000
@@ -344,7 +344,7 @@
     "name": "Portal 35",
     "minResponseTime": 4306,
     "maxResponseTime": 5732,
-    "requestsPerMinute": 60,
+    "requestsPerMinute": 350,
     "failureRate": 0.01,
     "timeoutRate": 0.13,
     "timeoutDuration": 10000
@@ -404,7 +404,7 @@
     "name": "Portal 41",
     "minResponseTime": 1644,
     "maxResponseTime": 2954,
-    "requestsPerMinute": 200,
+    "requestsPerMinute": -1,
     "failureRate": 0.09,
     "timeoutRate": 0.16,
     "timeoutDuration": 10000
@@ -414,7 +414,7 @@
     "name": "Portal 42",
     "minResponseTime": 1549,
     "maxResponseTime": 2587,
-    "requestsPerMinute": 30,
+    "requestsPerMinute": 50,
     "failureRate": 0.2,
     "timeoutRate": 0.19,
     "timeoutDuration": 10000
@@ -434,7 +434,7 @@
     "name": "Portal 44",
     "minResponseTime": 118,
     "maxResponseTime": 400,
-    "requestsPerMinute": 100,
+    "requestsPerMinute": 1000,
     "failureRate": 0.01,
     "timeoutRate": 0.19,
     "timeoutDuration": 10000
@@ -444,7 +444,7 @@
     "name": "Portal 45",
     "minResponseTime": 867,
     "maxResponseTime": 1362,
-    "requestsPerMinute": 30,
+    "requestsPerMinute": 690,
     "failureRate": 0.19,
     "timeoutRate": 0.07,
     "timeoutDuration": 10000
