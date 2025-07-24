@@ -77,6 +77,9 @@ public class GenerationUpdateService {
 
     @Async("generationUpdate")
     public void updateGenerationByApi(Api api) {
+        if (GenerationUpdateScheduler.solution.equals(GenerationUpdateScheduler.RunningSolution.NONE))
+            return;
+
         int batchSize = 20;
         int failedRecap = 5; // alta prioridade apenas
 
@@ -109,6 +112,9 @@ public class GenerationUpdateService {
 
     @Async("generationUpdate")
     public void updateGeneration() {
+        if (GenerationUpdateScheduler.solution.equals(GenerationUpdateScheduler.RunningSolution.NONE))
+            return;
+
         List<Usina> usinas = singleQueueService.dequeue(25);
         if (usinas.isEmpty())
             return;

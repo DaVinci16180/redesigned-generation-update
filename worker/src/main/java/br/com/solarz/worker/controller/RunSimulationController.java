@@ -4,7 +4,9 @@ import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler.*;
 import br.com.solarz.worker.service.SingleQueueService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -15,6 +17,8 @@ import java.util.Map;
 public class RunSimulationController {
 
     private final SingleQueueService singleQueueService;
+    @Qualifier("generationUpdate")
+    private final ThreadPoolTaskExecutor executor;
 
     @PostMapping("/change-state")
     public ResponseEntity<?> controlRunningState(@RequestBody Map<String, String> params) {
@@ -45,7 +49,9 @@ public class RunSimulationController {
                 return ResponseEntity.ok("Simulação iniciada");
             }
             case "stop" -> {
-                GenerationUpdateScheduler.solution = null;
+                GenerationUpdateScheduler.solution = RunningSolution.NONE;
+                executor.shutdown();
+                executor.initialize();
                 return ResponseEntity.ok("Simulação interrompida");
             }
         }

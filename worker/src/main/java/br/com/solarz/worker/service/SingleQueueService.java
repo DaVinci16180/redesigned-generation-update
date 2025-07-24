@@ -107,7 +107,7 @@ public class SingleQueueService {
 
     private Map<String, Double> queueScores(double rank) {
         return switch (GenerationUpdateScheduler.solution) {
-            case ORIGINAL_SOLUTION, SOLUTION_1 -> Map.of();
+            case ORIGINAL_SOLUTION, SOLUTION_1, NONE -> Map.of();
             case SOLUTION_2 -> solution2(rank);
             case SOLUTION_3 -> solution3(rank);
             case SOLUTION_4 -> solution4(rank);

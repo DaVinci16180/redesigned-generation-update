@@ -21,17 +21,20 @@ public class GenerationUpdateScheduler {
         SOLUTION_2,
         SOLUTION_3,
         SOLUTION_4,
+        NONE
     }
 
     private final GenerationUpdateService generationUpdateService;
     private final ApiScoreRepository apiScoreRepository;
     private final ApiRepository apiRepository;
 
-    public static RunningSolution solution = null;
+    public static RunningSolution solution = RunningSolution.NONE;
 
     @Scheduled(cron = "*/5 * * * * *")
     public void processarAtualizacaoDeGeracaoFila() {
-        if (solution == null)
+        System.out.println(solution.name());
+
+        if (solution.equals(RunningSolution.NONE))
             return;
 
         switch(solution) {
