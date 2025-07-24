@@ -78,6 +78,10 @@ public class CompositeQueueService {
                     .tags("portal", api.getName(), "priority", priorityName)
                     .register(meterRegistry);
         }
+
+        meterRegistry.counter("api.simulator.rate.limit", "portal", api.getName());
+        meterRegistry.counter("api.simulator.error", "portal", api.getName());
+        meterRegistry.counter("api.simulator.timeout", "portal", api.getName());
     }
 
     public synchronized Set<Usina> dequeue(Api api, QueueType type, int amount, Priority priority) {

@@ -64,6 +64,10 @@ public class SingleQueueService {
             Gauge.builder("available.queue.size", queue, q -> q.count(scoreNormal, true, scoreNormal, true))
                     .tags("portal", api.getName(), "priority", "NORMAL")
                     .register(meterRegistry);
+
+            meterRegistry.counter("api.simulator.rate.limit", "portal", api.getName());
+            meterRegistry.counter("api.simulator.error", "portal", api.getName());
+            meterRegistry.counter("api.simulator.timeout", "portal", api.getName());
         }
 
         apiScores.sort(Comparator.comparingDouble(ApiScore::getErrorRate));

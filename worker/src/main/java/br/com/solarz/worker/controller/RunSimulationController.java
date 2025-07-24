@@ -65,6 +65,11 @@ public class RunSimulationController {
     public ResponseEntity<?> setup(@RequestBody Map<String, String> params) {
         String operation = params.get("solution");
 
+        meterRegistry.counter("simulacao.usinas.falhas");
+        meterRegistry.counter("simulacao.usinas.falhas");
+        meterRegistry.counter("simulacao.usinas.processadas");
+        meterRegistry.counter("simulacao.usinas.expiradas");
+
         switch (operation) {
             case "original", "1" -> {
                 compositeQueueService.setupQueues();
