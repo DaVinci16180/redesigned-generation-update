@@ -38,8 +38,6 @@ public class GenerationUpdateService {
 
     @Value("${DOCKER_ADDR}")
     private String DOCKER_ADDR;
-
-    private final HashMap<Long, Integer> threadCounter = new HashMap<>();
     private String API_SIM_URL;
 
     @PostConstruct
@@ -79,12 +77,6 @@ public class GenerationUpdateService {
 
     @Async("generationUpdate")
     public void updateGenerationByApi(Api api) {
-        threadCounter.replace(api.getId(), threadCounter.get(api.getId()) + 1);
-
-        meterRegistry
-                .summary("threads.ativas", "portal", api.getName())
-                .record(threadCounter.get(api.getId()));
-
         int batchSize = 20;
         int failedRecap = 5; // alta prioridade apenas
 
@@ -115,8 +107,6 @@ public class GenerationUpdateService {
         compositeQueueService.queueFailed(failed, api);
 
         System.out.println(usinas.size() + " usinas do portal " + api.getName() + " processadas. Falhas: " + failed.size());
-
-        threadCounter.replace(api.getId(), threadCounter.get(api.getId()) - 1);
     }
 
     @Async("generationUpdate")
