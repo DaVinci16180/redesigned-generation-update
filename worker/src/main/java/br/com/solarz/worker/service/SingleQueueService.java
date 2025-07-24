@@ -130,10 +130,15 @@ public class SingleQueueService {
 
     private Map<String, Double> solution3(double rank) {
         List<ApiScore> apiScores = apiScoreRepository.findAll();
+
+        Double firstScore = queue.firstScore();
+        if (firstScore == null)
+            firstScore = 0.;
+
         return Map.of(
                 "AVAILABLE_HIGH",   rank,
                 "AVAILABLE_NORMAL", rank + apiScores.size(),
-                "FAILED_HIGH",      Math.min(queue.firstScore(), availableScores.size() * 2 - 1),
+                "FAILED_HIGH",      Math.min(firstScore, availableScores.size() * 2 - 1),
                 "FAILED_NORMAL",    rank + apiScores.size() * 2
         );
     }
