@@ -33,7 +33,7 @@ public class SingleQueueService {
     Map<Long, Double> availableScores = new HashMap<>();
     Map<Long, Double> errorScores = new HashMap<>();
 
-    List<Meter> meters = new ArrayList<>();
+//    List<Meter> meters = new ArrayList<>();
 
     @PostConstruct
     public void setup() {
@@ -42,7 +42,7 @@ public class SingleQueueService {
     }
 
     public void buildMeters() {
-        meters.forEach(meterRegistry::remove);
+//        meters.forEach(meterRegistry::remove);
 
         List<ApiScore> apiScores = apiScoreRepository.findAll();
 
@@ -57,13 +57,13 @@ public class SingleQueueService {
 
             availableScores.put(apiScore.getId(), scoreHigh);
 
-            meters.add(Gauge.builder("available.queue.size", queue, q -> q.count(scoreHigh, true, scoreHigh, true))
+            Gauge.builder("available.queue.size", queue, q -> q.count(scoreHigh, true, scoreHigh, true))
                     .tags("portal", api.getName(), "priority", "HIGH")
-                    .register(meterRegistry));
+                    .register(meterRegistry);
 
-            meters.add(Gauge.builder("available.queue.size", queue, q -> q.count(scoreNormal, true, scoreNormal, true))
+            Gauge.builder("available.queue.size", queue, q -> q.count(scoreNormal, true, scoreNormal, true))
                     .tags("portal", api.getName(), "priority", "NORMAL")
-                    .register(meterRegistry));
+                    .register(meterRegistry);
         }
 
         apiScores.sort(Comparator.comparingDouble(ApiScore::getErrorRate));
@@ -77,13 +77,13 @@ public class SingleQueueService {
 
             errorScores.put(apiScore.getId(), (double) i);
 
-            meters.add(Gauge.builder("error.queue.size", queue, q -> q.count(scoreHigh, true, scoreHigh, true))
+            Gauge.builder("error.queue.size", queue, q -> q.count(scoreHigh, true, scoreHigh, true))
                     .tags("portal", api.getName(), "priority", "HIGH")
-                    .register(meterRegistry));
+                    .register(meterRegistry);
 
-            meters.add(Gauge.builder("error.queue.size", queue, q -> q.count(scoreNormal, true, scoreNormal, true))
+            Gauge.builder("error.queue.size", queue, q -> q.count(scoreNormal, true, scoreNormal, true))
                     .tags("portal", api.getName(), "priority", "NORMAL")
-                    .register(meterRegistry));
+                    .register(meterRegistry);
         }
     }
 

@@ -3,6 +3,7 @@ package br.com.solarz.worker.controller;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler.*;
 import br.com.solarz.worker.service.SingleQueueService;
+import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +17,10 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class RunSimulationController {
 
-    private final SingleQueueService singleQueueService;
     @Qualifier("generationUpdate")
     private final ThreadPoolTaskExecutor executor;
+    private final SingleQueueService singleQueueService;
+    private final MeterRegistry meterRegistry;
 
     @PostMapping("/change-state")
     public ResponseEntity<?> controlRunningState(@RequestBody Map<String, String> params) {
@@ -52,6 +54,7 @@ public class RunSimulationController {
                 GenerationUpdateScheduler.solution = RunningSolution.NONE;
                 executor.shutdown();
                 executor.initialize();
+                meterRegistry.clear();
                 return ResponseEntity.ok("Simulação interrompida");
             }
         }
