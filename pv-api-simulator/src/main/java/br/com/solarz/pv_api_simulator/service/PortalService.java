@@ -2,7 +2,9 @@ package br.com.solarz.pv_api_simulator.service;
 
 import br.com.solarz.pv_api_simulator.model.Portal;
 import br.com.solarz.pv_api_simulator.utils.PortalLoader;
+import io.micrometer.core.instrument.MeterRegistry;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class PortalService {
 
     private Map<Integer, Portal> portals;
@@ -25,6 +28,8 @@ public class PortalService {
     private static final Random randomTimeout = new Random(1);
 
     private static final Random generation = new Random();
+
+    private final MeterRegistry meterRegistry;
 
     @PostConstruct
     public void populate() {
@@ -49,17 +54,21 @@ public class PortalService {
             rateLimit.putIfAbsent(portalId, new AtomicInteger(0));
             int count = rateLimit.get(portalId).incrementAndGet();
 
-            if (count > portal.getRequestsPerMinute())
+            if (count > portal.getRequestsPerMinute()) {
+                meterRegistry.counter("api.simulator.rate.limit", "portal", "Portal" + portalId).increment();
                 throw new RuntimeException("Rate limit excedido para portal " + portal.getName());
+            }
         }
 
         // Simular erro
         if (randomError.nextDouble() < portal.getFailureRate()) {
+            meterRegistry.counter("api.simulator.error", "portal", "Portal" + portalId).increment();
             throw new RuntimeException("Erro simulado na requisição para o portal " + portal.getName());
         }
 
         // Simular timeout
         if (randomTimeout.nextDouble() < portal.getTimeoutRate()) {
+            meterRegistry.counter("api.simulator.timeout", "portal", "Portal" + portalId).increment();
             Thread.sleep(portal.getTimeoutDuration());
             throw new RuntimeException("Timeout simulado para portal " + portal.getName());
         }
