@@ -28,6 +28,7 @@ public class SolutionService {
 
     public Runnable originalSolution() {
         return () -> {
+            setupSim("original");
             compositeQueueService.setupQueues();
             compositeQueueService.buildQueues();
             startSim("original");
@@ -36,6 +37,7 @@ public class SolutionService {
 
     public Runnable solution1() {
         return () -> {
+            setupSim("1");
             compositeQueueService.setupQueues();
             compositeQueueService.buildQueues();
             startSim("1");
@@ -44,6 +46,7 @@ public class SolutionService {
 
     public Runnable solution2() {
         return () -> {
+            setupSim("2");
             singleQueueService.buildQueues(0, 1);
             startSim("2");
         };
@@ -51,6 +54,7 @@ public class SolutionService {
 
     public Runnable solution3() {
         return () -> {
+            setupSim("3");
             singleQueueService.buildQueues(0, 1);
             startSim("3");
         };
@@ -58,6 +62,7 @@ public class SolutionService {
 
     public Runnable solution4() {
         return () -> {
+            setupSim("4");
             singleQueueService.buildQueues(0, 2);
             startSim("4");
         };
@@ -111,5 +116,21 @@ public class SolutionService {
             fos.write((ZonedDateTime.now() + " - Simulation started\n").getBytes());
             fos.close();
         } catch (IOException ignored) {}
+    }
+
+    public void setupSim(String solution) {
+        Map<String, String> body = new HashMap<>();
+        body.put("solution", solution);
+
+        for (String addr : MasterApplication.WORKERS_ADDR) {
+            client.post()
+                    .uri("http://" + addr + ":8081/simulation/setup")
+                    .body(body)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .retrieve()
+                    .body(String.class);
+        }
+
+        logger.info("Solution set up");
     }
 }

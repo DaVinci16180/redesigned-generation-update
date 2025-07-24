@@ -1,8 +1,8 @@
 package br.com.solarz.worker.service;
 
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
+import br.com.solarz.worker.scheduler.GenerationUpdateScheduler.*;
 import config.RedisClientProvider;
-import io.micrometer.core.instrument.Meter;
 import model.Api;
 import model.ApiScore;
 import model.Usina;
@@ -41,7 +41,7 @@ public class SingleQueueService {
         queue = redissonClient.getScoredSortedSet("usinas_queue");
     }
 
-    public void buildMeters() {
+    public void buildMeters(RunningSolution solution) {
 //        meters.forEach(meterRegistry::remove);
 
         List<ApiScore> apiScores = apiScoreRepository.findAll();
@@ -50,7 +50,7 @@ public class SingleQueueService {
         for (int i = 0; i < apiScores.size(); i++) {
             ApiScore apiScore = apiScores.get(i);
             Api api = apiScore.getApi();
-            Map<String, Double> scores = queueScores(i);
+            Map<String, Double> scores = queueScores(i, solution);
 
             double scoreHigh = scores.get("AVAILABLE_HIGH");
             double scoreNormal = scores.get("AVAILABLE_NORMAL");
@@ -70,7 +70,7 @@ public class SingleQueueService {
         for (int i = 0; i < apiScores.size(); i++) {
             ApiScore apiScore = apiScores.get(i);
             Api api = apiScore.getApi();
-            Map<String, Double> scores = queueScores(i);
+            Map<String, Double> scores = queueScores(i, solution);
 
             double scoreHigh = scores.get("FAILED_HIGH");
             double scoreNormal = scores.get("FAILED_NORMAL");
@@ -94,7 +94,7 @@ public class SingleQueueService {
     public void queueFailed(Usina usina) {
         long apiId = usina.getCredencial().getApi().getId();
         double rank = errorScores.get(apiId);
-        Map<String, Double> scores = queueScores(rank);
+        Map<String, Double> scores = queueScores(rank, GenerationUpdateScheduler.solution);
 
         double scoreHigh = scores.get("FAILED_HIGH");
         double scoreNormal = scores.get("FAILED_NORMAL");
@@ -105,8 +105,8 @@ public class SingleQueueService {
             queue.add(scoreNormal, usina.getId());
     }
 
-    private Map<String, Double> queueScores(double rank) {
-        return switch (GenerationUpdateScheduler.solution) {
+    private Map<String, Double> queueScores(double rank, RunningSolution solution) {
+        return switch (solution) {
             case ORIGINAL_SOLUTION, SOLUTION_1, NONE -> Map.of();
             case SOLUTION_2 -> solution2(rank);
             case SOLUTION_3 -> solution3(rank);

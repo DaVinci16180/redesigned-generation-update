@@ -30,28 +30,23 @@ public class RunSimulationController {
 
         switch (operation) {
             case "original" -> {
-                compositeQueueService.setupQueues();
                 GenerationUpdateScheduler.solution = RunningSolution.ORIGINAL_SOLUTION;
                 return ResponseEntity.ok("Simulação iniciada");
             }
             case "1" -> {
-                compositeQueueService.setupQueues();
                 GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_1;
                 return ResponseEntity.ok("Simulação iniciada");
             }
             case "2" -> {
                 GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_2;
-                singleQueueService.buildMeters();
                 return ResponseEntity.ok("Simulação iniciada");
             }
             case "3" -> {
                 GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_3;
-                singleQueueService.buildMeters();
                 return ResponseEntity.ok("Simulação iniciada");
             }
             case "4" -> {
                 GenerationUpdateScheduler.solution = RunningSolution.SOLUTION_4;
-                singleQueueService.buildMeters();
                 return ResponseEntity.ok("Simulação iniciada");
             }
             case "stop" -> {
@@ -60,6 +55,32 @@ public class RunSimulationController {
                 executor.initialize();
                 meterRegistry.clear();
                 return ResponseEntity.ok("Simulação interrompida");
+            }
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/setup")
+    public ResponseEntity<?> setup(@RequestBody Map<String, String> params) {
+        String operation = params.get("solution");
+
+        switch (operation) {
+            case "original", "1" -> {
+                compositeQueueService.setupQueues();
+                return ResponseEntity.ok("Simulação configurada");
+            }
+            case "2" -> {
+                singleQueueService.buildMeters(RunningSolution.SOLUTION_2);
+                return ResponseEntity.ok("Simulação configurada");
+            }
+            case "3" -> {
+                singleQueueService.buildMeters(RunningSolution.SOLUTION_3);
+                return ResponseEntity.ok("Simulação configurada");
+            }
+            case "4" -> {
+                singleQueueService.buildMeters(RunningSolution.SOLUTION_4);
+                return ResponseEntity.ok("Simulação configurada");
             }
         }
 
