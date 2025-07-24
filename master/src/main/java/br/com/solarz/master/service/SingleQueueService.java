@@ -61,12 +61,12 @@ public class SingleQueueService {
                 Map<Long, Double> usinasHigh = usinas
                         .stream()
                         .filter(u -> u.getPriority().equals(Usina.Priority.HIGH))
-                        .collect(Collectors.toMap(Usina::getId, x -> finalI + offsetHigh));
+                        .collect(Collectors.toMap(Usina::getId, x -> finalI + offsetHigh * scores.size()));
 
                 Map<Long, Double> usinasNorm = usinas
                         .stream()
                         .filter(u -> u.getPriority().equals(Usina.Priority.NORMAL))
-                        .collect(Collectors.toMap(Usina::getId, x -> finalI + offsetNorm));
+                        .collect(Collectors.toMap(Usina::getId, x -> finalI + offsetNorm * scores.size()));
 
                 queue.addAll(usinasHigh);
                 queue.addAll(usinasNorm);
