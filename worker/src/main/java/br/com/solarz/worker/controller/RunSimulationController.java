@@ -3,6 +3,7 @@ package br.com.solarz.worker.controller;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler;
 import br.com.solarz.worker.scheduler.GenerationUpdateScheduler.*;
 import br.com.solarz.worker.service.CompositeQueueService;
+import br.com.solarz.worker.service.GenerationUpdateService;
 import br.com.solarz.worker.service.SingleQueueService;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class RunSimulationController {
     private final SingleQueueService singleQueueService;
     private final MeterRegistry meterRegistry;
     private final CompositeQueueService compositeQueueService;
+    private final GenerationUpdateService generationUpdateService;
 
     @PostMapping("/change-state")
     public ResponseEntity<?> controlRunningState(@RequestBody Map<String, String> params) {
@@ -65,11 +67,10 @@ public class RunSimulationController {
     public ResponseEntity<?> setup(@RequestBody Map<String, String> params) {
         String operation = params.get("solution");
 
-        meterRegistry.counter("simulacao.usinas.falhas");
+        generationUpdateService.buildMeters();
         meterRegistry.counter("simulacao.usinas.falhas");
         meterRegistry.counter("simulacao.usinas.processadas");
         meterRegistry.counter("simulacao.usinas.expiradas");
-
         switch (operation) {
             case "original", "1" -> {
                 compositeQueueService.setupQueues();

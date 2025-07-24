@@ -50,11 +50,9 @@ public class GenerationUpdateService {
                 .build();
 
         API_SIM_URL = "http://" + DOCKER_ADDR + ":8082";
-
-        buildMeters();
     }
 
-    private void buildMeters() {
+    public void buildMeters() {
 //        List<Api> apis = apiRepository.findAll();
 //
 //        for (Api api : apis) {
