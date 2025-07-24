@@ -73,6 +73,7 @@ public class SimulationScheduler {
             checkpoint += 1;
 
             if (notUpdated == 0) {
+                solutionService.stopSim();
                 start = null;
                 checkpoint = 1;
             }

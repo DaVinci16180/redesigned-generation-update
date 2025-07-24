@@ -84,10 +84,8 @@ public class GenerationUpdateService {
         Set<Usina> recap = compositeQueueService.getUsinasByApi(api, QueueType.FAILED, failedRecap, Priority.HIGH);
         usinas.addAll(recap);
 
-        if (usinas.isEmpty()) {
-            GenerationUpdateScheduler.solution = null;
+        if (usinas.isEmpty())
             return;
-        }
 
         System.out.println("Iniciando atualização do portal " + api.getName());
 
@@ -112,9 +110,8 @@ public class GenerationUpdateService {
     @Async("generationUpdate")
     public void updateGeneration() {
         List<Usina> usinas = singleQueueService.dequeue(25);
-        if (usinas.isEmpty()) {
+        if (usinas.isEmpty())
             return;
-        }
 
         for (Usina usina : usinas) {
             System.out.println("Atualizando usina " + usina.getId());
